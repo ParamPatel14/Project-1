@@ -85,16 +85,83 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
     email = user_info["email"]
     
     user = db.query(User).filter(User.email == email).first()
+    
+    # Check if user should be admin based on current settings
+    should_be_admin = (email == settings.ADMIN_EMAIL)
+    
     if not user:
         user = User(
             email=email,
             name=user_info.get("name"),
             provider="google",
-            role="admin" if email == settings.ADMIN_EMAIL else "user"
+            role="admin" if should_be_admin else "user"
         )
         db.add(user)
         db.commit()
         db.refresh(user)
+    else:
+        # Update role if it needs to change to admin
+        if should_be_admin and user.role != "admin":
+            user.role = "admin"
+            db.commit()
+            db.refresh(user)
+
+    role = user.role
+    jwt_token = create_access_token({"sub": email, "role": role})
+
+    return RedirectResponse(f"http://localhost:5173/oauth?token={jwt_token}")
+
+@router.get("/github")
+async def github_login(request: Request):
+    return await oauth.github.authorize_redirect(
+        request, "http://localhost:8000/auth/github/callback"
+    )
+
+@router.get("/github/callback")
+async def github_callback(request: Request, db: Session = Depends(get_db)):
+    try:
+        token = await oauth.github.authorize_access_token(request)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"GitHub OAuth Error: {str(e)}")
+
+    user_info = await oauth.github.get("user", token=token)
+    user_info = user_info.json()
+    
+    # GitHub email might be private, so fetch it separately if needed
+    email = user_info.get("email")
+    if not email:
+        # Fetch emails if not in public profile
+        resp = await oauth.github.get("user/emails", token=token)
+        emails = resp.json()
+        for e in emails:
+            if e["primary"] and e["verified"]:
+                email = e["email"]
+                break
+    
+    if not email:
+         raise HTTPException(status_code=400, detail="Could not retrieve email from GitHub")
+
+    user = db.query(User).filter(User.email == email).first()
+    
+    # Check if user should be admin based on current settings
+    should_be_admin = (email == settings.ADMIN_EMAIL)
+
+    if not user:
+        user = User(
+            email=email,
+            name=user_info.get("name") or user_info.get("login"),
+            provider="github",
+            role="admin" if should_be_admin else "user"
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    else:
+        # Update role if it needs to change to admin
+        if should_be_admin and user.role != "admin":
+            user.role = "admin"
+            db.commit()
+            db.refresh(user)
 
     role = user.role
     jwt_token = create_access_token({"sub": email, "role": role})
