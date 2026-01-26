@@ -1,9 +1,38 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 from app.api.auth import router as auth_router
 from app.routes.users import router as users_router
+from app.core.config import settings
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Restaurant Management System")
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Loading settings...")
+    if not settings.SECRET_KEY:
+        logger.error("SECRET_KEY is missing!")
+    else:
+        logger.info(f"SECRET_KEY loaded (len={len(settings.SECRET_KEY)})")
+        
+    if not settings.GOOGLE_CLIENT_ID:
+        logger.error("GOOGLE_CLIENT_ID is missing!")
+    else:
+        logger.info(f"Google Client ID: {settings.GOOGLE_CLIENT_ID[:10]}...")
+
+# Add SessionMiddleware with explicit configuration for localhost
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.SECRET_KEY,
+    max_age=3600,
+    https_only=False,  # Essential for localhost (http)
+    same_site="lax"    # Allows cookies to be sent in redirects
+)
 
 app.add_middleware(
     CORSMiddleware,
