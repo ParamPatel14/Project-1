@@ -4,13 +4,21 @@ import { getCompleteness, getMe } from "../api";
 import StudentProfileForm from "../components/StudentProfileForm";
 import MentorProfileForm from "../components/MentorProfileForm";
 import AdminDashboard from "../components/AdminDashboard";
-import { FiLogOut, FiActivity, FiBook, FiUser } from "react-icons/fi";
+import OpportunityForm from "../components/OpportunityForm";
+import OpportunityList from "../components/OpportunityList";
+import MentorApplications from "../components/MentorApplications";
+import StudentApplications from "../components/StudentApplications";
+import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList } from "react-icons/fi";
 
 const Dashboard = () => {
-  const { user, logout, loading: authLoading } = useAuth();
+  const { user, logout, loading: authLoading, refreshUser } = useAuth();
   const [completeness, setCompleteness] = useState({ score: 0, role: "" });
   const [loading, setLoading] = useState(true);
   const [selectedRole, setSelectedRole] = useState(null);
+  
+  // Mentor Tabs: 'profile', 'post-opp', 'applications'
+  // Student Tabs: 'profile', 'browse', 'applications'
+  const [activeTab, setActiveTab] = useState('profile');
   
   // We need a local user state that can be updated when profile changes
   // without waiting for the global AuthContext to refresh (though we should trigger that too)
@@ -57,16 +65,37 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
-      <nav className="bg-white shadow-sm">
+      <nav className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <h1 className="text-xl font-bold text-indigo-600">ResearchMatch</h1>
+              {/* Role Badge */}
+              {displayRole && displayRole !== 'user' && (
+                 <span className="ml-3 px-2 py-1 rounded text-xs font-semibold bg-indigo-100 text-indigo-800 capitalize">
+                   {displayRole} Portal
+                 </span>
+              )}
             </div>
             <div className="flex items-center space-x-4">
+              {/* Tabs Navigation */}
+              {displayRole === "student" && (
+                <div className="hidden md:flex space-x-4 mr-8">
+                  <button onClick={() => setActiveTab('profile')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'profile' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Profile</button>
+                  <button onClick={() => setActiveTab('browse')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'browse' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Browse Opportunities</button>
+                  <button onClick={() => setActiveTab('applications')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'applications' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>My Applications</button>
+                </div>
+              )}
+              {displayRole === "mentor" && (
+                <div className="hidden md:flex space-x-4 mr-8">
+                  <button onClick={() => setActiveTab('profile')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'profile' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Profile</button>
+                  <button onClick={() => setActiveTab('post-opp')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'post-opp' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Post Opportunity</button>
+                  <button onClick={() => setActiveTab('applications')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'applications' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Manage Applications</button>
+                </div>
+              )}
+
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-gray-900">{currentUser?.name}</p>
-                <p className="text-xs text-gray-500 capitalize">{currentUser?.role}</p>
               </div>
               <button
                 onClick={logout}
@@ -120,78 +149,128 @@ const Dashboard = () => {
 
         {/* Student View */}
         {displayRole === "student" && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column: Profile */}
-            <div className="lg:col-span-2 space-y-8">
-               {/* Completeness Card */}
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-gray-800">Profile Completeness</h3>
-                  <span className="text-indigo-600 font-bold">{completeness.score}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div 
-                    className="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" 
-                    style={{ width: `${completeness.score}%` }}
-                  ></div>
-                </div>
-                <p className="text-sm text-gray-500 mt-2">
-                  {completeness.score < 100 
-                    ? "Complete your profile to increase your chances of finding a mentor." 
-                    : "Your profile is complete! You are ready to apply for positions."}
-                </p>
-              </div>
-
-              <StudentProfileForm user={currentUser} onUpdate={handleProfileUpdate} />
+          <>
+            {/* Mobile Tab Selector */}
+            <div className="md:hidden mb-6">
+              <select 
+                value={activeTab} 
+                onChange={(e) => setActiveTab(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              >
+                <option value="profile">My Profile</option>
+                <option value="browse">Browse Opportunities</option>
+                <option value="applications">My Applications</option>
+              </select>
             </div>
 
-            {/* Right Column: Status/Matches (Placeholder) */}
-            <div className="space-y-8">
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                  <FiActivity className="mr-2" /> Application Status
-                </h3>
-                <div className="text-center py-8 text-gray-500">
-                  <p>No active applications.</p>
-                  <p className="text-sm mt-2">Browse mentors to start applying.</p>
+            {activeTab === 'profile' && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column: Profile */}
+                <div className="lg:col-span-2 space-y-8">
+                   {/* Completeness Card */}
+                  <div className="bg-white p-6 rounded-xl shadow-md">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-semibold text-gray-800">Profile Completeness</h3>
+                      <span className="text-indigo-600 font-bold">{completeness.score}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div 
+                        className="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" 
+                        style={{ width: `${completeness.score}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-2">
+                      {completeness.score < 100 
+                        ? "Complete your profile to increase your chances of finding a mentor." 
+                        : "Your profile is complete! You are ready to apply for positions."}
+                    </p>
+                  </div>
+
+                  <StudentProfileForm user={currentUser} onUpdate={handleProfileUpdate} />
+                </div>
+
+                {/* Right Column: Status/Matches (Placeholder) */}
+                <div className="space-y-8">
+                  <div className="bg-white p-6 rounded-xl shadow-md">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                      <FiActivity className="mr-2" /> Quick Stats
+                    </h3>
+                    <div className="text-center py-4 text-gray-500">
+                      <p>Complete your profile to unlock more stats.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            )}
+
+            {activeTab === 'browse' && <OpportunityList />}
+            
+            {activeTab === 'applications' && <StudentApplications />}
+          </>
         )}
 
         {/* Mentor View */}
         {displayRole === "mentor" && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column: Profile */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Verification Status Card */}
-              <div className={`p-6 rounded-xl shadow-md ${currentUser.mentor_profile?.is_verified ? 'bg-green-50 border-l-4 border-green-500' : 'bg-yellow-50 border-l-4 border-yellow-500'}`}>
-                <h3 className={`text-lg font-semibold ${currentUser.mentor_profile?.is_verified ? 'text-green-800' : 'text-yellow-800'}`}>
-                  {currentUser.mentor_profile?.is_verified ? 'Verified Account' : 'Verification Pending'}
-                </h3>
-                <p className={`text-sm mt-1 ${currentUser.mentor_profile?.is_verified ? 'text-green-700' : 'text-yellow-700'}`}>
-                  {currentUser.mentor_profile?.is_verified 
-                    ? "Your account is verified. Students can now apply to your lab." 
-                    : "Your profile is under review by the administrators. You can update your details in the meantime."}
-                </p>
-              </div>
-
-              <MentorProfileForm user={currentUser} onUpdate={handleProfileUpdate} />
+          <>
+             {/* Mobile Tab Selector */}
+             <div className="md:hidden mb-6">
+              <select 
+                value={activeTab} 
+                onChange={(e) => setActiveTab(e.target.value)}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              >
+                <option value="profile">My Profile</option>
+                <option value="post-opp">Post Opportunity</option>
+                <option value="applications">Manage Applications</option>
+              </select>
             </div>
 
-            {/* Right Column: Requests (Placeholder) */}
-            <div className="space-y-8">
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                  <FiActivity className="mr-2" /> Student Requests
-                </h3>
-                <div className="text-center py-8 text-gray-500">
-                  <p>No new requests.</p>
+            {activeTab === 'profile' && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column: Profile */}
+                <div className="lg:col-span-2 space-y-8">
+                  {/* Verification Status Card */}
+                  <div className={`p-6 rounded-xl shadow-md ${currentUser.mentor_profile?.is_verified ? 'bg-green-50 border-l-4 border-green-500' : 'bg-yellow-50 border-l-4 border-yellow-500'}`}>
+                    <h3 className={`text-lg font-semibold ${currentUser.mentor_profile?.is_verified ? 'text-green-800' : 'text-yellow-800'}`}>
+                      {currentUser.mentor_profile?.is_verified ? 'Verified Account' : 'Verification Pending'}
+                    </h3>
+                    <p className={`text-sm mt-1 ${currentUser.mentor_profile?.is_verified ? 'text-green-700' : 'text-yellow-700'}`}>
+                      {currentUser.mentor_profile?.is_verified 
+                        ? "Your account is verified. Students can now apply to your lab." 
+                        : "Your profile is under review by the administrators. You can update your details in the meantime."}
+                    </p>
+                  </div>
+
+                  <MentorProfileForm user={currentUser} onUpdate={handleProfileUpdate} />
+                </div>
+
+                {/* Right Column: Quick Actions */}
+                <div className="space-y-8">
+                  <div className="bg-white p-6 rounded-xl shadow-md">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+                    <button 
+                      onClick={() => setActiveTab('post-opp')}
+                      className="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition flex items-center justify-center"
+                    >
+                      <FiPlusCircle className="mr-2" /> Post New Opportunity
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('applications')}
+                      className="w-full mt-3 bg-white text-indigo-600 border border-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-50 transition flex items-center justify-center"
+                    >
+                      <FiList className="mr-2" /> View Applications
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            )}
+
+            {activeTab === 'post-opp' && (
+              <OpportunityForm onSuccess={() => setActiveTab('applications')} />
+            )}
+
+            {activeTab === 'applications' && <MentorApplications />}
+          </>
         )}
 
       </main>

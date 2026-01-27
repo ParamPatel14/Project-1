@@ -80,4 +80,42 @@ export const verifyMentor = async (userId) => {
   return response.data;
 };
 
+// Opportunity APIs
+export const createOpportunity = async (data) => {
+  const response = await api.post("/opportunities/", data);
+  return response.data;
+};
+
+export const getOpportunities = async (filters = {}) => {
+  const params = new URLSearchParams(filters).toString();
+  const response = await api.get(`/opportunities/?${params}`);
+  return response.data;
+};
+
+export const getOpportunity = async (id) => {
+  const response = await api.get(`/opportunities/${id}`);
+  return response.data;
+};
+
+// Application APIs
+export const applyForOpportunity = async (data) => {
+  const response = await api.post("/applications/", data);
+  return response.data;
+};
+
+export const getMyApplications = async () => {
+  const response = await api.get("/applications/me");
+  return response.data;
+};
+
+export const getMentorApplications = async () => {
+  const response = await api.get("/applications/mentor");
+  return response.data;
+};
+
+export const updateApplicationStatus = async (id, status) => {
+  const response = await api.put(`/applications/${id}/status`, { status });
+  return response.data;
+};
+
 export default api;
