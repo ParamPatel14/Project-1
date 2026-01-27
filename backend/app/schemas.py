@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, HttpUrl
 from typing import Optional, List
 from enum import Enum
+from datetime import datetime
 
 class RoleEnum(str, Enum):
     student = "student"
@@ -95,3 +96,45 @@ class UserResponse(UserBase):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+# --- Opportunity Schemas ---
+class OpportunityBase(BaseModel):
+    title: str
+    description: str
+    type: str # internship, research_assistant, phd_guidance, collaboration
+    requirements: Optional[str] = None
+    is_open: Optional[bool] = True
+
+class OpportunityCreate(OpportunityBase):
+    pass
+
+class OpportunityUpdate(OpportunityBase):
+    pass
+
+class OpportunityResponse(OpportunityBase):
+    id: int
+    mentor_id: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+# --- Application Schemas ---
+class ApplicationBase(BaseModel):
+    cover_letter: Optional[str] = None
+
+class ApplicationCreate(ApplicationBase):
+    opportunity_id: int
+
+class ApplicationUpdate(BaseModel):
+    status: str # pending, reviewing, accepted, rejected
+
+class ApplicationResponse(ApplicationBase):
+    id: int
+    student_id: int
+    opportunity_id: int
+    status: str
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True

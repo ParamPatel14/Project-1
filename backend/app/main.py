@@ -5,6 +5,8 @@ from app.api.auth import router as auth_router
 from app.routes.users import router as users_router
 from app.api.profiles import router as profiles_router
 from app.api.admin import router as admin_router
+from app.api.opportunities import router as opportunities_router
+from app.api.applications import router as applications_router
 from app.core.config import settings
 import logging
 
@@ -37,6 +39,8 @@ app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(profiles_router, prefix="/profiles", tags=["Profiles"])
 app.include_router(admin_router, prefix="/admin", tags=["Admin"])
+app.include_router(opportunities_router, prefix="/opportunities", tags=["Opportunities"])
+app.include_router(applications_router, prefix="/applications", tags=["Applications"])
 
 @app.get("/")
 def root():

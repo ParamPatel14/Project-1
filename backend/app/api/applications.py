@@ -1,0 +1,90 @@
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from typing import List
+from app.db.database import get_db
+from app.db.models import Application, Opportunity, User
+from app.schemas import ApplicationCreate, ApplicationResponse, ApplicationUpdate
+from app.api.auth import get_current_user
+
+router = APIRouter()
+
+@router.post("/", response_model=ApplicationResponse)
+def create_application(
+    application: ApplicationCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "student":
+        raise HTTPException(status_code=403, detail="Only students can apply for opportunities")
+    
+    # Check if opportunity exists and is open
+    opportunity = db.query(Opportunity).filter(Opportunity.id == application.opportunity_id).first()
+    if not opportunity:
+        raise HTTPException(status_code=404, detail="Opportunity not found")
+    if not opportunity.is_open:
+        raise HTTPException(status_code=400, detail="This opportunity is closed")
+    
+    # Check if already applied
+    existing_application = db.query(Application).filter(
+        Application.student_id == current_user.id,
+        Application.opportunity_id == application.opportunity_id
+    ).first()
+    if existing_application:
+        raise HTTPException(status_code=400, detail="You have already applied to this opportunity")
+
+    new_application = Application(
+        student_id=current_user.id,
+        opportunity_id=application.opportunity_id,
+        cover_letter=application.cover_letter,
+        status="pending"
+    )
+    db.add(new_application)
+    db.commit()
+    db.refresh(new_application)
+    return new_application
+
+@router.get("/me", response_model=List[ApplicationResponse])
+def read_my_applications(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "student":
+        raise HTTPException(status_code=403, detail="Only students have personal applications")
+    
+    applications = db.query(Application).filter(Application.student_id == current_user.id).all()
+    return applications
+
+@router.get("/mentor", response_model=List[ApplicationResponse])
+def read_mentor_applications(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "mentor":
+        raise HTTPException(status_code=403, detail="Only mentors can view applications for their opportunities")
+    
+    # Join Opportunity to filter by mentor_id
+    applications = db.query(Application).join(Opportunity).filter(Opportunity.mentor_id == current_user.id).all()
+    return applications
+
+@router.put("/{application_id}/status", response_model=ApplicationResponse)
+def update_application_status(
+    application_id: int,
+    status_update: ApplicationUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if current_user.role != "mentor":
+        raise HTTPException(status_code=403, detail="Only mentors can update application status")
+    
+    application = db.query(Application).filter(Application.id == application_id).first()
+    if not application:
+        raise HTTPException(status_code=404, detail="Application not found")
+    
+    # Verify the mentor owns the opportunity
+    if application.opportunity.mentor_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to update this application")
+    
+    application.status = status_update.status
+    db.commit()
+    db.refresh(application)
+    return application
