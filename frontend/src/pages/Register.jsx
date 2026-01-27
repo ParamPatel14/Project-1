@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { FiUser, FiMail, FiLock } from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiBook } from "react-icons/fi";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [role, setRole] = useState("student");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
@@ -17,7 +18,7 @@ const Register = () => {
     setError("");
     setIsLoading(true);
     try {
-      await register(email, password, name);
+      await register(email, password, name, role);
       navigate("/login");
     } catch (err) {
       setError("Registration failed. Please try again.");
@@ -32,7 +33,7 @@ const Register = () => {
         <div className="p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800">Create Account</h1>
-            <p className="text-gray-500 mt-2">Join us to manage your restaurant</p>
+            <p className="text-gray-500 mt-2">Join us to match with research opportunities</p>
           </div>
 
           {error && (
@@ -92,6 +93,36 @@ const Register = () => {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">I am a...</label>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  type="button"
+                  onClick={() => setRole("student")}
+                  className={`py-3 px-4 border rounded-lg flex items-center justify-center space-x-2 transition-all ${
+                    role === "student"
+                      ? "bg-indigo-50 border-indigo-500 text-indigo-700 ring-2 ring-indigo-500 ring-opacity-50"
+                      : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <FiBook className={role === "student" ? "text-indigo-600" : "text-gray-400"} />
+                  <span className="font-medium">Student</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRole("mentor")}
+                  className={`py-3 px-4 border rounded-lg flex items-center justify-center space-x-2 transition-all ${
+                    role === "mentor"
+                      ? "bg-indigo-50 border-indigo-500 text-indigo-700 ring-2 ring-indigo-500 ring-opacity-50"
+                      : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <FiUser className={role === "mentor" ? "text-indigo-600" : "text-gray-400"} />
+                  <span className="font-medium">Mentor</span>
+                </button>
+              </div>
+            </div>
+
             <button
               type="submit"
               disabled={isLoading}
@@ -100,15 +131,15 @@ const Register = () => {
               {isLoading ? 'Creating account...' : 'Create Account'}
             </button>
           </form>
-        </div>
-        
-        <div className="px-8 py-4 bg-gray-50 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Sign in
-            </Link>
-          </p>
+
+          <div className="mt-6 text-center">
+            <p className="text-gray-600 text-sm">
+              Already have an account?{" "}
+              <Link to="/login" className="text-indigo-600 hover:text-indigo-800 font-medium">
+                Sign in
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

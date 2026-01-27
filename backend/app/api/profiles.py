@@ -41,8 +41,12 @@ def update_student_profile(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user)
 ):
-    if current_user.role != "student":
+    if current_user.role != "student" and current_user.role != "user":
         raise HTTPException(status_code=403, detail="Only students can create student profiles")
+    
+    if current_user.role == "user":
+        current_user.role = "student"
+        db.add(current_user)
     
     profile = current_user.student_profile
     if not profile:
@@ -62,8 +66,12 @@ def update_mentor_profile(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user)
 ):
-    if current_user.role != "mentor":
+    if current_user.role != "mentor" and current_user.role != "user":
         raise HTTPException(status_code=403, detail="Only mentors can create mentor profiles")
+    
+    if current_user.role == "user":
+        current_user.role = "mentor"
+        db.add(current_user)
     
     profile = current_user.mentor_profile
     if not profile:
