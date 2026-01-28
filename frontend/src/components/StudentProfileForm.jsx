@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { updateStudentProfile, addSkills, parseResume, uploadResume } from "../api";
-import { FiBook, FiGithub, FiGlobe, FiVideo, FiUpload, FiCheck, FiFileText, FiX } from "react-icons/fi";
+import { FiBook, FiGithub, FiGlobe, FiVideo, FiUpload, FiCheck, FiFileText, FiX, FiPlus, FiTrash2, FiLinkedin, FiTwitter } from "react-icons/fi";
+import { FaBehance } from "react-icons/fa";
 
 const INTEREST_OPTIONS = [
   "Web Development", "Data Science", "Machine Learning", "Mobile App Dev", 
@@ -12,53 +13,62 @@ const USER_TYPES = [
   "College Student", "Fresher", "Working Professional", "School Student", "Woman returning to work"
 ];
 
+const GENDER_OPTIONS = ["Female", "Male", "Others"];
+const LANGUAGE_OPTIONS = ["English", "Hindi", "Telugu", "Tamil", "Marathi", "Kannada", "Bengali", "Gujarati"];
+const DEGREE_OPTIONS = ["B.Tech", "BE", "B.Com", "MBA", "B.A", "M.Tech", "MSc", "PhD"];
+
 const StudentProfileForm = ({ user, onUpdate }) => {
+  // Core Profile Data
   const [formData, setFormData] = useState({
-    university: "",
-    degree: "",
-    major: "",
-    graduation_year: "",
-    start_year: "",
-    current_status: "College Student",
-    bio: "",
-    github_url: "",
-    scholar_url: "",
-    website_url: "",
-    intro_video_url: "",
-    interests: "",
-    resume_url: ""
+    university: "", degree: "", major: "", graduation_year: "", start_year: "",
+    current_status: "College Student", bio: "",
+    github_url: "", scholar_url: "", website_url: "", intro_video_url: "",
+    linkedin_url: "", behance_url: "", twitter_url: "", headline: "",
+    resume_url: "", phone_number: "", city: "", country: "", gender: "",
+    interests: "", languages: ""
   });
-  const [skills, setSkills] = useState("");
+
+  // Dynamic Lists
+  const [workExperiences, setWorkExperiences] = useState([]);
+  const [educations, setEducations] = useState([]);
+  const [projects, setProjects] = useState([]);
+  
+  // Skills
+  const [primarySkills, setPrimarySkills] = useState("");
+  const [tools, setTools] = useState("");
+
+  // UI State
   const [selectedInterests, setSelectedInterests] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isParsing, setIsParsing] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
 
   useEffect(() => {
     if (user?.student_profile) {
-      const profile = user.student_profile;
+      const p = user.student_profile;
       setFormData({
-        university: profile.university || "",
-        degree: profile.degree || "",
-        major: profile.major || "",
-        graduation_year: profile.graduation_year || "",
-        start_year: profile.start_year || "",
-        current_status: profile.current_status || "College Student",
-        bio: profile.bio || "",
-        github_url: profile.github_url || "",
-        scholar_url: profile.scholar_url || "",
-        website_url: profile.website_url || "",
-        intro_video_url: profile.intro_video_url || "",
-        interests: profile.interests || "",
-        resume_url: profile.resume_url || ""
+        university: p.university || "", degree: p.degree || "", major: p.major || "",
+        graduation_year: p.graduation_year || "", start_year: p.start_year || "",
+        current_status: p.current_status || "College Student", bio: p.bio || "",
+        github_url: p.github_url || "", scholar_url: p.scholar_url || "",
+        website_url: p.website_url || "", intro_video_url: p.intro_video_url || "",
+        linkedin_url: p.linkedin_url || "", behance_url: p.behance_url || "",
+        twitter_url: p.twitter_url || "", headline: p.headline || "",
+        resume_url: p.resume_url || "", phone_number: p.phone_number || "",
+        city: p.city || "", country: p.country || "", gender: p.gender || "",
+        interests: p.interests || "", languages: p.languages || ""
       });
       
-      if (profile.interests) {
-        setSelectedInterests(profile.interests.split(",").map(i => i.trim()));
-      }
-    }
-    if (user?.skills) {
-      setSkills(user.skills.map(s => s.name).join(", "));
+      if (p.interests) setSelectedInterests(p.interests.split(",").map(i => i.trim()));
+      if (p.languages) setSelectedLanguages(p.languages.split(",").map(i => i.trim()));
+      
+      if (p.work_experiences) setWorkExperiences(p.work_experiences);
+      if (p.educations) setEducations(p.educations);
+      if (p.projects) setProjects(p.projects);
+      
+      setPrimarySkills(p.primary_skills || "");
+      setTools(p.tools_libraries || "");
     }
   }, [user]);
 
@@ -67,12 +77,46 @@ const StudentProfileForm = ({ user, onUpdate }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const toggleInterest = (interest) => {
-    if (selectedInterests.includes(interest)) {
-      setSelectedInterests(prev => prev.filter(i => i !== interest));
-    } else {
-      setSelectedInterests(prev => [...prev, interest]);
-    }
+  const toggleSelection = (item, list, setList) => {
+    if (list.includes(item)) setList(prev => prev.filter(i => i !== item));
+    else setList(prev => [...prev, item]);
+  };
+
+  // Dynamic List Handlers
+  const addWorkExperience = () => {
+    setWorkExperiences([...workExperiences, { title: "", company: "", start_date: "", end_date: "", description: "" }]);
+  };
+  const updateWorkExperience = (index, field, value) => {
+    const newExp = [...workExperiences];
+    newExp[index][field] = value;
+    setWorkExperiences(newExp);
+  };
+  const removeWorkExperience = (index) => {
+    setWorkExperiences(workExperiences.filter((_, i) => i !== index));
+  };
+
+  const addEducation = () => {
+    setEducations([...educations, { institution: "", degree: "", start_year: "", end_year: "", grade: "" }]);
+  };
+  const updateEducation = (index, field, value) => {
+    const newEdu = [...educations];
+    newEdu[index][field] = value;
+    setEducations(newEdu);
+  };
+  const removeEducation = (index) => {
+    setEducations(educations.filter((_, i) => i !== index));
+  };
+
+  const addProject = () => {
+    setProjects([...projects, { title: "", tech_stack: "", url: "", description: "" }]);
+  };
+  const updateProject = (index, field, value) => {
+    const newProj = [...projects];
+    newProj[index][field] = value;
+    setProjects(newProj);
+  };
+  const removeProject = (index) => {
+    setProjects(projects.filter((_, i) => i !== index));
   };
 
   const handleResumeAutofill = async (e) => {
@@ -83,58 +127,44 @@ const StudentProfileForm = ({ user, onUpdate }) => {
     setMessage({ type: "info", text: "Parsing resume..." });
     
     try {
-      // 1. Parse for Autofill
       const result = await parseResume(file);
       const data = result.extracted_data;
       
+      // Update basic fields
       setFormData(prev => ({
         ...prev,
-        university: data.university || prev.university,
-        degree: data.degree || prev.degree,
-        major: data.major || prev.major,
+        phone_number: data.phone_number || prev.phone_number,
+        headline: data.headline || prev.headline,
+        email: data.email || prev.email, // Note: email is usually on User model, but we can display it
         github_url: data.github_url || prev.github_url,
-        website_url: data.website_url || prev.website_url,
-        // If phone/email extracted, we might want to show them or update user (skipped for now)
+        linkedin_url: data.linkedin_url || prev.linkedin_url,
+        behance_url: data.behance_url || prev.behance_url,
+        twitter_url: data.twitter_url || prev.twitter_url,
+        // Heuristic: If we found university in education list, use it for main field too
+        university: data.educations?.[0]?.institution || prev.university,
+        degree: data.educations?.[0]?.degree || prev.degree
       }));
       
-      if (data.skills) {
-        setSkills(prev => {
-            const newSkills = data.skills;
-            // Avoid duplicates
-            if (prev) return prev + ", " + newSkills;
-            return newSkills;
-        });
-      }
+      // Update Lists (Merge or Replace? Let's append for now to avoid losing manual entries)
+      if (data.work_experiences?.length) setWorkExperiences(prev => [...prev, ...data.work_experiences]);
+      if (data.educations?.length) setEducations(prev => [...prev, ...data.educations]);
+      if (data.projects?.length) setProjects(prev => [...prev, ...data.projects]);
+      
+      if (data.primary_skills) setPrimarySkills(data.primary_skills);
+      if (data.tools_libraries) setTools(data.tools_libraries);
 
-      // 2. Upload File
       const uploadResult = await uploadResume(file);
       if (uploadResult.url) {
         setFormData(prev => ({ ...prev, resume_url: uploadResult.url }));
       }
       
-      setMessage({ type: "success", text: "Resume parsed and attached! Please review the auto-filled details." });
+      setMessage({ type: "success", text: "Resume parsed! Please review the details below." });
     } catch (err) {
-      console.error(err);
-      setMessage({ type: "error", text: "Failed to process resume. Please try again." });
+        console.error(err);
+      setMessage({ type: "error", text: "Failed to process resume." });
     } finally {
       setIsParsing(false);
     }
-  };
-
-  const handleResumeUploadOnly = async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      
-      try {
-          const uploadResult = await uploadResume(file);
-          if (uploadResult.url) {
-              setFormData(prev => ({ ...prev, resume_url: uploadResult.url }));
-              setMessage({ type: "success", text: "Resume uploaded successfully!" });
-          }
-      } catch (_) {
-          void _;
-          setMessage({ type: "error", text: "Failed to upload resume." });
-      }
   };
 
   const handleSubmit = async (e) => {
@@ -143,306 +173,241 @@ const StudentProfileForm = ({ user, onUpdate }) => {
     setMessage({ type: "", text: "" });
 
     try {
-      if (!formData.resume_url) {
-        setMessage({ type: "error", text: "Please upload your CV to complete profile submission." });
-        setIsLoading(false);
-        return;
-      }
-      await updateStudentProfile({
+      // Prepare Payload
+      const payload = {
         ...formData,
-        graduation_year: formData.graduation_year ? parseInt(formData.graduation_year) : null,
-        start_year: formData.start_year ? parseInt(formData.start_year) : null,
-        interests: selectedInterests.join(", ")
-      });
-
-      if (skills.trim()) {
-        const skillList = skills.split(",").map(s => ({ name: s.trim() })).filter(s => s.name);
-        await addSkills(skillList);
-      }
-
+        interests: selectedInterests.join(", "),
+        languages: selectedLanguages.join(", "),
+        primary_skills: primarySkills,
+        tools_libraries: tools,
+        work_experiences: workExperiences,
+        educations: educations,
+        projects: projects
+      };
+      
+      await updateStudentProfile(payload);
+      
+      // Update user skills separately if needed, or assume backend handles it via primary_skills
+      // Keeping existing addSkills call for backward compatibility if needed
+      // await addSkills(primarySkills.split(",")); 
+      
       setMessage({ type: "success", text: "Profile updated successfully!" });
       if (onUpdate) onUpdate();
-    } catch (_) {
-      void _;
-      setMessage({ type: "error", text: "Failed to update profile. Please try again." });
+    } catch (err) {
+        console.error(err);
+      setMessage({ type: "error", text: "Failed to update profile." });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden">
-      <div className="p-6 bg-indigo-600 text-white">
-        <h2 className="text-2xl font-bold flex items-center">
-          <FiBook className="mr-2" /> Student Profile
-        </h2>
-        <p className="opacity-80">Complete your profile to get matched with mentors</p>
+    <form onSubmit={handleSubmit} className="space-y-8 bg-white p-8 rounded-xl shadow-md max-w-5xl mx-auto">
+      <div className="flex justify-between items-center border-b pb-4">
+        <h2 className="text-2xl font-bold text-gray-800">Complete Your Profile</h2>
+        {formData.resume_url && <span className="text-green-600 flex items-center gap-2"><FiCheck /> CV Uploaded</span>}
       </div>
-      
-      <div className="p-6">
-        {/* Resume Autofill Section */}
-        <div className="mb-8 p-6 bg-indigo-50 rounded-lg border border-indigo-100 flex flex-col md:flex-row items-center justify-between">
+
+      {/* Resume Upload Section - Front & Center */}
+      <div className="bg-indigo-50 p-6 rounded-lg border-2 border-dashed border-indigo-200 text-center">
+        <FiUpload className="mx-auto text-4xl text-indigo-500 mb-2" />
+        <h3 className="font-semibold text-lg text-indigo-900">Auto-fill with Resume</h3>
+        <p className="text-sm text-indigo-700 mb-4">Upload your CV to automatically extract details</p>
+        <div className="flex justify-center items-center gap-4">
+            <label className="cursor-pointer bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition">
+            {isParsing ? "Parsing..." : "Upload Resume / CV"}
+            <input type="file" accept=".pdf" className="hidden" onChange={handleResumeAutofill} disabled={isParsing} />
+            </label>
+            {formData.resume_url && (
+                <a href={formData.resume_url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline text-sm">View Uploaded CV</a>
+            )}
+        </div>
+        {message.text && <p className={`mt-2 text-sm ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>{message.text}</p>}
+      </div>
+
+      {/* 1. Core Profile & Identity */}
+      <section>
+        <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiFileText /> Core Profile</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <h3 className="text-lg font-semibold text-indigo-900 mb-2">🚀 Speed up with Resume Autofill</h3>
-                <p className="text-indigo-700 text-sm">Upload your CV to automatically fill skills, education, and links.</p>
+                <label className="block text-sm font-medium text-gray-700">I am a</label>
+                <select name="current_status" value={formData.current_status} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg">
+                    {USER_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
+                </select>
             </div>
-            <div className="mt-4 md:mt-0">
-                <label className={`flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg cursor-pointer hover:bg-indigo-700 transition ${isParsing ? 'opacity-50' : ''}`}>
-                    {isParsing ? <div className="animate-spin h-5 w-5 border-2 border-white rounded-full border-t-transparent mr-2"></div> : <FiUpload className="mr-2" />}
-                    {isParsing ? "Analyzing..." : "Upload Resume"}
-                    <input type="file" accept=".pdf" className="hidden" onChange={handleResumeAutofill} disabled={isParsing} />
-                </label>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Headline</label>
+                <input type="text" name="headline" value={formData.headline} onChange={handleChange} placeholder="e.g. Full Stack Developer | React Expert" className="w-full mt-1 p-2 border rounded-lg" />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input type="text" name="phone_number" value={formData.phone_number} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg" />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">City</label>
+                <input type="text" name="city" value={formData.city} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg" />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Country</label>
+                <input type="text" name="country" value={formData.country} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg" />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Gender</label>
+                <div className="flex gap-2 mt-1">
+                    {GENDER_OPTIONS.map(g => (
+                        <button key={g} type="button" onClick={() => setFormData(p => ({...p, gender: g}))}
+                            className={`px-4 py-2 rounded-full text-sm border ${formData.gender === g ? 'bg-indigo-100 border-indigo-500 text-indigo-700' : 'bg-white border-gray-300'}`}>
+                            {g}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
+      </section>
 
-        {message.text && (
-          <div className={`p-4 mb-6 rounded ${message.type === 'success' ? 'bg-green-50 text-green-700' : (message.type === 'info' ? 'bg-blue-50 text-blue-700' : 'bg-red-50 text-red-700')}`}>
-            {message.text}
-          </div>
-        )}
+      {/* 2. Socials */}
+      <section>
+        <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiGlobe /> Socials & Portfolio</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-center gap-2">
+                <FiGithub className="text-xl" />
+                <input type="text" name="github_url" value={formData.github_url} onChange={handleChange} placeholder="GitHub URL" className="w-full p-2 border rounded-lg" />
+            </div>
+            <div className="flex items-center gap-2">
+                <FiLinkedin className="text-xl text-blue-600" />
+                <input type="text" name="linkedin_url" value={formData.linkedin_url} onChange={handleChange} placeholder="LinkedIn URL" className="w-full p-2 border rounded-lg" />
+            </div>
+            <div className="flex items-center gap-2">
+                <FaBehance className="text-xl text-blue-500" />
+                <input type="text" name="behance_url" value={formData.behance_url} onChange={handleChange} placeholder="Behance URL" className="w-full p-2 border rounded-lg" />
+            </div>
+            <div className="flex items-center gap-2">
+                <FiGlobe className="text-xl" />
+                <input type="text" name="website_url" value={formData.website_url} onChange={handleChange} placeholder="Personal Website" className="w-full p-2 border rounded-lg" />
+            </div>
+        </div>
+      </section>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-            {/* User Type Selection */}
+      {/* 3. Work Experience */}
+      <section>
+        <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2"><FiBook /> Work Experience</h3>
+            <button type="button" onClick={addWorkExperience} className="text-sm bg-indigo-50 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-100 flex items-center gap-1"><FiPlus /> Add</button>
+        </div>
+        <div className="space-y-4">
+            {workExperiences.map((exp, index) => (
+                <div key={index} className="p-4 border rounded-lg bg-gray-50 relative">
+                    <button type="button" onClick={() => removeWorkExperience(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><FiTrash2 /></button>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                        <input type="text" placeholder="Job Title" value={exp.title} onChange={(e) => updateWorkExperience(index, 'title', e.target.value)} className="p-2 border rounded" />
+                        <input type="text" placeholder="Company" value={exp.company} onChange={(e) => updateWorkExperience(index, 'company', e.target.value)} className="p-2 border rounded" />
+                        <input type="text" placeholder="Start Date (e.g. 2020)" value={exp.start_date} onChange={(e) => updateWorkExperience(index, 'start_date', e.target.value)} className="p-2 border rounded" />
+                        <input type="text" placeholder="End Date (e.g. Present)" value={exp.end_date} onChange={(e) => updateWorkExperience(index, 'end_date', e.target.value)} className="p-2 border rounded" />
+                    </div>
+                    <textarea placeholder="Description (Bullet points)" value={exp.description} onChange={(e) => updateWorkExperience(index, 'description', e.target.value)} className="w-full p-2 border rounded h-20" />
+                </div>
+            ))}
+        </div>
+      </section>
+
+      {/* 4. Education */}
+      <section>
+        <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2"><FiBook /> Education</h3>
+            <button type="button" onClick={addEducation} className="text-sm bg-indigo-50 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-100 flex items-center gap-1"><FiPlus /> Add</button>
+        </div>
+        <div className="space-y-4">
+            {educations.map((edu, index) => (
+                <div key={index} className="p-4 border rounded-lg bg-gray-50 relative">
+                    <button type="button" onClick={() => removeEducation(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><FiTrash2 /></button>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" placeholder="Institution" value={edu.institution} onChange={(e) => updateEducation(index, 'institution', e.target.value)} className="p-2 border rounded" />
+                        <input type="text" placeholder="Degree" value={edu.degree} onChange={(e) => updateEducation(index, 'degree', e.target.value)} className="p-2 border rounded" />
+                        <input type="text" placeholder="Start Year" value={edu.start_year} onChange={(e) => updateEducation(index, 'start_year', e.target.value)} className="p-2 border rounded" />
+                        <input type="text" placeholder="End Year" value={edu.end_year} onChange={(e) => updateEducation(index, 'end_year', e.target.value)} className="p-2 border rounded" />
+                        <input type="text" placeholder="Grade/CGPA" value={edu.grade} onChange={(e) => updateEducation(index, 'grade', e.target.value)} className="p-2 border rounded" />
+                    </div>
+                </div>
+            ))}
+        </div>
+      </section>
+
+      {/* 5. Projects */}
+      <section>
+        <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2"><FiBook /> Projects</h3>
+            <button type="button" onClick={addProject} className="text-sm bg-indigo-50 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-100 flex items-center gap-1"><FiPlus /> Add</button>
+        </div>
+        <div className="space-y-4">
+            {projects.map((proj, index) => (
+                <div key={index} className="p-4 border rounded-lg bg-gray-50 relative">
+                    <button type="button" onClick={() => removeProject(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><FiTrash2 /></button>
+                    <div className="grid grid-cols-1 gap-4 mb-2">
+                        <input type="text" placeholder="Project Title" value={proj.title} onChange={(e) => updateProject(index, 'title', e.target.value)} className="w-full p-2 border rounded" />
+                        <input type="text" placeholder="Project URL" value={proj.url} onChange={(e) => updateProject(index, 'url', e.target.value)} className="w-full p-2 border rounded" />
+                        <input type="text" placeholder="Tech Stack (comma separated)" value={proj.tech_stack} onChange={(e) => updateProject(index, 'tech_stack', e.target.value)} className="w-full p-2 border rounded" />
+                    </div>
+                    <textarea placeholder="Description" value={proj.description} onChange={(e) => updateProject(index, 'description', e.target.value)} className="w-full p-2 border rounded h-20" />
+                </div>
+            ))}
+        </div>
+      </section>
+
+      {/* 6. Skills */}
+      <section>
+        <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiCheck /> Skills</h3>
+        <div className="space-y-4">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">I am a...</label>
-                <div className="flex flex-wrap gap-3">
-                    {USER_TYPES.map(type => (
-                        <button
-                            key={type}
-                            type="button"
-                            onClick={() => setFormData(prev => ({ ...prev, current_status: type }))}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border ${
-                                formData.current_status === type 
-                                ? 'bg-indigo-600 text-white border-indigo-600' 
-                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                            }`}
-                        >
-                            {type}
-                        </button>
-                    ))}
-                </div>
+                <label className="block text-sm font-medium text-gray-700">Primary Skills (Top 5)</label>
+                <input type="text" value={primarySkills} onChange={(e) => setPrimarySkills(e.target.value)} placeholder="e.g. Python, React, Node.js (Comma separated)" className="w-full mt-1 p-2 border rounded-lg" />
             </div>
-
-            {/* Conditional Fields based on User Type */}
-            {formData.current_status === "College Student" && (
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg">
-                    <div className="col-span-2">
-                        <h4 className="text-md font-semibold text-gray-800 mb-2">College Details</h4>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">College/University</label>
-                        <input
-                            type="text"
-                            name="university"
-                            value={formData.university}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Eg. BITS Pilani"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Course/Degree</label>
-                        <input
-                            type="text"
-                            name="degree"
-                            value={formData.degree}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Eg. B.Tech"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Stream (Optional)</label>
-                        <input
-                            type="text"
-                            name="major"
-                            value={formData.major}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Eg. Computer Science"
-                        />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Start Year</label>
-                            <input
-                                type="number"
-                                name="start_year"
-                                value={formData.start_year}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                placeholder="2022"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">End Year</label>
-                            <input
-                                type="number"
-                                name="graduation_year"
-                                value={formData.graduation_year}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                placeholder="2026"
-                            />
-                        </div>
-                    </div>
-                 </div>
-            )}
-             {/* Fallback for other types - reuse same fields but maybe different labels if needed, or just show them generally */}
-             {formData.current_status !== "College Student" && (
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Institution/Company</label>
-                        <input
-                            type="text"
-                            name="university"
-                            value={formData.university}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Current Organization"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Role/Degree</label>
-                        <input
-                            type="text"
-                            name="degree"
-                            value={formData.degree}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Designation or Degree"
-                        />
-                    </div>
-                 </div>
-             )}
-
-            {/* Interest Chips */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Area(s) of Interest</label>
-                <div className="flex flex-wrap gap-2">
-                    {INTEREST_OPTIONS.map(interest => (
-                        <button
-                            key={interest}
-                            type="button"
-                            onClick={() => toggleInterest(interest)}
-                            className={`px-3 py-1 rounded-full text-sm transition-colors border flex items-center ${
-                                selectedInterests.includes(interest)
-                                ? 'bg-blue-600 text-white border-blue-600'
-                                : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400'
-                            }`}
-                        >
-                            {interest}
-                            {selectedInterests.includes(interest) && <FiX className="ml-2" />}
-                        </button>
-                    ))}
-                </div>
+                <label className="block text-sm font-medium text-gray-700">Tools & Libraries</label>
+                <input type="text" value={tools} onChange={(e) => setTools(e.target.value)} placeholder="e.g. Pandas, Docker, Git (Comma separated)" className="w-full mt-1 p-2 border rounded-lg" />
             </div>
+        </div>
+      </section>
 
-            {/* General Info */}
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
-                <textarea
-                    name="bio"
-                    value={formData.bio}
-                    onChange={handleChange}
-                    rows="3"
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Tell us about your research interests..."
-                ></textarea>
+      {/* 7. Additional Info */}
+      <section>
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">Interests & Languages</h3>
+        <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Interests</label>
+            <div className="flex flex-wrap gap-2">
+                {INTEREST_OPTIONS.map(interest => (
+                    <button key={interest} type="button" onClick={() => toggleSelection(interest, selectedInterests, setSelectedInterests)}
+                        className={`px-3 py-1 rounded-full text-sm border ${selectedInterests.includes(interest) ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                        {interest}
+                    </button>
+                ))}
             </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Skills (comma separated)</label>
-                <input
-                    type="text"
-                    value={skills}
-                    onChange={(e) => setSkills(e.target.value)}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Python, Machine Learning, React, Data Analysis"
-                />
+        </div>
+        <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Languages</label>
+            <div className="flex flex-wrap gap-2">
+                {LANGUAGE_OPTIONS.map(lang => (
+                    <button key={lang} type="button" onClick={() => toggleSelection(lang, selectedLanguages, setSelectedLanguages)}
+                        className={`px-3 py-1 rounded-full text-sm border ${selectedLanguages.includes(lang) ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                        {lang}
+                    </button>
+                ))}
             </div>
+        </div>
+      </section>
 
-          <div className="border-t pt-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Links & Portfolio</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiGithub className="text-gray-400" />
-                </div>
-                <input
-                  type="url"
-                  name="github_url"
-                  value={formData.github_url}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="GitHub Profile URL"
-                />
-              </div>
-
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiBook className="text-gray-400" />
-                </div>
-                <input
-                  type="url"
-                  name="scholar_url"
-                  value={formData.scholar_url}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Google Scholar URL"
-                />
-              </div>
-
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiGlobe className="text-gray-400" />
-                </div>
-                <input
-                  type="url"
-                  name="website_url"
-                  value={formData.website_url}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Personal Website URL"
-                />
-              </div>
-            </div>
-          </div>
-          
-          {/* File Upload Confirmation */}
-           <div className="border-t pt-6">
-             <h3 className="text-lg font-medium text-gray-900 mb-4">Resume/CV</h3>
-             <div className="flex items-center space-x-4">
-                 <div className="flex-1">
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Upload Updated Resume</label>
-                     <input 
-                        type="file" 
-                        accept=".pdf" 
-                        onChange={handleResumeUploadOnly}
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                     />
-                 </div>
-                 {formData.resume_url && (
-                     <div className="flex items-center text-green-600">
-                         <FiCheck className="mr-1" />
-                         <a href={formData.resume_url} target="_blank" rel="noopener noreferrer" className="underline text-sm">View Current Resume</a>
-                     </div>
-                 )}
-             </div>
-           </div>
-
-          <div className="flex justify-end pt-4">
-            <button
-              type="submit"
-              disabled={isLoading || !formData.resume_url}
-              className={`bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors shadow-lg ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
-            >
-              {isLoading ? 'Saving...' : 'Save Complete Profile'}
-            </button>
-          </div>
-        </form>
+      <div className="pt-6 border-t">
+        <button
+          type="submit"
+          disabled={isLoading || !formData.resume_url}
+          className={`w-full py-4 rounded-lg font-bold text-lg text-white shadow-lg ${
+            isLoading || !formData.resume_url ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 transition'
+          }`}
+        >
+          {isLoading ? 'Saving Profile...' : 'Save & Complete Profile'}
+        </button>
+        {!formData.resume_url && <p className="text-center text-red-500 mt-2 text-sm">Please upload your CV/Resume to continue</p>}
       </div>
-    </div>
+    </form>
   );
 };
 

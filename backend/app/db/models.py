@@ -43,6 +43,11 @@ class StudentProfile(Base):
     scholar_url = Column(String)
     website_url = Column(String)
     intro_video_url = Column(String)
+    phone_number = Column(String)
+    city = Column(String)
+    country = Column(String)
+    gender = Column(String)
+    languages = Column(Text)
     
     # New Profile Fields
     current_status = Column(String) # college_student, working_professional, etc.
@@ -50,10 +55,65 @@ class StudentProfile(Base):
     interests = Column(Text) # Comma separated list of interests
     resume_url = Column(String)
     
+    # Enhanced Fields for Matching Engine
+    headline = Column(String)
+    linkedin_url = Column(String)
+    behance_url = Column(String)
+    twitter_url = Column(String)
+    
+    # Skills
+    primary_skills = Column(Text) # JSON or Comma separated list of top 5 skills
+    tools_libraries = Column(Text) # JSON or Comma separated list of tools
+    
     readiness_score = Column(Float, default=0.0) # Global readiness score
     
     # Relationships
     user = relationship("User", back_populates="student_profile")
+    work_experiences = relationship("WorkExperience", back_populates="student_profile", cascade="all, delete-orphan")
+    educations = relationship("Education", back_populates="student_profile", cascade="all, delete-orphan")
+    projects = relationship("Project", back_populates="student_profile", cascade="all, delete-orphan")
+
+class WorkExperience(Base):
+    __tablename__ = "work_experiences"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    student_profile_id = Column(Integer, ForeignKey("student_profiles.id"))
+    
+    title = Column(String)
+    company = Column(String)
+    start_date = Column(String) # YYYY-MM or YYYY
+    end_date = Column(String) # YYYY-MM, YYYY or "Present"
+    description = Column(Text)
+    skills_used = Column(Text) # Comma separated
+    
+    student_profile = relationship("StudentProfile", back_populates="work_experiences")
+
+class Education(Base):
+    __tablename__ = "educations"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    student_profile_id = Column(Integer, ForeignKey("student_profiles.id"))
+    
+    institution = Column(String)
+    degree = Column(String)
+    start_year = Column(String)
+    end_year = Column(String)
+    grade = Column(String) # CGPA/Percentage
+    
+    student_profile = relationship("StudentProfile", back_populates="educations")
+
+class Project(Base):
+    __tablename__ = "projects"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    student_profile_id = Column(Integer, ForeignKey("student_profiles.id"))
+    
+    title = Column(String)
+    tech_stack = Column(Text) # Comma separated
+    url = Column(String)
+    description = Column(Text)
+    
+    student_profile = relationship("StudentProfile", back_populates="projects")
 
 class MentorProfile(Base):
     __tablename__ = "mentor_profiles"

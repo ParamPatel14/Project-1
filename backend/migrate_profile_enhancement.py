@@ -16,4 +16,8 @@ if __name__ == "__main__":
     add_column("student_profiles", "start_year", "INTEGER")
     add_column("student_profiles", "interests", "TEXT")
     add_column("student_profiles", "resume_url", "VARCHAR")
+    add_column("student_profiles", "phone_number", "VARCHAR")
+    add_column("student_profiles", "city", "VARCHAR")
+    add_column("student_profiles", "gender", "VARCHAR")
+    add_column("student_profiles", "languages", "TEXT")
     print("Migration Complete.")

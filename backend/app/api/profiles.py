@@ -51,12 +51,35 @@ def update_student_profile(
         db.add(current_user)
     
     profile = current_user.student_profile
+    profile_data = profile_in.dict(exclude_unset=True)
+    
+    # Handle Nested Relations (Arrays)
+    work_ex_data = profile_data.pop("work_experiences", None)
+    edu_data = profile_data.pop("educations", None)
+    proj_data = profile_data.pop("projects", None)
+    
     if not profile:
-        profile = models.StudentProfile(user_id=current_user.id, **profile_in.dict(exclude_unset=True))
+        profile = models.StudentProfile(user_id=current_user.id, **profile_data)
         db.add(profile)
+        db.flush() # Ensure ID is generated
     else:
-        for field, value in profile_in.dict(exclude_unset=True).items():
+        for field, value in profile_data.items():
             setattr(profile, field, value)
+    
+    # Update Relations if provided
+    # Strategy: Replace all (since form sends full list)
+    if work_ex_data is not None:
+        # Clear existing (cascade delete should handle orphans if configured, 
+        # but explicit clear is safer for replacing list)
+        # Note: SQLAlchemy relationship assignment usually replaces the collection.
+        # We need to convert dicts to model instances.
+        profile.work_experiences = [models.WorkExperience(**item) for item in work_ex_data]
+        
+    if edu_data is not None:
+        profile.educations = [models.Education(**item) for item in edu_data]
+        
+    if proj_data is not None:
+        profile.projects = [models.Project(**item) for item in proj_data]
     
     # Update readiness score
     # Note: Skills might not be updated here (usually separate endpoint), but we use current skills

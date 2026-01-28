@@ -36,24 +36,93 @@ class StudentProfileBase(BaseModel):
     major: Optional[str] = None
     graduation_year: Optional[int] = None
     bio: Optional[str] = None
-    github_url: Optional[str] = None # Pydantic v2 uses HttpUrl, keeping str for simplicity or validation
+    github_url: Optional[str] = None
     scholar_url: Optional[str] = None
     website_url: Optional[str] = None
     intro_video_url: Optional[str] = None
+    phone_number: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    gender: Optional[str] = None
+    languages: Optional[str] = None
     current_status: Optional[str] = None
     start_year: Optional[int] = None
     interests: Optional[str] = None
     resume_url: Optional[str] = None
+    
+    # Enhanced Fields
+    headline: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    behance_url: Optional[str] = None
+    twitter_url: Optional[str] = None
+    primary_skills: Optional[str] = None
+    tools_libraries: Optional[str] = None
+
+# Nested Schemas
+class WorkExperienceBase(BaseModel):
+    title: Optional[str] = None
+    company: Optional[str] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    description: Optional[str] = None
+    skills_used: Optional[str] = None
+
+class WorkExperienceCreate(WorkExperienceBase):
+    pass
+
+class WorkExperienceResponse(WorkExperienceBase):
+    id: int
+    student_profile_id: int
+    class Config:
+        from_attributes = True
+
+class EducationBase(BaseModel):
+    institution: Optional[str] = None
+    degree: Optional[str] = None
+    start_year: Optional[str] = None
+    end_year: Optional[str] = None
+    grade: Optional[str] = None
+
+class EducationCreate(EducationBase):
+    pass
+
+class EducationResponse(EducationBase):
+    id: int
+    student_profile_id: int
+    class Config:
+        from_attributes = True
+
+class ProjectBase(BaseModel):
+    title: Optional[str] = None
+    tech_stack: Optional[str] = None
+    url: Optional[str] = None
+    description: Optional[str] = None
+
+class ProjectCreate(ProjectBase):
+    pass
+
+class ProjectResponse(ProjectBase):
+    id: int
+    student_profile_id: int
+    class Config:
+        from_attributes = True
 
 class StudentProfileCreate(StudentProfileBase):
-    pass
+    work_experiences: Optional[List[WorkExperienceCreate]] = []
+    educations: Optional[List[EducationCreate]] = []
+    projects: Optional[List[ProjectCreate]] = []
 
 class StudentProfileUpdate(StudentProfileBase):
-    pass
+    work_experiences: Optional[List[WorkExperienceCreate]] = []
+    educations: Optional[List[EducationCreate]] = []
+    projects: Optional[List[ProjectCreate]] = []
 
 class StudentProfileResponse(StudentProfileBase):
     id: int
     user_id: int
+    work_experiences: List[WorkExperienceResponse] = []
+    educations: List[EducationResponse] = []
+    projects: List[ProjectResponse] = []
     class Config:
         from_attributes = True
 
