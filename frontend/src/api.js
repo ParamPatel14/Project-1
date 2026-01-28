@@ -155,4 +155,46 @@ export const getMentorImprovementPlans = async (opportunityId) => {
   return response.data;
 };
 
+// Assignment APIs
+export const createAssignment = async (data) => {
+  const response = await api.post("/assignments/", data);
+  return response.data;
+};
+
+export const getOpportunityAssignments = async (opportunityId) => {
+  const response = await api.get(`/assignments/opportunity/${opportunityId}`);
+  return response.data;
+};
+
+export const submitAssignment = async (assignmentId, data) => {
+  const response = await api.post(`/assignments/${assignmentId}/submit`, data);
+  return response.data;
+};
+
+export const getSubmissions = async (assignmentId) => {
+  const response = await api.get(`/assignments/${assignmentId}/submissions`);
+  return response.data;
+};
+
+export const gradeSubmission = async (submissionId, data) => {
+  const response = await api.post(`/assignments/submissions/${submissionId}/grade`, data);
+  return response.data;
+};
+
+// Research Project APIs
+export const createResearchProject = async (data) => {
+  const response = await api.post("/research/", data);
+  return response.data;
+};
+
+export const getMyResearchProjects = async () => {
+  const response = await api.get("/research/my");
+  return response.data;
+};
+
+export const updateResearchProjectStatus = async (projectId, data) => {
+  const response = await api.put(`/research/${projectId}`, data);
+  return response.data;
+};
+
 export default api;

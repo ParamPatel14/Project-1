@@ -9,6 +9,8 @@ from app.api.opportunities import router as opportunities_router
 from app.api.applications import router as applications_router
 from app.api.skills import router as skills_router
 from app.api.improvement import router as improvement_router
+from app.api.assignments import router as assignments_router
+from app.api.research import router as research_router
 from app.core.config import settings
 import logging
 
@@ -45,6 +47,8 @@ app.include_router(opportunities_router, prefix="/opportunities", tags=["Opportu
 app.include_router(applications_router, prefix="/applications", tags=["Applications"])
 app.include_router(skills_router, prefix="/skills", tags=["Skills"])
 app.include_router(improvement_router, prefix="/improvement", tags=["Improvement Plans"])
+app.include_router(assignments_router, prefix="/assignments", tags=["Assignments"])
+app.include_router(research_router, prefix="/research", tags=["Research"])
 
 @app.get("/")
 def root():

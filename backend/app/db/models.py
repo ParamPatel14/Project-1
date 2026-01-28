@@ -91,6 +91,7 @@ class Opportunity(Base):
     applications = relationship("Application", back_populates="opportunity")
     required_skills = relationship("OpportunitySkill", back_populates="opportunity", cascade="all, delete-orphan")
     improvement_plans = relationship("ImprovementPlan", back_populates="opportunity")
+    assignments = relationship("Assignment", back_populates="opportunity")
 
 class OpportunitySkill(Base):
     __tablename__ = "opportunity_skills"
@@ -146,3 +147,55 @@ class PlanItem(Base):
     
     # Relationships
     plan = relationship("ImprovementPlan", back_populates="items")
+
+class Assignment(Base):
+    __tablename__ = "assignments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    opportunity_id = Column(Integer, ForeignKey("opportunities.id"))
+    title = Column(String)
+    description = Column(Text)
+    type = Column(String) # code, pdf, analysis
+    due_date = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    opportunity = relationship("Opportunity", back_populates="assignments")
+    submissions = relationship("Submission", back_populates="assignment")
+
+class Submission(Base):
+    __tablename__ = "submissions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    assignment_id = Column(Integer, ForeignKey("assignments.id"))
+    student_id = Column(Integer, ForeignKey("users.id"))
+    content = Column(Text) # Text content or description
+    file_url = Column(String) # URL to uploaded file
+    submitted_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Grading
+    grade = Column(Float, nullable=True) # Score
+    feedback = Column(Text, nullable=True) # Mentor comments
+    rubric_scores = Column(Text, nullable=True) # JSON string for rubric breakdown
+    audio_feedback_url = Column(String, nullable=True)
+
+    # Relationships
+    assignment = relationship("Assignment", back_populates="submissions")
+    student = relationship("User")
+
+class PublicationProject(Base):
+    __tablename__ = "publication_projects"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    student_id = Column(Integer, ForeignKey("users.id"))
+    mentor_id = Column(Integer, ForeignKey("users.id"))
+    opportunity_id = Column(Integer, ForeignKey("opportunities.id"), nullable=True)
+    status = Column(String, default="Ideation") # Ideation, Literature Review, Experimentation, Drafting, Submission, Published
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    student = relationship("User", foreign_keys=[student_id])
+    mentor = relationship("User", foreign_keys=[mentor_id])
+    opportunity = relationship("Opportunity")

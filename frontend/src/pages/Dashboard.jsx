@@ -8,7 +8,8 @@ import OpportunityForm from "../components/OpportunityForm";
 import OpportunityList from "../components/OpportunityList";
 import MentorApplications from "../components/MentorApplications";
 import StudentApplications from "../components/StudentApplications";
-import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList } from "react-icons/fi";
+import ResearchLab from "../components/ResearchLab";
+import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase } from "react-icons/fi";
 
 const Dashboard = () => {
   const { user, logout, loading: authLoading, refreshUser } = useAuth();
@@ -84,6 +85,7 @@ const Dashboard = () => {
                   <button onClick={() => setActiveTab('profile')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'profile' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Profile</button>
                   <button onClick={() => setActiveTab('browse')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'browse' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Browse Opportunities</button>
                   <button onClick={() => setActiveTab('applications')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'applications' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>My Applications</button>
+                  <button onClick={() => setActiveTab('lab')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'lab' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Research Lab</button>
                 </div>
               )}
               {displayRole === "mentor" && (
@@ -91,6 +93,7 @@ const Dashboard = () => {
                   <button onClick={() => setActiveTab('profile')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'profile' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Profile</button>
                   <button onClick={() => setActiveTab('post-opp')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'post-opp' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Post Opportunity</button>
                   <button onClick={() => setActiveTab('applications')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'applications' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Manage Applications</button>
+                  <button onClick={() => setActiveTab('lab')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'lab' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:text-gray-900'}`}>Research Lab</button>
                 </div>
               )}
 
@@ -216,6 +219,8 @@ const Dashboard = () => {
             {activeTab === 'browse' && <OpportunityList />}
             
             {activeTab === 'applications' && <StudentApplications />}
+            
+            {activeTab === 'lab' && <ResearchLab />}
           </>
         )}
 
@@ -280,6 +285,8 @@ const Dashboard = () => {
             )}
 
             {activeTab === 'applications' && <MentorApplications />}
+
+            {activeTab === 'lab' && <ResearchLab />}
           </>
         )}
 
