@@ -47,10 +47,17 @@ const MentorApplications = () => {
     }
   };
 
+  const getScoreColor = (score) => {
+      if (!score) return 'text-gray-500';
+      if (score >= 80) return 'text-green-600 font-bold';
+      if (score >= 50) return 'text-yellow-600 font-bold';
+      return 'text-red-600';
+  };
+
   if (loading) return <div>Loading applications...</div>;
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto mt-8">
+    <div className="bg-white p-6 rounded-lg shadow-md max-w-5xl mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Manage Applications</h2>
       
       {applications.length === 0 ? (
@@ -60,6 +67,12 @@ const MentorApplications = () => {
           <table className="min-w-full leading-normal">
             <thead>
               <tr>
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Rank
+                </th>
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Score
+                </th>
                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Applicant
                 </th>
@@ -81,14 +94,21 @@ const MentorApplications = () => {
               </tr>
             </thead>
             <tbody>
-              {applications.map((app) => (
+              {applications.map((app, index) => (
                 <tr key={app.id}>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <span className="font-bold text-gray-700">#{index + 1}</span>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <span className={getScoreColor(app.match_score)}>
+                        {app.match_score ? `${app.match_score}%` : 'N/A'}
+                    </span>
+                  </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <div className="flex items-center">
                       <div className="ml-3">
                         <p className="text-gray-900 whitespace-no-wrap">
                            Student ID: {app.student_id}
-                           {/* In a real app, we'd fetch the student name here or include it in the response */}
                         </p>
                       </div>
                     </div>
@@ -107,26 +127,47 @@ const MentorApplications = () => {
                     </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusColor(app.status)} rounded-full`}>
-                      <span className="relative">{app.status}</span>
+                    <span
+                      className={`relative inline-block px-3 py-1 font-semibold leading-tight ${getStatusColor(app.status)}`}
+                    >
+                      <span aria-hidden className="absolute inset-0 opacity-50 rounded-full"></span>
+                      <span className="relative capitalize">{app.status}</span>
                     </span>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleStatusChange(app.id, 'accepted')}
-                        disabled={statusUpdating === app.id}
-                        className="text-green-600 hover:text-green-900 text-sm font-semibold"
-                      >
-                        Accept
-                      </button>
-                      <button
-                        onClick={() => handleStatusChange(app.id, 'rejected')}
-                        disabled={statusUpdating === app.id}
-                        className="text-red-600 hover:text-red-900 text-sm font-semibold"
-                      >
-                        Reject
-                      </button>
+                    <div className="flex flex-col gap-2">
+                      {statusUpdating === app.id ? (
+                        <span className="text-gray-500">Updating...</span>
+                      ) : (
+                        <>
+                          {app.status === 'pending' && (
+                            <>
+                              <button
+                                onClick={() => handleStatusChange(app.id, 'reviewing')}
+                                className="text-yellow-600 hover:text-yellow-900"
+                              >
+                                Review
+                              </button>
+                            </>
+                          )}
+                          {app.status === 'reviewing' && (
+                            <>
+                              <button
+                                onClick={() => handleStatusChange(app.id, 'accepted')}
+                                className="text-green-600 hover:text-green-900"
+                              >
+                                Accept
+                              </button>
+                              <button
+                                onClick={() => handleStatusChange(app.id, 'rejected')}
+                                className="text-red-600 hover:text-red-900"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>

@@ -136,31 +136,6 @@ def read_profile(
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.post("/me/skills", response_model=List[schemas.SkillResponse])
-def add_skills(
-    skills: List[str],
-    db: Session = Depends(deps.get_db),
-    current_user: models.User = Depends(deps.get_current_user)
-):
-    """
-    Add skills to the current user's profile. Creates new skills if they don't exist.
-    """
-    for skill_name in skills:
-        skill_name = skill_name.lower().strip()
-        skill = db.query(models.Skill).filter(models.Skill.name == skill_name).first()
-        if not skill:
-            skill = models.Skill(name=skill_name)
-            db.add(skill)
-            db.commit()
-            db.refresh(skill)
-        
-        if skill not in current_user.skills:
-            current_user.skills.append(skill)
-    
-    db.commit()
-    db.refresh(current_user)
-    return current_user.skills
-
 @router.get("/me/completeness")
 def get_profile_completeness(
     current_user: models.User = Depends(deps.get_current_user)
@@ -168,8 +143,13 @@ def get_profile_completeness(
     if current_user.role == "student":
         if not current_user.student_profile:
             return {"score": 0, "role": "student"}
+        # Use the new readiness_score if available, otherwise fallback
+        score = current_user.student_profile.readiness_score
+        if score is None:
+             score = calculate_student_completeness(current_user.student_profile, len(current_user.skills))
+        
         return {
-            "score": calculate_student_completeness(current_user.student_profile, len(current_user.skills)),
+            "score": score,
             "role": "student"
         }
     elif current_user.role == "mentor":

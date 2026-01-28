@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createOpportunity } from '../api';
+import React, { useState, useEffect } from 'react';
+import { createOpportunity, getSkills } from '../api';
 
 const OpportunityForm = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +11,56 @@ const OpportunityForm = ({ onSuccess }) => {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  
+  // Skills Management
+  const [availableSkills, setAvailableSkills] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]); // Array of { skill_id, weight, name }
+  const [currentSkillId, setCurrentSkillId] = useState('');
+  const [currentWeight, setCurrentWeight] = useState(1);
+  const [skillSearch, setSkillSearch] = useState('');
+
+  useEffect(() => {
+    fetchSkills();
+  }, [skillSearch]);
+
+  const fetchSkills = async () => {
+    try {
+      const skills = await getSkills(skillSearch);
+      setAvailableSkills(skills);
+    } catch (err) {
+      console.error("Failed to fetch skills", err);
+    }
+  };
+
+  const handleAddSkill = () => {
+    if (!currentSkillId) return;
+    
+    // Check if already added
+    if (selectedSkills.find(s => s.skill_id === parseInt(currentSkillId))) {
+      alert("Skill already added");
+      return;
+    }
+
+    const skillObj = availableSkills.find(s => s.id === parseInt(currentSkillId));
+    if (!skillObj) return;
+
+    setSelectedSkills([
+      ...selectedSkills,
+      {
+        skill_id: skillObj.id,
+        name: skillObj.name,
+        weight: parseInt(currentWeight)
+      }
+    ]);
+    
+    // Reset selection
+    setCurrentSkillId('');
+    setCurrentWeight(1);
+  };
+
+  const handleRemoveSkill = (skillId) => {
+    setSelectedSkills(selectedSkills.filter(s => s.skill_id !== skillId));
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -24,8 +74,14 @@ const OpportunityForm = ({ onSuccess }) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    
+    const payload = {
+        ...formData,
+        skills: selectedSkills.map(s => ({ skill_id: s.skill_id, weight: s.weight }))
+    };
+
     try {
-      await createOpportunity(formData);
+      await createOpportunity(payload);
       setSuccess('Opportunity created successfully!');
       setFormData({
         title: '',
@@ -34,6 +90,7 @@ const OpportunityForm = ({ onSuccess }) => {
         requirements: '',
         is_open: true,
       });
+      setSelectedSkills([]);
       if (onSuccess) onSuccess();
     } catch (err) {
       setError('Failed to create opportunity. Please try again.');
@@ -97,8 +154,76 @@ const OpportunityForm = ({ onSuccess }) => {
           />
         </div>
 
+        {/* Skills Section */}
+        <div className="border p-4 rounded-md bg-gray-50">
+            <h3 className="text-lg font-semibold mb-2">Required Skills</h3>
+            
+            <div className="flex gap-2 mb-4">
+                <div className="flex-1">
+                    <select 
+                        value={currentSkillId}
+                        onChange={(e) => setCurrentSkillId(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-md"
+                    >
+                        <option value="">Select Skill...</option>
+                        {availableSkills.map(skill => (
+                            <option key={skill.id} value={skill.id}>{skill.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="w-32">
+                    <select
+                        value={currentWeight}
+                        onChange={(e) => setCurrentWeight(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-md"
+                        title="Importance (1: Nice to have, 5: Critical)"
+                    >
+                        <option value="1">1 - Nice to have</option>
+                        <option value="2">2 - Low</option>
+                        <option value="3">3 - Medium</option>
+                        <option value="4">4 - High</option>
+                        <option value="5">5 - Critical</option>
+                    </select>
+                </div>
+                <button
+                    type="button"
+                    onClick={handleAddSkill}
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                    Add
+                </button>
+            </div>
+
+            {/* Selected Skills List */}
+            {selectedSkills.length > 0 && (
+                <ul className="space-y-2">
+                    {selectedSkills.map((item) => (
+                        <li key={item.skill_id} className="flex justify-between items-center bg-white p-2 rounded border shadow-sm">
+                            <span className="font-medium">{item.name}</span>
+                            <div className="flex items-center gap-3">
+                                <span className={`text-xs px-2 py-1 rounded ${
+                                    item.weight >= 5 ? 'bg-red-100 text-red-800' : 
+                                    item.weight >= 3 ? 'bg-yellow-100 text-yellow-800' : 
+                                    'bg-green-100 text-green-800'
+                                }`}>
+                                    Weight: {item.weight}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemoveSkill(item.skill_id)}
+                                    className="text-red-500 hover:text-red-700"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+
         <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2">Requirements</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2">Detailed Requirements</label>
           <textarea
             name="requirements"
             value={formData.requirements}
@@ -116,14 +241,14 @@ const OpportunityForm = ({ onSuccess }) => {
             onChange={handleChange}
             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
-          <label className="ml-2 block text-gray-900">
-            Open for applications
+          <label className="ml-2 block text-gray-700 text-sm">
+            Immediately Open for Applications
           </label>
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition duration-200"
+          className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         >
           Post Opportunity
         </button>

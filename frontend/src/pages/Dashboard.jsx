@@ -170,19 +170,29 @@ const Dashboard = () => {
                    {/* Completeness Card */}
                   <div className="bg-white p-6 rounded-xl shadow-md">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-gray-800">Profile Completeness</h3>
-                      <span className="text-indigo-600 font-bold">{completeness.score}%</span>
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {displayRole === 'student' ? 'Readiness Score' : 'Profile Completeness'}
+                      </h3>
+                      <span className={`font-bold ${
+                        completeness.score >= 80 ? 'text-green-600' : 
+                        completeness.score >= 50 ? 'text-yellow-600' : 'text-red-600'
+                      }`}>
+                        {completeness.score}%
+                      </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div 
-                        className="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" 
+                        className={`h-2.5 rounded-full transition-all duration-500 ${
+                            completeness.score >= 80 ? 'bg-green-600' : 
+                            completeness.score >= 50 ? 'bg-yellow-600' : 'bg-red-600'
+                        }`}
                         style={{ width: `${completeness.score}%` }}
                       ></div>
                     </div>
                     <p className="text-sm text-gray-500 mt-2">
-                      {completeness.score < 100 
-                        ? "Complete your profile to increase your chances of finding a mentor." 
-                        : "Your profile is complete! You are ready to apply for positions."}
+                      {completeness.score < 80 
+                        ? "Increase your readiness score to match with top opportunities." 
+                        : "Your readiness score is excellent! You are well-positioned for applications."}
                     </p>
                   </div>
 

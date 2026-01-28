@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { getOpportunities, applyForOpportunity } from '../api';
+import { getOpportunities, applyForOpportunity, getMatchPreview } from '../api';
 
 const OpportunityList = () => {
   const [opportunities, setOpportunities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState('');
+  
+  // Application State
   const [applyingId, setApplyingId] = useState(null);
   const [coverLetter, setCoverLetter] = useState('');
   const [message, setMessage] = useState({ type: '', text: '' });
+
+  // Match Preview State
+  const [matchPreview, setMatchPreview] = useState(null); // { score, details }
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewError, setPreviewError] = useState('');
 
   useEffect(() => {
     fetchOpportunities();
@@ -54,6 +61,30 @@ const OpportunityList = () => {
     }
   };
 
+  const handleCheckMatch = async (id) => {
+      setMatchPreview(null);
+      setPreviewError('');
+      setPreviewLoading(true);
+      // Open modal placeholder? Or just set loading state for that item?
+      // Let's use a single modal for simplicity
+      setApplyingId('PREVIEW_' + id); // Hack to reuse modal logic or just distinct ID
+
+      try {
+          const data = await getMatchPreview(id);
+          setMatchPreview(data);
+      } catch (err) {
+          console.error(err);
+          setPreviewError(err.response?.data?.detail || "Failed to get match preview");
+      } finally {
+          setPreviewLoading(false);
+      }
+  };
+  
+  const closeMatchModal = () => {
+      setApplyingId(null);
+      setMatchPreview(null);
+  }
+
   return (
     <div className="max-w-4xl mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Browse Opportunities</h2>
@@ -97,40 +128,50 @@ const OpportunityList = () => {
                       </div>
                     )}
                   </div>
-                  {opp.is_open ? (
-                    <button
-                      onClick={() => handleApplyClick(opp.id)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Apply
-                    </button>
-                  ) : (
-                    <span className="bg-red-100 text-red-600 py-1 px-3 rounded text-sm font-bold">Closed</span>
-                  )}
+                  <div className="flex flex-col gap-2">
+                    {opp.is_open ? (
+                        <>
+                        <button
+                        onClick={() => handleApplyClick(opp.id)}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                        >
+                        Apply Now
+                        </button>
+                        <button
+                            onClick={() => handleCheckMatch(opp.id)}
+                            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm"
+                        >
+                            Check Match
+                        </button>
+                        </>
+                    ) : (
+                        <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                        Closed
+                        </span>
+                    )}
+                  </div>
                 </div>
 
-                {/* Application Form (Inline) */}
+                {/* Apply Modal (Inline) */}
                 {applyingId === opp.id && (
                   <div className="mt-6 border-t pt-4">
-                    <h4 className="font-bold text-lg mb-2">Apply for {opp.title}</h4>
+                    <h4 className="font-bold text-lg mb-2">Submit Application</h4>
                     {message.text && (
-                      <div className={`px-4 py-2 rounded mb-4 ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                      <div className={`p-3 rounded mb-3 ${message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
                         {message.text}
                       </div>
                     )}
                     <form onSubmit={handleSubmitApplication}>
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Cover Letter</label>
-                        <textarea
-                          value={coverLetter}
-                          onChange={(e) => setCoverLetter(e.target.value)}
-                          rows="4"
-                          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Introduce yourself and explain why you're a good fit..."
-                          required
-                        />
-                      </div>
-                      <div className="flex justify-end space-x-3">
+                      <label className="block text-gray-700 text-sm font-bold mb-2">Cover Letter</label>
+                      <textarea
+                        value={coverLetter}
+                        onChange={(e) => setCoverLetter(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                        rows="4"
+                        placeholder="Explain why you are a good fit..."
+                        required
+                      />
+                      <div className="flex justify-end gap-3">
                         <button
                           type="button"
                           onClick={handleCancelApply}
@@ -140,13 +181,78 @@ const OpportunityList = () => {
                         </button>
                         <button
                           type="submit"
-                          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                         >
-                          Submit Application
+                          Submit
                         </button>
                       </div>
                     </form>
                   </div>
+                )}
+                
+                {/* Match Preview Modal (Inline) */}
+                {applyingId === 'PREVIEW_' + opp.id && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-lg max-w-lg w-full m-4">
+                            <h3 className="text-xl font-bold mb-4">Match Analysis</h3>
+                            
+                            {previewLoading && <p>Analyzing skills...</p>}
+                            {previewError && <p className="text-red-500">{previewError}</p>}
+                            
+                            {matchPreview && (
+                                <div>
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className={`text-4xl font-bold ${
+                                            matchPreview.match_score >= 80 ? 'text-green-600' :
+                                            matchPreview.match_score >= 50 ? 'text-yellow-600' : 'text-red-600'
+                                        }`}>
+                                            {matchPreview.match_score}%
+                                        </div>
+                                        <div className="text-gray-600">Match Score</div>
+                                    </div>
+                                    
+                                    <div className="space-y-4 max-h-96 overflow-y-auto">
+                                        {/* Missing Skills */}
+                                        {matchPreview.details.missing_critical.length > 0 && (
+                                            <div className="bg-red-50 p-3 rounded">
+                                                <h5 className="font-bold text-red-800 mb-1">Missing Critical Skills</h5>
+                                                <ul className="list-disc pl-5 text-red-700">
+                                                    {matchPreview.details.missing_critical.map(s => <li key={s}>{s}</li>)}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        {matchPreview.details.missing_important.length > 0 && (
+                                            <div className="bg-yellow-50 p-3 rounded">
+                                                <h5 className="font-bold text-yellow-800 mb-1">Missing Important Skills</h5>
+                                                <ul className="list-disc pl-5 text-yellow-700">
+                                                    {matchPreview.details.missing_important.map(s => <li key={s}>{s}</li>)}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        
+                                        {/* Matched Skills */}
+                                        {matchPreview.details.matched_skills.length > 0 && (
+                                            <div className="bg-green-50 p-3 rounded">
+                                                <h5 className="font-bold text-green-800 mb-1">Matched Skills</h5>
+                                                <ul className="list-disc pl-5 text-green-700">
+                                                    {matchPreview.details.matched_skills.map(s => <li key={s}>{s}</li>)}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="mt-6 flex justify-end">
+                                <button 
+                                    onClick={closeMatchModal}
+                                    className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300"
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 )}
               </div>
             ))

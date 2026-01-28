@@ -56,7 +56,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       // Update skills
       if (skills.trim()) {
-        const skillList = skills.split(",").map(s => s.trim()).filter(Boolean);
+        const skillList = skills.split(",").map(s => ({ name: s.trim() })).filter(s => s.name);
         await addSkills(skillList);
       }
 
