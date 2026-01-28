@@ -8,6 +8,7 @@ from app.api.admin import router as admin_router
 from app.api.opportunities import router as opportunities_router
 from app.api.applications import router as applications_router
 from app.api.skills import router as skills_router
+from app.api.improvement import router as improvement_router
 from app.core.config import settings
 import logging
 

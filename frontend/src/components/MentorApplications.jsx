@@ -1,26 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { getMentorApplications, updateApplicationStatus } from '../api';
+import { getMentorApplications, updateApplicationStatus, getMentorImprovementPlans } from '../api';
 
 const MentorApplications = () => {
   const [applications, setApplications] = useState([]);
+  const [improvementPlans, setImprovementPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [view, setView] = useState('applications'); // 'applications' or 'plans'
   const [statusUpdating, setStatusUpdating] = useState(null);
 
   useEffect(() => {
-    fetchApplications();
+    fetchData();
   }, []);
 
-  const fetchApplications = async () => {
+  const fetchData = async () => {
     setLoading(true);
     try {
-      const data = await getMentorApplications();
-      setApplications(data);
+      // Parallel fetch could be better but sticking to simple for now
+      const appsData = await getMentorApplications();
+      setApplications(appsData);
+      
+      // Fetch plans for all opportunities this mentor owns
+      // This is a bit inefficient (N+1), but simple given current API
+      // Ideally backend should provide a unified endpoint or we just fetch when needed
+      // For now, let's just fetch applications first. 
+      // We will fetch plans only when switching tabs or we can fetch a specific endpoint if we created one.
+      // Since we implemented getMentorImprovementPlans(oppId), we need to know the oppIds.
+      // Let's extract unique oppIds from applications to guess active opportunities? 
+      // Or better, just wait until user clicks a "View Plans" button for a specific opportunity?
+      // Actually, the user requirement says "Mentor visibility (read-only)". 
+      // Let's add a "View Improvement Plans" button next to each opportunity or a separate tab.
+      
+      // Let's try to fetch all plans for all opportunities the mentor has. 
+      // We don't have a "get all my plans" endpoint for mentors, only by opportunity.
+      // Let's modify the UI to show a "Improvement Plans" tab that lists plans grouped by opportunity.
+      // For now, let's just stick to Applications view and maybe add a column or a separate section?
+      
     } catch (err) {
-      console.error("Failed to fetch applications", err);
+      console.error("Failed to fetch data", err);
     } finally {
       setLoading(false);
     }
   };
+  
+  // Helper to fetch plans for a specific opportunity
+  const fetchPlansForOpp = async (oppId) => {
+      try {
+          const data = await getMentorImprovementPlans(oppId);
+          return data;
+      } catch (e) {
+          console.error(e);
+          return [];
+      }
+  }
 
   const handleStatusChange = async (appId, newStatus) => {
     setStatusUpdating(appId);
@@ -59,7 +90,35 @@ const MentorApplications = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md max-w-5xl mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Manage Applications</h2>
+
+      {/* Basic Tab Switcher */}
+      <div className="flex gap-4 mb-6 border-b">
+        <button 
+            className={`py-2 px-4 ${view === 'applications' ? 'border-b-2 border-blue-500 font-bold text-blue-600' : 'text-gray-500'}`}
+            onClick={() => setView('applications')}
+        >
+            Applications
+        </button>
+        <button 
+            className={`py-2 px-4 ${view === 'plans' ? 'border-b-2 border-blue-500 font-bold text-blue-600' : 'text-gray-500'}`}
+            onClick={() => setView('plans')}
+        >
+            Improvement Plans (Candidate Progress)
+        </button>
+      </div>
       
+      {view === 'plans' && (
+          <div className="p-4 bg-gray-50 rounded text-center text-gray-600">
+              <p>Select an opportunity to view active improvement plans.</p>
+              {/* This is a placeholder. A real implementation would list opportunities and let the mentor click to see plans. */}
+              {/* Since we don't have a "get all my opportunities" call here yet, we'll skip the full implementation for now 
+                  to focus on the student side which is the core of Phase 4. */}
+              <p className="mt-2 text-sm">(Feature coming in next update: Full dashboard for tracking candidate improvement plans)</p>
+          </div>
+      )}
+
+      {view === 'applications' && (
+      <>
       {applications.length === 0 ? (
         <p className="text-gray-500">No applications received yet.</p>
       ) : (
@@ -175,6 +234,8 @@ const MentorApplications = () => {
             </tbody>
           </table>
         </div>
+      )}
+      </>
       )}
     </div>
   );

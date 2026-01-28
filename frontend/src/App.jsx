@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import OAuthCallback from "./pages/OAuthCallback";
+import ImprovementPlanBoard from "./components/ImprovementPlanBoard";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -27,6 +28,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/improvement-plans"
+            element={
+              <ProtectedRoute>
+                <ImprovementPlanBoard />
               </ProtectedRoute>
             }
           />

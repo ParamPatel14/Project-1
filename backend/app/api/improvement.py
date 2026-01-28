@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from app.db.database import get_db
 from app.db.models import User, Opportunity, ImprovementPlan, PlanItem, OpportunitySkill, Skill
-from app.api.auth import get_current_user
+from app.deps import get_current_user
 
 router = APIRouter()
 
@@ -26,7 +26,7 @@ class PlanItemResponse(PlanItemBase):
     created_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ImprovementPlanResponse(BaseModel):
     id: int
@@ -37,7 +37,7 @@ class ImprovementPlanResponse(BaseModel):
     items: List[PlanItemResponse]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Endpoints
 
