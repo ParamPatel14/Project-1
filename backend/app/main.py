@@ -43,6 +43,7 @@ app.include_router(admin_router, prefix="/admin", tags=["Admin"])
 app.include_router(opportunities_router, prefix="/opportunities", tags=["Opportunities"])
 app.include_router(applications_router, prefix="/applications", tags=["Applications"])
 app.include_router(skills_router, prefix="/skills", tags=["Skills"])
+app.include_router(improvement_router, prefix="/improvement", tags=["Improvement Plans"])
 
 @app.get("/")
 def root():

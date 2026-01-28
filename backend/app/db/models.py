@@ -1,9 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Text, Table, DateTime, Float
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
-
-Base = declarative_base()
+from app.db.database import Base
 
 # Association table for User <-> Skills (Many-to-Many)
 user_skills = Table(
@@ -29,6 +27,7 @@ class User(Base):
     skills = relationship("Skill", secondary=user_skills, back_populates="users")
     opportunities = relationship("Opportunity", back_populates="mentor")
     applications = relationship("Application", back_populates="student")
+    improvement_plans = relationship("ImprovementPlan", back_populates="student")
 
 class StudentProfile(Base):
     __tablename__ = "student_profiles"
@@ -91,6 +90,7 @@ class Opportunity(Base):
     mentor = relationship("User", back_populates="opportunities")
     applications = relationship("Application", back_populates="opportunity")
     required_skills = relationship("OpportunitySkill", back_populates="opportunity", cascade="all, delete-orphan")
+    improvement_plans = relationship("ImprovementPlan", back_populates="opportunity")
 
 class OpportunitySkill(Base):
     __tablename__ = "opportunity_skills"
@@ -117,3 +117,32 @@ class Application(Base):
     # Relationships
     student = relationship("User", back_populates="applications")
     opportunity = relationship("Opportunity", back_populates="applications")
+
+class ImprovementPlan(Base):
+    __tablename__ = "improvement_plans"
+
+    id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey("users.id"))
+    opportunity_id = Column(Integer, ForeignKey("opportunities.id"))
+    created_at = Column(DateTime, default=datetime.utcnow)
+    status = Column(String, default="in_progress") # in_progress, completed, abandoned
+    
+    # Relationships
+    student = relationship("User", back_populates="improvement_plans")
+    opportunity = relationship("Opportunity", back_populates="improvement_plans")
+    items = relationship("PlanItem", back_populates="plan", cascade="all, delete-orphan")
+
+class PlanItem(Base):
+    __tablename__ = "plan_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    plan_id = Column(Integer, ForeignKey("improvement_plans.id"))
+    title = Column(String)
+    description = Column(Text)
+    type = Column(String) # skill_gap, mini_project, reading_list, sop
+    status = Column(String, default="pending") # pending, in_progress, completed
+    evidence_link = Column(String) # URL to proof (e.g. GitHub, Google Doc)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    plan = relationship("ImprovementPlan", back_populates="items")
