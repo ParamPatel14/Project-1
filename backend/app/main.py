@@ -11,6 +11,8 @@ from app.api.skills import router as skills_router
 from app.api.improvement import router as improvement_router
 from app.api.assignments import router as assignments_router
 from app.api.research import router as research_router
+from app.api.communication import router as communication_router
+from app.api.references import router as references_router
 from app.core.config import settings
 import logging
 
@@ -49,6 +51,8 @@ app.include_router(skills_router, prefix="/skills", tags=["Skills"])
 app.include_router(improvement_router, prefix="/improvement", tags=["Improvement Plans"])
 app.include_router(assignments_router, prefix="/assignments", tags=["Assignments"])
 app.include_router(research_router, prefix="/research", tags=["Research"])
+app.include_router(communication_router, prefix="/comm", tags=["Communication"])
+app.include_router(references_router, prefix="/references", tags=["References"])
 
 @app.get("/")
 def root():

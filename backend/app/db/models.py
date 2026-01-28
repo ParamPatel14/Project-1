@@ -61,6 +61,10 @@ class MentorProfile(Base):
     bio = Column(Text)
     website_url = Column(String)
     
+    # Reputation
+    reputation_score = Column(Float, default=0.0)
+    outcome_count = Column(Integer, default=0)
+
     # Relationships
     user = relationship("User", back_populates="mentor_profile")
 
@@ -199,3 +203,60 @@ class PublicationProject(Base):
     student = relationship("User", foreign_keys=[student_id])
     mentor = relationship("User", foreign_keys=[mentor_id])
     opportunity = relationship("Opportunity")
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    sender_id = Column(Integer, ForeignKey("users.id"))
+    receiver_id = Column(Integer, ForeignKey("users.id"))
+    content = Column(Text)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    read = Column(Boolean, default=False)
+    
+    sender = relationship("User", foreign_keys=[sender_id])
+    receiver = relationship("User", foreign_keys=[receiver_id])
+
+class Meeting(Base):
+    __tablename__ = "meetings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    organizer_id = Column(Integer, ForeignKey("users.id"))
+    attendee_id = Column(Integer, ForeignKey("users.id"))
+    title = Column(String)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
+    status = Column(String, default="scheduled") # scheduled, completed, cancelled
+    link = Column(String) # Video call link
+    
+    organizer = relationship("User", foreign_keys=[organizer_id])
+    attendee = relationship("User", foreign_keys=[attendee_id])
+
+class Reference(Base):
+    __tablename__ = "references"
+
+    id = Column(Integer, primary_key=True, index=True)
+    mentor_id = Column(Integer, ForeignKey("users.id"))
+    student_id = Column(Integer, ForeignKey("users.id"))
+    content = Column(Text)
+    is_silent = Column(Boolean, default=True) # Visible only to other mentors/admins? Or aggregated?
+    # Actually, user requirement says "Silent reference system" & "Reference visibility rules (private by design)"
+    # So maybe students can NEVER see them, but they boost the profile?
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    mentor = relationship("User", foreign_keys=[mentor_id])
+    student = relationship("User", foreign_keys=[student_id])
+
+class ProjectFile(Base):
+    __tablename__ = "project_files"
+
+    id = Column(Integer, primary_key=True, index=True)
+    project_id = Column(Integer, ForeignKey("publication_projects.id"))
+    uploader_id = Column(Integer, ForeignKey("users.id"))
+    name = Column(String)
+    url = Column(String)
+    version = Column(Integer, default=1)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    project = relationship("PublicationProject")
+    uploader = relationship("User")
