@@ -64,6 +64,12 @@ export const addSkills = async (skills) => {
   return response.data;
 };
 
+// Skills APIs
+export const getSkills = async (search = "") => {
+  const response = await api.get(`/skills/?search=${search}`);
+  return response.data;
+};
+
 export const getCompleteness = async () => {
   const response = await api.get("/profiles/me/completeness");
   return response.data;
@@ -94,6 +100,11 @@ export const getOpportunities = async (filters = {}) => {
 
 export const getOpportunity = async (id) => {
   const response = await api.get(`/opportunities/${id}`);
+  return response.data;
+};
+
+export const getMatchPreview = async (id) => {
+  const response = await api.get(`/opportunities/${id}/match-preview`);
   return response.data;
 };
 

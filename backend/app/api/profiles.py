@@ -91,6 +91,38 @@ def update_mentor_profile(
     db.refresh(profile)
     return profile
 
+@router.post("/me/skills", response_model=List[schemas.SkillResponse])
+def update_user_skills(
+    skills: List[schemas.SkillCreate],
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user)
+):
+    """
+    Update user skills (replace existing).
+    Creates skills if they don't exist.
+    """
+    # clear existing skills
+    current_user.skills = []
+    
+    for skill_data in skills:
+        # Check if skill exists
+        skill = db.query(models.Skill).filter(models.Skill.name.ilike(skill_data.name)).first()
+        if not skill:
+            skill = models.Skill(name=skill_data.name)
+            db.add(skill)
+            db.commit()
+            db.refresh(skill)
+        
+        current_user.skills.append(skill)
+    
+    # Update readiness score if student
+    if current_user.student_profile:
+        current_user.student_profile.readiness_score = calculate_readiness_score(current_user.student_profile, current_user.skills)
+    
+    db.commit()
+    db.refresh(current_user)
+    return current_user.skills
+
 @router.get("/{user_id}", response_model=schemas.UserResponse)
 def read_profile(
     user_id: int,
