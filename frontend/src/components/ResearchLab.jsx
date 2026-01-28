@@ -12,11 +12,15 @@ import {
 } from '../api';
 import { useAuth } from '../context/AuthContext';
 
+import ChatBox from './ChatBox';
+import MeetingScheduler from './MeetingScheduler';
+import ReferencePortal from './ReferencePortal';
+
 const ResearchLab = () => {
     const { user } = useAuth();
     const [projects, setProjects] = useState([]);
     const [selectedProject, setSelectedProject] = useState(null);
-    const [view, setView] = useState('pipeline'); // pipeline, assignments
+    const [view, setView] = useState('pipeline'); // pipeline, assignments, chat, meetings, references
     const [loading, setLoading] = useState(true);
     
     // Mentor specific state
@@ -119,24 +123,56 @@ const ResearchLab = () => {
                         <nav className="flex -mb-px">
                             <button
                                 onClick={() => setView('pipeline')}
-                                className={`w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm ${
+                                className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
                                     view === 'pipeline'
                                     ? 'border-indigo-500 text-indigo-600'
                                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                 }`}
                             >
-                                Publication Pipeline
+                                Pipeline
                             </button>
                             <button
                                 onClick={() => setView('assignments')}
-                                className={`w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm ${
+                                className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
                                     view === 'assignments'
                                     ? 'border-indigo-500 text-indigo-600'
                                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                 }`}
                             >
-                                Assignments & Tasks
+                                Assignments
                             </button>
+                            <button
+                                onClick={() => setView('chat')}
+                                className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
+                                    view === 'chat'
+                                    ? 'border-indigo-500 text-indigo-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                }`}
+                            >
+                                Chat
+                            </button>
+                            <button
+                                onClick={() => setView('meetings')}
+                                className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
+                                    view === 'meetings'
+                                    ? 'border-indigo-500 text-indigo-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                }`}
+                            >
+                                Meetings
+                            </button>
+                            {user.role === 'mentor' && (
+                                <button
+                                    onClick={() => setView('references')}
+                                    className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
+                                        view === 'references'
+                                        ? 'border-indigo-500 text-indigo-600'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    }`}
+                                >
+                                    Reference
+                                </button>
+                            )}
                         </nav>
                     </div>
 
@@ -146,6 +182,15 @@ const ResearchLab = () => {
                         )}
                         {view === 'assignments' && (
                             <AssignmentsManager project={selectedProject} user={user} />
+                        )}
+                        {view === 'chat' && (
+                            <ChatBox otherUser={user.role === 'mentor' ? selectedProject.student : selectedProject.mentor} />
+                        )}
+                        {view === 'meetings' && (
+                            <MeetingScheduler otherUser={user.role === 'mentor' ? selectedProject.student : selectedProject.mentor} />
+                        )}
+                        {view === 'references' && user.role === 'mentor' && (
+                            <ReferencePortal studentId={selectedProject.student_id} studentName={selectedProject.student?.name} />
                         )}
                     </div>
                 </div>

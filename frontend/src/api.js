@@ -197,4 +197,41 @@ export const updateResearchProjectStatus = async (projectId, data) => {
   return response.data;
 };
 
+// Communication APIs
+export const sendMessage = async (data) => {
+  const response = await api.post("/comm/messages/", data);
+  return response.data;
+};
+
+export const getChatHistory = async (otherUserId) => {
+  const response = await api.get(`/comm/messages/${otherUserId}`);
+  return response.data;
+};
+
+export const getConversations = async () => {
+  const response = await api.get("/comm/conversations");
+  return response.data;
+};
+
+export const scheduleMeeting = async (data) => {
+  const response = await api.post("/comm/meetings/", data);
+  return response.data;
+};
+
+export const getMyMeetings = async () => {
+  const response = await api.get("/comm/meetings/");
+  return response.data;
+};
+
+// Reference APIs
+export const createReference = async (data) => {
+  const response = await api.post("/references/", data);
+  return response.data;
+};
+
+export const getStudentReferences = async (studentId) => {
+  const response = await api.get(`/references/student/${studentId}`);
+  return response.data;
+};
+
 export default api;
