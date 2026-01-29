@@ -21,6 +21,26 @@ const OpportunityDetail = () => {
   const [matchPreview, setMatchPreview] = useState(null);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [previewError, setPreviewError] = useState('');
+  
+  // Loading Animation State
+  const [loadingStep, setLoadingStep] = useState(0);
+  const loadingMessages = [
+    "Analyzing your profile...",
+    "Scanning opportunity requirements...",
+    "Matching skills and experience...",
+    "Calculating final score..."
+  ];
+
+  useEffect(() => {
+    let interval;
+    if (previewLoading) {
+      setLoadingStep(0);
+      interval = setInterval(() => {
+        setLoadingStep((prev) => (prev + 1) % loadingMessages.length);
+      }, 1500);
+    }
+    return () => clearInterval(interval);
+  }, [previewLoading]);
 
   useEffect(() => {
     fetchOpportunity();
@@ -168,8 +188,8 @@ const OpportunityDetail = () => {
 
       {/* Apply Modal */}
       {showApplyModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-xl max-w-2xl w-full mx-4 shadow-2xl transform transition-all animate-scale-up overflow-hidden">
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-xl max-w-2xl w-full mx-4 shadow-2xl transform transition-all animate-scale-up overflow-hidden border border-gray-100">
             <div className="bg-gray-50 px-6 py-4 border-b flex justify-between items-center">
                 <h3 className="text-xl font-bold text-gray-800">Submit Application</h3>
                 <button onClick={() => setShowApplyModal(false)} className="text-gray-500 hover:text-gray-700">&times;</button>
@@ -187,26 +207,36 @@ const OpportunityDetail = () => {
                             type="button"
                             onClick={handleGenerateCoverLetter}
                             disabled={isGeneratingCoverLetter}
-                            className="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full hover:bg-indigo-200 flex items-center gap-1 transition"
+                            className="text-sm bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-100 border border-indigo-200 flex items-center gap-1 transition disabled:opacity-50"
                         >
-                            {isGeneratingCoverLetter ? (
-                                <><div className="animate-spin rounded-full h-3 w-3 border-b-2 border-indigo-700"></div> Writing...</>
-                            ) : (
-                                <><FiCpu /> Generate with AI</>
-                            )}
+                            <FiCpu /> Generate with AI
                         </button>
                     </div>
-                    <textarea
-                        value={coverLetter}
-                        onChange={(e) => setCoverLetter(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition mb-6"
-                        rows="8"
-                        placeholder="Why are you the best fit for this role?"
-                        required
-                    />
+                    <div className="relative">
+                        <textarea
+                            value={coverLetter}
+                            onChange={(e) => setCoverLetter(e.target.value)}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition mb-6 min-h-[200px]"
+                            rows="8"
+                            placeholder="Why are you the best fit for this role?"
+                            required
+                            disabled={isGeneratingCoverLetter}
+                        />
+                        {isGeneratingCoverLetter && (
+                            <div className="absolute inset-0 bg-white/90 backdrop-blur-[2px] flex flex-col items-center justify-center rounded-lg border border-indigo-100 z-10">
+                                <div className="relative mb-3">
+                                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <FiCpu className="text-indigo-600 text-sm animate-pulse"/>
+                                    </div>
+                                </div>
+                                <p className="text-indigo-600 font-medium animate-pulse">AI is crafting your cover letter...</p>
+                            </div>
+                        )}
+                    </div>
                     <div className="flex justify-end gap-3">
                         <button type="button" onClick={() => setShowApplyModal(false)} className="px-5 py-2 text-gray-600 hover:text-gray-800 font-medium">Cancel</button>
-                        <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold shadow-md transition">Submit Application</button>
+                        <button type="submit" disabled={isGeneratingCoverLetter} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed">Submit Application</button>
                     </div>
                 </form>
             </div>
@@ -216,14 +246,21 @@ const OpportunityDetail = () => {
 
       {/* Match Preview Modal */}
       {showMatchModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-xl max-w-lg w-full mx-4 shadow-2xl p-6 relative animate-scale-up">
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-xl max-w-lg w-full mx-4 shadow-2xl p-6 relative animate-scale-up border border-gray-100">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2"><FiCpu className="text-indigo-600"/> AI Match Analysis</h3>
             
             {previewLoading ? (
-                <div className="flex flex-col items-center py-10">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-4"></div>
-                    <p className="text-gray-600 animate-pulse">Analyzing your profile...</p>
+                <div className="flex flex-col items-center py-12 px-4 text-center">
+                    <div className="relative mb-6">
+                        <div className="w-16 h-16 border-4 border-indigo-100 rounded-full"></div>
+                        <div className="w-16 h-16 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin absolute top-0 left-0"></div>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                             <FiCpu className="text-indigo-600 text-xl animate-bounce"/>
+                        </div>
+                    </div>
+                    <h4 className="text-lg font-bold text-gray-800 mb-2">{loadingMessages[loadingStep]}</h4>
+                    <p className="text-sm text-gray-500 max-w-xs">Comparing your profile skills, projects, and experience against the internship requirements.</p>
                 </div>
             ) : previewError ? (
                 <p className="text-red-500">{previewError}</p>
