@@ -187,6 +187,8 @@ class OpportunityBase(BaseModel):
     type: str # internship, research_assistant, phd_guidance, collaboration
     requirements: Optional[str] = None
     is_open: Optional[bool] = True
+    deadline: Optional[datetime] = None
+    total_slots: Optional[int] = 1
     # Phase 7: Grants
     funding_amount: Optional[float] = None
     currency: Optional[str] = "USD"

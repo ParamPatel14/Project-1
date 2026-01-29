@@ -155,6 +155,8 @@ class Opportunity(Base):
     requirements = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
     is_open = Column(Boolean, default=True)
+    deadline = Column(DateTime, nullable=True)
+    total_slots = Column(Integer, default=1)
 
     # Relationships
     mentor = relationship("User", back_populates="opportunities")

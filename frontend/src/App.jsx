@@ -10,6 +10,7 @@ import ImprovementPlanBoard from "./components/ImprovementPlanBoard";
 import CertificateVerification from "./components/CertificateVerification";
 import AnalyticsDashboard from "./components/AnalyticsDashboard";
 import LanguageTool from "./components/LanguageTool";
+import OpportunityDetail from "./components/OpportunityDetail";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -61,6 +62,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ImprovementPlanBoard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/opportunities/:id"
+            element={
+              <ProtectedRoute>
+                <OpportunityDetail />
               </ProtectedRoute>
             }
           />
