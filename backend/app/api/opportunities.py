@@ -21,7 +21,6 @@ def create_opportunity(
     # Extract skills data
     skills_data = opportunity.skills
     
-    # Create opportunity (exclude skills from main model init)
     opportunity_data = opportunity.model_dump(exclude={"skills"})
     new_opportunity = Opportunity(
         mentor_id=current_user.id,

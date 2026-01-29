@@ -21,8 +21,6 @@ def extract_links(text):
     twitter = re.search(r'(twitter\.com/[\w-]+|x\.com/[\w-]+)', text, re.IGNORECASE)
     if twitter: links['twitter_url'] = "https://" + twitter.group(1)
     
-    # Portfolio/Website (generic)
-    # This is harder to distinguish from other links, skipping for now unless explicit "Portfolio: www.xyz.com"
     
     return links
 
