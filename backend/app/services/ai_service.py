@@ -12,7 +12,7 @@ if settings.GEMINI_API_KEY:
     genai.configure(api_key=settings.GEMINI_API_KEY)
 
 # Use Gemini 1.5 Flash (or Pro) - 2.5 is likely a typo/future placeholder
-MODEL_NAME = "gemini-1.5-flash" 
+MODEL_NAME = "gemini-2.5-flash" 
 
 def get_model():
     if not settings.GEMINI_API_KEY:
@@ -70,6 +70,54 @@ async def analyze_match(resume_text: str, job_description: str) -> dict:
             "missing_skills": ["Error analyzing match"],
             "explanation": "Could not analyze match due to an internal error."
         }
+
+async def generate_improvement_plan(resume_text: str, job_description: str, days_remaining: int) -> list:
+    """
+    Generates a detailed, step-by-step improvement plan based on the resume and job description.
+    Returns a list of plan items with estimated hours and deadlines.
+    """
+    try:
+        model = get_model()
+        
+        prompt = f"""
+        You are a senior mentor and technical lead. Analyze the student's resume and the target opportunity.
+        Create a detailed, step-by-step improvement plan to be completed in {days_remaining} days.
+        
+        Job Description:
+        {job_description}
+        
+        Resume:
+        {resume_text}
+        
+        The plan should focus on closing skill gaps and demonstrating readiness.
+        It must be practical, "real-world" focused (e.g., "Build a React component" instead of "Learn React").
+        
+        Output a JSON ARRAY of objects with the following keys:
+        - "title": Short, actionable title (e.g., "Master Redux Toolkit").
+        - "description": Detailed instructions on what to do/build.
+        - "type": One of ["skill_gap", "mini_project", "reading_list", "sop"].
+        - "estimated_hours": String (e.g., "4-6 hours").
+        - "deadline_day_offset": Integer (days from now this should be done, between 1 and {days_remaining}).
+        - "priority": One of ["high", "medium", "low"].
+        
+        Ensure the plan fits within {days_remaining} days.
+        Output ONLY the JSON ARRAY.
+        """
+        
+        response = model.generate_content(prompt)
+        
+        # Clean up response text to ensure it's valid JSON
+        text = response.text.strip()
+        if text.startswith("```json"):
+            text = text[7:]
+        if text.endswith("```"):
+            text = text[:-3]
+            
+        return json.loads(text)
+        
+    except Exception as e:
+        logger.error(f"Error in generate_improvement_plan: {str(e)}")
+        return []
 
 async def generate_cover_letter(resume_text: str, job_description: str) -> str:
     """
