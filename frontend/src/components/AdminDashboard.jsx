@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getPendingMentors, verifyMentor, getAllStudents, getAllMentors, getOpportunities, createAdminOpportunity, getAllApplications } from "../api";
-import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink } from "react-icons/fi";
+import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu } from "react-icons/fi";
 import OpportunityForm from "./OpportunityForm";
 
 const AdminDashboard = () => {
@@ -292,7 +292,7 @@ const AdminDashboard = () => {
                           <div className="flex space-x-3">
                              {app.student?.student_profile?.resume_url && (
                                 <a 
-                                  href={app.student.student_profile.resume_url} 
+                                  href={getResumeUrl(app.student.student_profile.resume_url)} 
                                   target="_blank" 
                                   rel="noopener noreferrer"
                                   className="text-indigo-600 hover:text-indigo-900 flex items-center"
@@ -301,7 +301,11 @@ const AdminDashboard = () => {
                                   <FiDownload className="mr-1" /> Resume
                                 </a>
                              )}
-                             <button className="text-gray-600 hover:text-gray-900 flex items-center" title="View Full Profile">
+                             <button 
+                               onClick={() => handleViewProfile(app.student)}
+                               className="text-gray-600 hover:text-gray-900 flex items-center" 
+                               title="View Full Profile"
+                             >
                                <FiExternalLink className="mr-1" /> Profile
                              </button>
                           </div>
@@ -341,6 +345,142 @@ const AdminDashboard = () => {
                 }} 
                 customSubmitFunction={createAdminOpportunity}
               />
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Profile Modal */}
+      {showProfileModal && selectedStudent && (
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-xl max-w-2xl w-full mx-4 shadow-2xl overflow-hidden border border-gray-100 max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-6 text-white flex justify-between items-start">
+              <div>
+                <h3 className="text-2xl font-bold">{selectedStudent.name}</h3>
+                <p className="text-indigo-100">{selectedStudent.email}</p>
+                <div className="mt-2 flex gap-2">
+                    {selectedStudent.student_profile?.university && <span className="bg-white/20 px-2 py-1 rounded text-xs">{selectedStudent.student_profile.university}</span>}
+                    {selectedStudent.student_profile?.major && <span className="bg-white/20 px-2 py-1 rounded text-xs">{selectedStudent.student_profile.major}</span>}
+                </div>
+              </div>
+              <button onClick={() => setShowProfileModal(false)} className="text-white/80 hover:text-white text-2xl">&times;</button>
+            </div>
+            
+            <div className="p-6 space-y-6">
+                {/* About */}
+                {selectedStudent.student_profile?.bio && (
+                    <section>
+                        <h4 className="text-lg font-bold text-gray-800 mb-2 flex items-center"><FiUsers className="mr-2 text-indigo-500"/> About</h4>
+                        <p className="text-gray-600 leading-relaxed">{selectedStudent.student_profile.bio}</p>
+                    </section>
+                )}
+
+                {/* Skills */}
+                {selectedStudent.skills && selectedStudent.skills.length > 0 && (
+                    <section>
+                        <h4 className="text-lg font-bold text-gray-800 mb-2 flex items-center"><FiCheck className="mr-2 text-green-500"/> Skills</h4>
+                        <div className="flex flex-wrap gap-2">
+                            {selectedStudent.skills.map(skill => (
+                                <span key={skill.id} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                    {skill.name}
+                                </span>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Experience */}
+                {selectedStudent.student_profile?.work_experiences?.length > 0 && (
+                    <section>
+                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiBriefcase className="mr-2 text-blue-500"/> Experience</h4>
+                        <div className="space-y-4">
+                            {selectedStudent.student_profile.work_experiences.map((exp, i) => (
+                                <div key={i} className="border-l-2 border-gray-200 pl-4 pb-2">
+                                    <h5 className="font-bold text-gray-900">{exp.title}</h5>
+                                    <p className="text-indigo-600 text-sm font-medium">{exp.company}</p>
+                                    <p className="text-gray-500 text-xs mb-1">{exp.start_date} - {exp.end_date || 'Present'}</p>
+                                    {exp.description && <p className="text-gray-600 text-sm mt-1">{exp.description}</p>}
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Projects */}
+                {selectedStudent.student_profile?.projects?.length > 0 && (
+                    <section>
+                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiCpu className="mr-2 text-purple-500"/> Projects</h4>
+                        <div className="grid grid-cols-1 gap-4">
+                            {selectedStudent.student_profile.projects.map((proj, i) => (
+                                <div key={i} className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                    <div className="flex justify-between items-start">
+                                        <h5 className="font-bold text-gray-900">{proj.title}</h5>
+                                        {proj.url && (
+                                            <a href={proj.url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-sm flex items-center">
+                                                <FiExternalLink className="mr-1"/> Link
+                                            </a>
+                                        )}
+                                    </div>
+                                    <p className="text-gray-600 text-sm mt-1">{proj.description}</p>
+                                    {proj.tech_stack && (
+                                        <div className="mt-2 flex flex-wrap gap-1">
+                                            {proj.tech_stack.split(',').map((tech, j) => (
+                                                <span key={j} className="text-xs bg-white border border-gray-300 px-1.5 py-0.5 rounded text-gray-600">{tech.trim()}</span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Education */}
+                {selectedStudent.student_profile?.educations?.length > 0 && (
+                    <section>
+                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiFileText className="mr-2 text-yellow-600"/> Education</h4>
+                        <div className="space-y-3">
+                            {selectedStudent.student_profile.educations.map((edu, i) => (
+                                <div key={i} className="flex justify-between items-start border-b border-gray-100 pb-2 last:border-0">
+                                    <div>
+                                        <h5 className="font-bold text-gray-900">{edu.institution}</h5>
+                                        <p className="text-gray-600 text-sm">{edu.degree}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-gray-500 text-xs">{edu.start_year} - {edu.end_year}</p>
+                                        {edu.grade && <p className="text-indigo-600 text-xs font-semibold">Grade: {edu.grade}</p>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Readiness */}
+                <section className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div className="flex justify-between items-center mb-2">
+                        <h4 className="font-bold text-gray-800">Readiness Score</h4>
+                        <span className="text-2xl font-bold text-indigo-600">{selectedStudent.student_profile?.readiness_score || 0}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div 
+                            className="bg-indigo-600 h-2.5 rounded-full" 
+                            style={{ width: `${selectedStudent.student_profile?.readiness_score || 0}%` }}
+                        ></div>
+                    </div>
+                </section>
+
+                <div className="flex justify-end pt-4 border-t border-gray-100">
+                    {selectedStudent.student_profile?.resume_url && (
+                        <a 
+                            href={getResumeUrl(selectedStudent.student_profile.resume_url)} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center"
+                        >
+                            <FiDownload className="mr-2" /> Download Resume
+                        </a>
+                    )}
+                </div>
             </div>
           </div>
         </div>

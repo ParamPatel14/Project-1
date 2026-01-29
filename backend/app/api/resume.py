@@ -310,9 +310,26 @@ async def parse_resume(file: UploadFile = File(...), current_user: User = Depend
 
 @router.post("/upload")
 async def upload_resume(file: UploadFile = File(...), current_user: User = Depends(get_current_user)):
-    # In a real app, upload to S3/Cloudinary.
-    # Here we return a fake URL that implies it was stored.
-    # We use a timestamp to make it look unique.
+    # Save to local uploads directory
+    import shutil
+    import os
     import time
+    
+    UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "uploads")
+    if not os.path.exists(UPLOAD_DIR):
+        os.makedirs(UPLOAD_DIR)
+        
+    # Create unique filename
     timestamp = int(time.time())
-    return {"url": f"https://storage.googleapis.com/resume-bucket/{current_user.id}/{timestamp}_{file.filename}"}
+    safe_filename = re.sub(r'[^\w\.-]', '_', file.filename)
+    filename = f"{current_user.id}_{timestamp}_{safe_filename}"
+    file_path = os.path.join(UPLOAD_DIR, filename)
+    
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        # Return relative URL that can be served by StaticFiles
+        return {"url": f"uploads/{filename}"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
