@@ -133,6 +133,49 @@ const StudentProfileView = ({ data, onEdit }) => {
                     </div>
                 ) : <p className="text-gray-400 italic">No education details added.</p>}
             </section>
+
+            {data.is_phd_seeker && (
+             <section className="mt-8 pt-6 border-t border-gray-200">
+                <h3 className="text-xl font-bold text-purple-800 mb-4 flex items-center gap-2"><FiBook /> Research Profile (PhD)</h3>
+                
+                <div className="bg-purple-50 p-4 rounded-lg mb-6 border border-purple-100">
+                    <h4 className="font-bold text-purple-900 mb-2">Research Interests</h4>
+                    <p className="text-gray-800 whitespace-pre-line">{data.research_interests || "No research interests specified."}</p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                    <div className="bg-white p-4 rounded-lg shadow-sm border text-center">
+                        <span className="block text-gray-500 text-xs uppercase tracking-wide">GPA</span>
+                        <span className="font-bold text-2xl text-gray-800">{data.gpa || "-"}</span>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow-sm border text-center">
+                        <span className="block text-gray-500 text-xs uppercase tracking-wide">GRE</span>
+                        <span className="font-bold text-2xl text-gray-800">{data.gre_score || "-"}</span>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow-sm border text-center">
+                        <span className="block text-gray-500 text-xs uppercase tracking-wide">TOEFL</span>
+                        <span className="font-bold text-2xl text-gray-800">{data.toefl_score || "-"}</span>
+                    </div>
+                </div>
+
+                <h4 className="font-bold text-lg mb-3 text-gray-800">Publications</h4>
+                {data.publications?.length > 0 ? (
+                    <div className="space-y-4">
+                        {data.publications.map((pub, i) => (
+                            <div key={i} className="bg-white p-4 rounded-lg border hover:shadow-md transition">
+                                <h4 className="font-bold text-lg text-purple-700">{pub.title}</h4>
+                                <div className="flex justify-between items-center mt-1">
+                                    <p className="text-gray-600 font-medium text-sm">{pub.journal_conference}</p>
+                                    <span className="text-gray-400 text-xs">{pub.publication_date}</span>
+                                </div>
+                                <p className="text-gray-600 mt-2 text-sm">{pub.description}</p>
+                                {pub.url && <a href={pub.url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-sm mt-2 inline-block">View Paper &rarr;</a>}
+                            </div>
+                        ))}
+                    </div>
+                ) : <p className="text-gray-400 italic">No publications listed.</p>}
+             </section>
+            )}
              
              {data.resume_url && (
                 <div className="mt-8 pt-6 border-t">
@@ -157,13 +200,16 @@ const StudentProfileForm = ({ user, onUpdate }) => {
     github_url: "", scholar_url: "", website_url: "", intro_video_url: "",
     linkedin_url: "", twitter_url: "", headline: "",
     resume_url: "", phone_number: "", city: "", country: "", gender: "",
-    interests: "", languages: ""
+    interests: "", languages: "",
+    // PhD Fields
+    is_phd_seeker: false, research_interests: "", gpa: "", gre_score: "", toefl_score: ""
   });
 
   // Dynamic Lists
   const [workExperiences, setWorkExperiences] = useState([]);
   const [educations, setEducations] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [publications, setPublications] = useState([]);
   
   // Skills
   const [primarySkills, setPrimarySkills] = useState("");
@@ -191,7 +237,10 @@ const StudentProfileForm = ({ user, onUpdate }) => {
         twitter_url: p.twitter_url || "", headline: p.headline || "",
         resume_url: p.resume_url || "", phone_number: p.phone_number || "",
         city: p.city || "", country: p.country || "", gender: p.gender || "",
-        interests: p.interests || "", languages: p.languages || ""
+        interests: p.interests || "", languages: p.languages || "",
+        is_phd_seeker: p.is_phd_seeker || false,
+        research_interests: p.research_interests || "",
+        gpa: p.gpa || "", gre_score: p.gre_score || "", toefl_score: p.toefl_score || ""
       });
       
       if (p.interests) setSelectedInterests(p.interests.split(",").map(i => i.trim()));
@@ -200,6 +249,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
       if (p.work_experiences) setWorkExperiences(p.work_experiences);
       if (p.educations) setEducations(p.educations);
       if (p.projects) setProjects(p.projects);
+      if (p.publications) setPublications(p.publications);
       
       setPrimarySkills(p.primary_skills || "");
       setTools(p.tools_libraries || "");
@@ -210,8 +260,11 @@ const StudentProfileForm = ({ user, onUpdate }) => {
   }, [user]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ 
+        ...prev, 
+        [name]: type === 'checkbox' ? checked : value 
+    }));
   };
 
   const toggleSelection = (item, list, setList) => {
@@ -254,6 +307,18 @@ const StudentProfileForm = ({ user, onUpdate }) => {
   };
   const removeProject = (index) => {
     setProjects(projects.filter((_, i) => i !== index));
+  };
+
+  const addPublication = () => {
+    setPublications([...publications, { title: "", journal_conference: "", publication_date: "", url: "", description: "" }]);
+  };
+  const updatePublication = (index, field, value) => {
+    const newPub = [...publications];
+    newPub[index][field] = value;
+    setPublications(newPub);
+  };
+  const removePublication = (index) => {
+    setPublications(publications.filter((_, i) => i !== index));
   };
 
   const handleResumeAutofill = async (e) => {
@@ -328,6 +393,9 @@ const StudentProfileForm = ({ user, onUpdate }) => {
         })),
         projects: projects.map(({title, tech_stack, url, description}) => ({
             title, tech_stack, url, description
+        })),
+        publications: publications.map(({title, journal_conference, publication_date, url, description}) => ({
+            title, journal_conference, publication_date, url, description
         }))
       };
       
@@ -425,6 +493,110 @@ const StudentProfileForm = ({ user, onUpdate }) => {
                 </div>
             </div>
         </div>
+      </section>
+
+      {/* PhD Matcher Section */}
+      <section className="bg-purple-50 p-6 rounded-lg border border-purple-200">
+        <div className="flex items-center gap-4 mb-4">
+            <input 
+                type="checkbox" 
+                name="is_phd_seeker" 
+                id="is_phd_seeker"
+                checked={formData.is_phd_seeker} 
+                onChange={handleChange} 
+                className="w-6 h-6 text-purple-600 rounded focus:ring-purple-500 border-gray-300"
+            />
+            <label htmlFor="is_phd_seeker" className="text-xl font-bold text-purple-900 cursor-pointer">
+                I am looking for a PhD Supervisor
+            </label>
+        </div>
+        
+        {formData.is_phd_seeker && (
+            <div className="space-y-6 animate-fade-in">
+                <div>
+                    <label className="block text-sm font-medium text-purple-900">Research Interests & Goals (Detailed)</label>
+                    <textarea 
+                        name="research_interests" 
+                        value={formData.research_interests} 
+                        onChange={handleChange} 
+                        rows={4}
+                        placeholder="Describe your research interests, potential topics, and career goals..."
+                        className="w-full mt-1 p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                    />
+                </div>
+                
+                <div className="grid grid-cols-3 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium text-purple-900">Overall GPA</label>
+                        <input type="text" name="gpa" value={formData.gpa} onChange={handleChange} placeholder="e.g. 3.8/4.0" className="w-full mt-1 p-2 border border-purple-300 rounded-lg" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-purple-900">GRE Score</label>
+                        <input type="text" name="gre_score" value={formData.gre_score} onChange={handleChange} placeholder="e.g. 320" className="w-full mt-1 p-2 border border-purple-300 rounded-lg" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-purple-900">TOEFL/IELTS</label>
+                        <input type="text" name="toefl_score" value={formData.toefl_score} onChange={handleChange} placeholder="e.g. 110" className="w-full mt-1 p-2 border border-purple-300 rounded-lg" />
+                    </div>
+                </div>
+
+                {/* Publications List */}
+                <div>
+                    <div className="flex justify-between items-center mb-2">
+                        <label className="block text-sm font-medium text-purple-900">Publications / Papers</label>
+                        <button type="button" onClick={addPublication} className="text-sm text-purple-600 hover:text-purple-800 flex items-center gap-1">
+                            <FiPlus /> Add Paper
+                        </button>
+                    </div>
+                    <div className="space-y-3">
+                        {publications.map((pub, index) => (
+                            <div key={index} className="bg-white p-4 rounded border border-purple-200 relative">
+                                <button type="button" onClick={() => removePublication(index)} className="absolute top-2 right-2 text-red-400 hover:text-red-600"><FiTrash2 /></button>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Paper Title" 
+                                        value={pub.title} 
+                                        onChange={(e) => updatePublication(index, 'title', e.target.value)} 
+                                        className="w-full p-2 border rounded"
+                                    />
+                                    <input 
+                                        type="text" 
+                                        placeholder="Journal / Conference Name" 
+                                        value={pub.journal_conference} 
+                                        onChange={(e) => updatePublication(index, 'journal_conference', e.target.value)} 
+                                        className="w-full p-2 border rounded"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Publication Date (YYYY-MM)" 
+                                        value={pub.publication_date} 
+                                        onChange={(e) => updatePublication(index, 'publication_date', e.target.value)} 
+                                        className="w-full p-2 border rounded"
+                                    />
+                                    <input 
+                                        type="text" 
+                                        placeholder="Link to Paper (URL)" 
+                                        value={pub.url} 
+                                        onChange={(e) => updatePublication(index, 'url', e.target.value)} 
+                                        className="w-full p-2 border rounded"
+                                    />
+                                </div>
+                                <textarea 
+                                    placeholder="Abstract / Short Description" 
+                                    value={pub.description} 
+                                    onChange={(e) => updatePublication(index, 'description', e.target.value)} 
+                                    className="w-full p-2 border rounded"
+                                    rows={2}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        )}
       </section>
 
       {/* 2. Socials */}
