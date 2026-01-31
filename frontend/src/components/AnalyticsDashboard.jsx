@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAnalytics } from '../api';
 
-const AnalyticsDashboard = () => {
+const AnalyticsDashboard = ({ title = "Platform Analytics" }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +24,7 @@ const AnalyticsDashboard = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md mt-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Platform Analytics</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">{title}</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* User Stats */}
@@ -34,10 +34,12 @@ const AnalyticsDashboard = () => {
             <p className="text-3xl font-bold text-blue-600">{data.users.students}</p>
             <p className="text-sm text-blue-500">Students</p>
           </div>
-          <div className="mt-2">
-            <p className="text-3xl font-bold text-blue-600">{data.users.mentors}</p>
-            <p className="text-sm text-blue-500">Mentors</p>
-          </div>
+          {data.users.mentors > 0 && (
+            <div className="mt-2">
+                <p className="text-3xl font-bold text-blue-600">{data.users.mentors}</p>
+                <p className="text-sm text-blue-500">Mentors</p>
+            </div>
+          )}
         </div>
 
         {/* Engagement Stats */}
