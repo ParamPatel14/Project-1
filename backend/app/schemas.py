@@ -125,7 +125,8 @@ class PublicationCreate(PublicationBase):
 
 class PublicationResponse(PublicationBase):
     id: int
-    student_profile_id: int
+    student_profile_id: Optional[int] = None
+    mentor_profile_id: Optional[int] = None
     class Config:
         from_attributes = True
 
@@ -161,17 +162,25 @@ class MentorProfileBase(BaseModel):
     research_areas: Optional[str] = None
     bio: Optional[str] = None
     website_url: Optional[str] = None
+    
+    # PhD Supervisor Fields
+    accepting_phd_students: Optional[str] = None # Yes, No, Maybe
+    funding_available: Optional[str] = None # Yes, Depends, No
+    preferred_backgrounds: Optional[str] = None
+    min_expectations: Optional[str] = None
+    max_student_requests: Optional[int] = 5
 
 class MentorProfileCreate(MentorProfileBase):
-    pass
+    publications: Optional[List[PublicationCreate]] = []
 
 class MentorProfileUpdate(MentorProfileBase):
-    pass
+    publications: Optional[List[PublicationCreate]] = []
 
 class MentorProfileResponse(MentorProfileBase):
     id: int
     user_id: int
     is_verified: bool
+    publications: List[PublicationResponse] = []
     class Config:
         from_attributes = True
 

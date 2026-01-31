@@ -31,6 +31,16 @@ add_column("student_profiles", "gpa", "VARCHAR")
 add_column("student_profiles", "gre_score", "VARCHAR")
 add_column("student_profiles", "toefl_score", "VARCHAR")
 
+# Add PhD Supervisor columns to mentor_profiles
+add_column("mentor_profiles", "accepting_phd_students", "VARCHAR")
+add_column("mentor_profiles", "funding_available", "VARCHAR")
+add_column("mentor_profiles", "preferred_backgrounds", "TEXT")
+add_column("mentor_profiles", "min_expectations", "TEXT")
+add_column("mentor_profiles", "max_student_requests", "INTEGER DEFAULT 5")
+
+# Add mentor_profile_id to publications
+add_column("publications", "mentor_profile_id", "INTEGER REFERENCES mentor_profiles(id)")
+
 # Create new tables (like publications) if they don't exist
 print("Creating new tables if needed...")
 Base.metadata.create_all(bind=engine)

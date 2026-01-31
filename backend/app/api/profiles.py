@@ -113,12 +113,22 @@ def update_mentor_profile(
         db.add(current_user)
     
     profile = current_user.mentor_profile
+    profile_data = profile_in.dict(exclude_unset=True)
+    
+    # Handle Nested Relations (Publications)
+    pub_data = profile_data.pop("publications", None)
+    
     if not profile:
-        profile = models.MentorProfile(user_id=current_user.id, **profile_in.dict(exclude_unset=True))
+        profile = models.MentorProfile(user_id=current_user.id, **profile_data)
         db.add(profile)
+        db.flush() # Ensure ID is generated
     else:
-        for field, value in profile_in.dict(exclude_unset=True).items():
+        for field, value in profile_data.items():
             setattr(profile, field, value)
+            
+    # Update Publications
+    if pub_data is not None:
+        profile.publications = [models.Publication(**item) for item in pub_data]
             
     db.commit()
     db.refresh(profile)

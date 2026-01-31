@@ -126,7 +126,8 @@ class Publication(Base):
     __tablename__ = "publications"
     
     id = Column(Integer, primary_key=True, index=True)
-    student_profile_id = Column(Integer, ForeignKey("student_profiles.id"))
+    student_profile_id = Column(Integer, ForeignKey("student_profiles.id"), nullable=True)
+    mentor_profile_id = Column(Integer, ForeignKey("mentor_profiles.id"), nullable=True)
     
     title = Column(String)
     journal_conference = Column(String) # Name of journal or conference
@@ -135,6 +136,7 @@ class Publication(Base):
     description = Column(Text) # Abstract or summary
     
     student_profile = relationship("StudentProfile", back_populates="publications")
+    mentor_profile = relationship("MentorProfile", back_populates="publications")
 
 class MentorProfile(Base):
     __tablename__ = "mentor_profiles"
@@ -153,8 +155,16 @@ class MentorProfile(Base):
     reputation_score = Column(Float, default=0.0)
     outcome_count = Column(Integer, default=0)
 
+    # PhD Supervisor Fields
+    accepting_phd_students = Column(String) # Yes, No, Maybe
+    funding_available = Column(String) # Yes, Depends, No
+    preferred_backgrounds = Column(Text) # Comma separated: CS, ECE, Bio, Math
+    min_expectations = Column(Text) # Comma separated: Programming, Math, Writing
+    max_student_requests = Column(Integer, default=5)
+    
     # Relationships
     user = relationship("User", back_populates="mentor_profile")
+    publications = relationship("Publication", back_populates="mentor_profile", cascade="all, delete-orphan")
 
 class Skill(Base):
     __tablename__ = "skills"

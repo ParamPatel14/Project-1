@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateMentorProfile } from "../api";
-import { FiUser, FiGlobe } from "react-icons/fi";
+import { FiUser, FiGlobe, FiBook, FiBriefcase, FiPlus, FiTrash2, FiType, FiCalendar, FiLink } from "react-icons/fi";
 
 const MentorProfileForm = ({ user, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -10,7 +10,13 @@ const MentorProfileForm = ({ user, onUpdate }) => {
     research_areas: "",
     bio: "",
     website_url: "",
+    accepting_phd_students: "Maybe",
+    funding_available: "Depends",
+    preferred_backgrounds: "",
+    min_expectations: "",
+    max_student_requests: 5,
   });
+  const [publications, setPublications] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -23,7 +29,15 @@ const MentorProfileForm = ({ user, onUpdate }) => {
         research_areas: user.mentor_profile.research_areas || "",
         bio: user.mentor_profile.bio || "",
         website_url: user.mentor_profile.website_url || "",
+        accepting_phd_students: user.mentor_profile.accepting_phd_students || "Maybe",
+        funding_available: user.mentor_profile.funding_available || "Depends",
+        preferred_backgrounds: user.mentor_profile.preferred_backgrounds || "",
+        min_expectations: user.mentor_profile.min_expectations || "",
+        max_student_requests: user.mentor_profile.max_student_requests || 5,
       });
+      if (user.mentor_profile.publications) {
+        setPublications(user.mentor_profile.publications);
+      }
     }
   }, [user]);
 
@@ -32,13 +46,33 @@ const MentorProfileForm = ({ user, onUpdate }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Publication Handlers
+  const addPublication = () => {
+    setPublications([...publications, { title: "", journal_conference: "", publication_date: "", url: "", description: "" }]);
+  };
+
+  const removePublication = (index) => {
+    const updated = publications.filter((_, i) => i !== index);
+    setPublications(updated);
+  };
+
+  const updatePublication = (index, field, value) => {
+    const updated = [...publications];
+    updated[index][field] = value;
+    setPublications(updated);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage({ type: "", text: "" });
 
     try {
-      await updateMentorProfile(formData);
+      const payload = {
+        ...formData,
+        publications: publications
+      };
+      await updateMentorProfile(payload);
       setMessage({ type: "success", text: "Profile updated successfully!" });
       if (onUpdate) onUpdate();
     } catch (error) {
@@ -46,6 +80,20 @@ const MentorProfileForm = ({ user, onUpdate }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const backgrounds = ["CS", "ECE", "Bio", "Math"];
+  const expectations = ["Programming", "Math", "Writing"];
+
+  const handleCheckboxChange = (field, value) => {
+    const current = formData[field] ? formData[field].split(",").map(s => s.trim()) : [];
+    let updated;
+    if (current.includes(value)) {
+      updated = current.filter(item => item !== value);
+    } else {
+      updated = [...current, value];
+    }
+    setFormData(prev => ({ ...prev, [field]: updated.join(", ") }));
   };
 
   return (
@@ -153,6 +201,171 @@ const MentorProfileForm = ({ user, onUpdate }) => {
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Describe your mentorship style and what you're looking for in students..."
             ></textarea>
+          </div>
+
+          {/* PhD Supervision Section */}
+          <div className="border-t pt-6 mt-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+              <FiBriefcase className="mr-2 text-indigo-600" /> PhD Supervision Details
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Are you accepting PhD students?</label>
+                <select
+                  name="accepting_phd_students"
+                  value={formData.accepting_phd_students}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Maybe">Maybe</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Funding Available?</label>
+                <select
+                  name="funding_available"
+                  value={formData.funding_available}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <option value="Yes">Yes</option>
+                  <option value="Depends">Depends</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              
+               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Max Student Requests per Month</label>
+                <input
+                  type="number"
+                  name="max_student_requests"
+                  value={formData.max_student_requests}
+                  onChange={handleChange}
+                  min="0"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Backgrounds</label>
+                <div className="flex flex-wrap gap-3">
+                  {backgrounds.map(bg => (
+                    <label key={bg} className="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.preferred_backgrounds.split(",").map(s => s.trim()).includes(bg)}
+                        onChange={() => handleCheckboxChange("preferred_backgrounds", bg)}
+                        className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                      />
+                      <span className="ml-2 text-gray-700">{bg}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Expectations</label>
+                <div className="flex flex-wrap gap-3">
+                  {expectations.map(exp => (
+                    <label key={exp} className="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.min_expectations.split(",").map(s => s.trim()).includes(exp)}
+                        onChange={() => handleCheckboxChange("min_expectations", exp)}
+                        className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                      />
+                      <span className="ml-2 text-gray-700">{exp}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Publications Section */}
+          <div className="border-t pt-6 mt-6">
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-gray-800 flex items-center">
+                    <FiBook className="mr-2 text-indigo-600" /> Recent Publications
+                </h3>
+                <button type="button" onClick={addPublication} className="flex items-center gap-2 text-sm bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition">
+                    <FiPlus /> Add Paper
+                </button>
+            </div>
+            
+            <div className="space-y-4">
+              {publications.map((pub, index) => (
+                <div key={index} className="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm relative group">
+                  <button type="button" onClick={() => removePublication(index)} className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition bg-white p-2 rounded-full hover:bg-red-50">
+                    <FiTrash2 />
+                  </button>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                    <div className="relative">
+                      <FiType className="absolute top-3.5 left-3 text-gray-400" />
+                      <input 
+                        type="text" 
+                        placeholder="Paper Title" 
+                        value={pub.title} 
+                        onChange={(e) => updatePublication(index, 'title', e.target.value)} 
+                        className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                      />
+                    </div>
+                    <div className="relative">
+                      <FiBook className="absolute top-3.5 left-3 text-gray-400" />
+                      <input 
+                        type="text" 
+                        placeholder="Journal / Conference Name" 
+                        value={pub.journal_conference} 
+                        onChange={(e) => updatePublication(index, 'journal_conference', e.target.value)} 
+                        className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                    <div className="relative">
+                      <FiCalendar className="absolute top-3.5 left-3 text-gray-400" />
+                      <input 
+                        type="text" 
+                        placeholder="Publication Date (YYYY-MM)" 
+                        value={pub.publication_date} 
+                        onChange={(e) => updatePublication(index, 'publication_date', e.target.value)} 
+                        className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                      />
+                    </div>
+                    <div className="relative">
+                      <FiLink className="absolute top-3.5 left-3 text-gray-400" />
+                      <input 
+                        type="text" 
+                        placeholder="Link to Paper (URL)" 
+                        value={pub.url} 
+                        onChange={(e) => updatePublication(index, 'url', e.target.value)} 
+                        className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                      />
+                    </div>
+                  </div>
+                  
+                  <textarea 
+                    placeholder="Abstract / Short Description..." 
+                    value={pub.description} 
+                    onChange={(e) => updatePublication(index, 'description', e.target.value)} 
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition h-24 resize-none"
+                  />
+                </div>
+              ))}
+              {publications.length === 0 && (
+                  <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                      No publications added yet. Click "Add Paper" to showcase your research.
+                  </div>
+              )}
+            </div>
           </div>
 
           <div className="flex justify-end">
