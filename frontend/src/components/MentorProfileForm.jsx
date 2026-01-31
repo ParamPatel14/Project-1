@@ -86,7 +86,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
   const expectations = ["Programming", "Math", "Writing"];
 
   const handleCheckboxChange = (field, value) => {
-    const current = formData[field] ? formData[field].split(",").map(s => s.trim()) : [];
+    const current = formData[field] ? formData[field].split(",").map(s => s.trim()).filter(s => s !== "") : [];
     let updated;
     if (current.includes(value)) {
       updated = current.filter(item => item !== value);

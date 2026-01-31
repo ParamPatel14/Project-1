@@ -163,6 +163,9 @@ class MentorProfileBase(BaseModel):
     bio: Optional[str] = None
     website_url: Optional[str] = None
     
+    mentor_type: Optional[str] = "academic_supervisor"
+    company: Optional[str] = None
+    
     # PhD Supervisor Fields
     accepting_phd_students: Optional[str] = None # Yes, No, Maybe
     funding_available: Optional[str] = None # Yes, Depends, No

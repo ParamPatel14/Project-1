@@ -151,6 +151,10 @@ class MentorProfile(Base):
     bio = Column(Text)
     website_url = Column(String)
     
+    # New Fields for Mentor Type
+    mentor_type = Column(String, default="academic_supervisor") # 'academic_supervisor', 'industry_mentor'
+    company = Column(String) # For Industry Mentor
+    
     # Reputation
     reputation_score = Column(Float, default=0.0)
     outcome_count = Column(Integer, default=0)
