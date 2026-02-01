@@ -259,3 +259,56 @@ async def extract_research_topics(abstracts: list[str]) -> list[str]:
     except Exception as e:
         logger.error(f"Error in extract_research_topics: {str(e)}")
         return []
+
+async def generate_research_gaps(mentor_name: str, mentor_domains: list[str], student_skills: list[str], mentor_abstracts: list[str]) -> list:
+    """
+    Identifies research gaps by combining mentor domains with student skills (method-domain gaps).
+    """
+    try:
+        model = get_model()
+        
+        # Context preparation
+        domains_str = ", ".join(mentor_domains)
+        skills_str = ", ".join(student_skills)
+        abstracts_context = "\n".join(mentor_abstracts[:5]) # Use top 5 recent abstracts for context
+        
+        prompt = f"""
+        You are a PhD Research Advisor. Your goal is to suggest 3 novel "Research Gaps" for a student applying to Professor {mentor_name}'s lab.
+        
+        Context:
+        - Mentor's Active Research Domains: {domains_str}
+        - Student's Key Skills (Methods/Tools): {skills_str}
+        - Mentor's Recent Work (Abstracts):
+        {abstracts_context}
+        
+        Task:
+        Identify 3 "Method-Domain" gaps where the student's skills (Methods) can be applied to the Mentor's Domains in a way that is:
+        1. Novel (Under-explored in the provided abstracts).
+        2. Feasible for the student.
+        3. Aligned with the mentor's general direction.
+        
+        Output a JSON ARRAY of objects with:
+        - "title": Catchy, academic title for the research direction.
+        - "description": Plain-English description of the gap.
+        - "type": "method_domain_gap".
+        - "why_gap": Why is this a gap? (e.g., "Common in Domain X but rarely using Method Y").
+        - "reason_student": Why it fits the student (skills).
+        - "reason_mentor": Why it fits the mentor (domain alignment).
+        - "feasibility_score": Integer (0-100).
+        - "confidence_score": Integer (0-100).
+        - "related_papers": List of 2-3 existing real or plausible paper titles that hint at this direction but don't fully solve it.
+        
+        Output ONLY the JSON ARRAY.
+        """
+        
+        response = model.generate_content(prompt)
+        text = response.text.strip()
+        if text.startswith("```json"):
+            text = text[7:]
+        if text.endswith("```"):
+            text = text[:-3]
+            
+        return json.loads(text)
+    except Exception as e:
+        logger.error(f"Error in generate_research_gaps: {str(e)}")
+        return []

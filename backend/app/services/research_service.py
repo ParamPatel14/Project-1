@@ -154,3 +154,53 @@ class ResearchService:
             }
             for t in trends
         ]
+
+    @staticmethod
+    async def generate_gaps_for_pair(db: Session, mentor_id: int, student_id: int) -> List[Dict[str, Any]]:
+        """
+        Generates research gaps for a specific student-mentor pair.
+        """
+        mentor = db.query(models.MentorProfile).filter(models.MentorProfile.id == mentor_id).first()
+        student = db.query(models.StudentProfile).filter(models.StudentProfile.id == student_id).first()
+        
+        if not mentor or not student:
+            raise ValueError("Mentor or Student not found")
+            
+        # 1. Gather Context
+        # Mentor's top domains (from trends)
+        top_trends = db.query(models.MentorTopicTrend).filter(
+            models.MentorTopicTrend.mentor_id == mentor_id
+        ).order_by(models.MentorTopicTrend.total_count.desc()).limit(5).all()
+        mentor_domains = [t.topic.name for t in top_trends]
+        if not mentor_domains and mentor.research_areas:
+             mentor_domains = [area.strip() for area in mentor.research_areas.split(',')]
+        
+        # Mentor's Abstracts
+        pubs = db.query(models.Publication).filter(models.Publication.mentor_profile_id == mentor_id).order_by(models.Publication.publication_date.desc()).limit(10).all()
+        mentor_abstracts = [f"Title: {p.title}\nAbstract: {p.description}" for p in pubs]
+        
+        # Student's Skills
+        student_skills = []
+        if student.primary_skills:
+            try:
+                # Try JSON
+                import json
+                student_skills = json.loads(student.primary_skills)
+            except:
+                # Fallback to CSV
+                student_skills = [s.strip() for s in student.primary_skills.split(',')]
+        
+        if not student_skills:
+            # Fallback to interests if no skills
+             if student.interests:
+                 student_skills = [s.strip() for s in student.interests.split(',')]
+        
+        # 2. Call AI Service
+        gaps = await ai_service.generate_research_gaps(
+            mentor_name=mentor.user.name,
+            mentor_domains=mentor_domains,
+            student_skills=student_skills,
+            mentor_abstracts=mentor_abstracts
+        )
+        
+        return gaps

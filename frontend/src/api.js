@@ -339,3 +339,8 @@ export const generateAICoverLetter = async (opportunityId) => {
   return response.data;
 };
 
+export const getResearchGaps = async (mentorId, studentId) => {
+  const response = await api.get(`/intelligence/mentors/${mentorId}/gaps?student_id=${studentId}`);
+  return response.data;
+};
+

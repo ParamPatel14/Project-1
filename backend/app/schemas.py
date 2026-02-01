@@ -175,6 +175,18 @@ class MentorTopicTrendResponse(MentorTopicTrendBase):
     class Config:
         from_attributes = True
 
+# --- Phase 4: Research Gap Schemas ---
+class ResearchGapResponse(BaseModel):
+    title: str
+    description: str
+    type: str # 'method_domain_gap', 'under_explored_topic', etc.
+    why_gap: str
+    reason_student: str # Why it fits student
+    reason_mentor: str # Why it fits mentor
+    feasibility_score: int # 0-100
+    confidence_score: int # 0-100
+    related_papers: List[str] = [] # List of titles/citations
+
 # --- Mentor Profile Schemas ---
 class MentorProfileBase(BaseModel):
     lab_name: Optional[str] = None

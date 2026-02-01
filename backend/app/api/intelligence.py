@@ -44,3 +44,27 @@ def get_analytics(
 ):
     # Publicly accessible (or at least for logged in users)
     return ResearchService.get_mentor_analytics(db, mentor_id)
+
+@router.get("/mentors/{mentor_id}/gaps")
+async def get_research_gaps(
+    mentor_id: int,
+    student_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Returns AI-generated research gaps for a student-mentor pair.
+    """
+    # Auth check: User must be the student or the mentor or admin
+    is_student = current_user.student_profile and current_user.student_profile.id == student_id
+    is_mentor = current_user.mentor_profile and current_user.mentor_profile.id == mentor_id
+    if not (is_student or is_mentor or current_user.role == "admin"):
+        raise HTTPException(status_code=403, detail="Not authorized to view these gaps")
+        
+    try:
+        gaps = await ResearchService.generate_gaps_for_pair(db, mentor_id, student_id)
+        return gaps
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

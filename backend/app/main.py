@@ -21,6 +21,7 @@ from app.api.tools import router as tools_router
 from app.api.resume import router as resume_router
 from app.api.ai import router as ai_router
 from app.api.matches import router as matches_router
+from app.api.intelligence import router as intelligence_router
 from app.core.config import settings
 import logging
 
