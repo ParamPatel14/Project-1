@@ -156,3 +156,28 @@ async def generate_cover_letter(resume_text: str, job_description: str) -> str:
         if "GEMINI_API_KEY is not set" in str(e):
              return "Please add GEMINI_API_KEY to your .env file to enable AI features."
         return "Error generating cover letter. Please try again later."
+
+async def get_embedding(text: str) -> list:
+    """
+    Generates a vector embedding for the given text using Gemini.
+    """
+    if not text:
+        return []
+    try:
+        if not settings.GEMINI_API_KEY:
+             # Return a dummy zero vector if no API key (for dev/testing without key)
+             # In production, this should raise an error or be handled
+             logger.warning("GEMINI_API_KEY not set. Returning dummy embedding.")
+             return [0.0] * 768 
+
+        # Use the embedding model
+        result = genai.embed_content(
+            model="models/text-embedding-004",
+            content=text,
+            task_type="retrieval_document",
+            title="Matching Embedding"
+        )
+        return result['embedding']
+    except Exception as e:
+        logger.error(f"Error in get_embedding: {str(e)}")
+        return [0.0] * 768 # Fallback
