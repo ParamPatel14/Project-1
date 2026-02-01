@@ -168,6 +168,26 @@ class MatchingEngine:
         if mentor.mentor_type == 'academic_supervisor' and student.is_phd_seeker:
             reasons.append("active PhD recruitment matches your goals")
             
+        # 4. Research Intelligence (Trend Analysis)
+        # Check if mentor has trend data (lazy loaded or eager loaded)
+        try:
+            if hasattr(mentor, 'topic_trends') and mentor.topic_trends:
+                # Find a "Rising" topic or the most active one in recent years
+                rising_trends = [t for t in mentor.topic_trends if t.trend_status == "Rising"]
+                if rising_trends:
+                    # Pick the one with highest count
+                    top_trend = max(rising_trends, key=lambda x: x.total_count)
+                    if top_trend.topic:
+                        reasons.append(f"this supervisor has actively published on {top_trend.topic.name} in the last 3 years")
+                elif mentor.topic_trends:
+                     # Fallback to most active overall if no rising trend
+                    top_trend = max(mentor.topic_trends, key=lambda x: x.total_count)
+                    if top_trend.topic:
+                        reasons.append(f"recent research focus includes {top_trend.topic.name}")
+        except Exception as e:
+            # Fallback if DB relation issue
+            pass
+
         if not reasons:
             return "Profile matched based on general domain availability."
             

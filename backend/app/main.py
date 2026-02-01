@@ -73,6 +73,7 @@ app.include_router(tools_router, prefix="/tools", tags=["Tools"])
 app.include_router(resume_router, prefix="/resume", tags=["Resume"])
 app.include_router(ai_router, prefix="/ai", tags=["AI Features"])
 app.include_router(matches_router, prefix="/matches", tags=["Matching Engine"])
+app.include_router(intelligence_router, prefix="/intelligence", tags=["Research Intelligence"])
 
 @app.get("/")
 def root():

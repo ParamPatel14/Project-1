@@ -181,3 +181,81 @@ async def get_embedding(text: str) -> list:
     except Exception as e:
         logger.error(f"Error in get_embedding: {str(e)}")
         return [0.0] * 768 # Fallback
+
+async def generate_simulated_publications(mentor_name: str, research_areas: str, bio: str) -> list:
+    """
+    Generates a list of simulated recent publications for a mentor based on their profile.
+    Used for the 'Ingestion' phase demo to populate the database with realistic data.
+    """
+    try:
+        model = get_model()
+        
+        prompt = f"""
+        You are a research database simulator. Generate 10-15 realistic academic publication records for a professor named {mentor_name}.
+        
+        Professor Profile:
+        - Research Areas: {research_areas}
+        - Bio: {bio}
+        
+        Constraints:
+        1. Years: 2019 to 2025 (inclusive).
+        2. Titles: Academic, technical, and plausible for their field.
+        3. Abstracts: 2-3 sentences summarizing the paper.
+        4. Citation Count: Random integer between 0 and 150 (skewed lower for recent papers).
+        5. Trends: Show a progression or evolution in topics over the years if possible.
+        
+        Output a JSON ARRAY of objects with:
+        - "title": str
+        - "abstract": str
+        - "year": int
+        - "citation_count": int
+        - "journal": str (e.g., "NeurIPS 2023", "Nature Medicine", "IEEE Transactions")
+        
+        Output ONLY the JSON ARRAY.
+        """
+        
+        response = model.generate_content(prompt)
+        text = response.text.strip()
+        if text.startswith("```json"):
+            text = text[7:]
+        if text.endswith("```"):
+            text = text[:-3]
+            
+        return json.loads(text)
+    except Exception as e:
+        logger.error(f"Error in generate_simulated_publications: {str(e)}")
+        return []
+
+async def extract_research_topics(abstracts: list[str]) -> list[str]:
+    """
+    Extracts high-level research topics from a list of abstracts.
+    """
+    try:
+        model = get_model()
+        
+        # Limit input size to avoid token limits, take first 50 abstracts or just concat first 2000 chars
+        combined_text = "\n\n".join(abstracts[:20]) 
+        
+        prompt = f"""
+        Analyze the following research abstracts and identify the top 5-7 distinct research topics/themes.
+        
+        Abstracts:
+        {combined_text[:10000]}
+        
+        Output a JSON ARRAY of strings, e.g., ["Graph Neural Networks", "Clinical Decision Support", "Explainable AI"].
+        Keep topics specific but broad enough to categorize multiple papers.
+        
+        Output ONLY the JSON ARRAY.
+        """
+        
+        response = model.generate_content(prompt)
+        text = response.text.strip()
+        if text.startswith("```json"):
+            text = text[7:]
+        if text.endswith("```"):
+            text = text[:-3]
+            
+        return json.loads(text)
+    except Exception as e:
+        logger.error(f"Error in extract_research_topics: {str(e)}")
+        return []
