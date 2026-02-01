@@ -119,6 +119,10 @@ const MentorProfileForm = ({ user, onUpdate }) => {
         publications: publications
       };
       
+      // Sanitize integer fields to avoid 422 errors (empty string -> null)
+      if (payload.lab_size === "") payload.lab_size = null;
+      if (payload.max_student_requests === "") payload.max_student_requests = 5; // Default to 5
+      
       delete payload.other_background;
       delete payload.other_expectation;
 
