@@ -13,6 +13,12 @@ class Settings(BaseSettings):
     GITHUB_CLIENT_ID: str
     GITHUB_CLIENT_SECRET: str
     GEMINI_API_KEY: str = ""
+    
+    # Twilio Configuration
+    TWILIO_ACCOUNT_SID: str = ""
+    TWILIO_AUTH_TOKEN: str = ""
+    TWILIO_WHATSAPP_NUMBER: str = "" # e.g. "whatsapp:+14155238886"
+    TWILIO_CONTACT_NUMBER: str = "+1234567890" # Number for students to contact
 
     class Config:
         env_file = ".env"

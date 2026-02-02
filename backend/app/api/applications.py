@@ -8,6 +8,8 @@ from app.db.models import Application, Opportunity, User, Message
 from app.schemas import ApplicationCreate, ApplicationResponse, ApplicationUpdate
 from app.deps import get_current_user
 from app.services.matching import calculate_match_score
+from app.services.twilio_service import send_whatsapp_message
+from app.core.config import settings
 
 router = APIRouter()
 
@@ -112,6 +114,27 @@ def update_application_status(
             timestamp=datetime.utcnow()
         )
         db.add(new_message)
+
+        # Send WhatsApp Notification
+        # Use the specific test number as requested
+        student_phone = "+918105350692"
+        
+        # In production, we would use:
+        # if application.student and application.student.student_profile and application.student.student_profile.phone_number:
+        #     student_phone = application.student.student_profile.phone_number
+
+        if student_phone:
+            student_name = application.student.name
+            opp_title = application.opportunity.title
+            contact_number = settings.TWILIO_CONTACT_NUMBER
+            
+            whatsapp_body = (
+                f"Hello {student_name}, congratulations! "
+                f"You have been selected for the role '{opp_title}'. "
+                f"Please contact {contact_number} for further information."
+            )
+            
+            send_whatsapp_message(student_phone, whatsapp_body)
         
     db.commit()
     db.refresh(application)

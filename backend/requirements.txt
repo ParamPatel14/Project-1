@@ -13,3 +13,4 @@ python-dotenv
 requests
 psycopg2-binary
 google-generativeai
+twilio
