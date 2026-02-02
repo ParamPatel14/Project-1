@@ -197,6 +197,19 @@ const StudentApplications = () => {
                     </div>
                  </div>
               )}
+
+              {/* Curriculum Section (Only if Accepted) */}
+              {selectedApp.status === 'accepted' && selectedApp.opportunity && selectedApp.opportunity.curriculum && (
+                 <div>
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                        <FiBriefcase className="text-indigo-500" />
+                        Course Curriculum
+                    </h4>
+                    <div className="bg-green-50 p-6 rounded-xl border border-green-100 text-gray-700 leading-relaxed whitespace-pre-wrap">
+                        {selectedApp.opportunity.curriculum}
+                    </div>
+                 </div>
+              )}
             </div>
             
             {/* Modal Footer */}

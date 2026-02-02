@@ -17,7 +17,8 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
     grant_agency: '',
     is_open: true,
     deadline: '',
-    total_slots: 1
+    total_slots: 1,
+    curriculum: ''
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -94,7 +95,8 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
         grant_agency: '',
         is_open: true,
         deadline: '',
-        total_slots: 1
+        total_slots: 1,
+        curriculum: ''
       });
       setSelectedSkills([]);
       
@@ -369,6 +371,18 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                         onChange={handleChange}
                         rows="3"
                         placeholder="Specific prerequisites, eligibility criteria, etc."
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50 hover:bg-white"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Curriculum / Learning Plan</label>
+                    <textarea
+                        name="curriculum"
+                        value={formData.curriculum}
+                        onChange={handleChange}
+                        rows="3"
+                        placeholder="Outline the learning modules, weekly plan, or syllabus..."
                         className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50 hover:bg-white"
                     />
                 </div>

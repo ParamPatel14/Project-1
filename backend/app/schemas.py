@@ -269,6 +269,7 @@ class OpportunityBase(BaseModel):
     is_open: Optional[bool] = True
     deadline: Optional[datetime] = None
     total_slots: Optional[int] = 1
+    curriculum: Optional[str] = None
     # Phase 7: Grants
     funding_amount: Optional[float] = None
     currency: Optional[str] = "USD"

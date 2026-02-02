@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 import json
+from datetime import datetime
 from app.db.database import get_db
-from app.db.models import Application, Opportunity, User
+from app.db.models import Application, Opportunity, User, Message
 from app.schemas import ApplicationCreate, ApplicationResponse, ApplicationUpdate
 from app.deps import get_current_user
 from app.services.matching import calculate_match_score
@@ -95,7 +96,20 @@ def update_application_status(
     if application.opportunity.mentor_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized to update this application")
     
+    old_status = application.status
     application.status = status_update.status
+    
+    # Send notification if accepted
+    if status_update.status == "accepted" and old_status != "accepted":
+        message_content = f"Congratulations! Your application for '{application.opportunity.title}' has been accepted."
+        new_message = Message(
+            sender_id=current_user.id,
+            receiver_id=application.student_id,
+            content=message_content,
+            timestamp=datetime.utcnow()
+        )
+        db.add(new_message)
+        
     db.commit()
     db.refresh(application)
     return application

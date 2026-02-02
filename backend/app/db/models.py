@@ -229,6 +229,7 @@ class Opportunity(Base):
     is_open = Column(Boolean, default=True)
     deadline = Column(DateTime, nullable=True)
     total_slots = Column(Integer, default=1)
+    curriculum = Column(Text, nullable=True)
 
     # Relationships
     mentor = relationship("User", back_populates="opportunities")
