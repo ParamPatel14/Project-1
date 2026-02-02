@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getMentorApplications, updateApplicationStatus, getMentorImprovementPlans } from '../api';
 import { FaTimes } from 'react-icons/fa';
-import { FiUser, FiMail, FiMapPin, FiLinkedin, FiGithub, FiGlobe } from 'react-icons/fi';
+import { FiUser, FiMail, FiMapPin, FiLinkedin, FiGithub, FiGlobe, FiFileText } from 'react-icons/fi';
 
 const MentorApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -10,9 +10,8 @@ const MentorApplications = () => {
   const [view, setView] = useState('applications'); // 'applications' or 'plans'
   const [statusUpdating, setStatusUpdating] = useState(null);
   
-  // Profile Modal State
-  const [showProfileModal, setShowProfileModal] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedApplication, setSelectedApplication] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -31,9 +30,9 @@ const MentorApplications = () => {
     }
   };
   
-  const handleViewProfile = (student) => {
-    setSelectedStudent(student);
-    setShowProfileModal(true);
+  const handleViewApplication = (app) => {
+    setSelectedApplication(app);
+    setShowDetailsModal(true);
   };
 
   const handleStatusChange = async (appId, newStatus) => {
@@ -71,7 +70,7 @@ const MentorApplications = () => {
   if (loading) return <div>Loading applications...</div>;
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md max-w-5xl mx-auto mt-8">
+    <div className="bg-white p-6 rounded-xl shadow-md max-w-6xl mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Manage Applications</h2>
 
       {/* Basic Tab Switcher */}
@@ -158,10 +157,10 @@ const MentorApplications = () => {
                                 {app.student?.name || `Student ID: ${app.student_id}`}
                             </p>
                             <button 
-                                onClick={() => handleViewProfile(app.student)}
+                                onClick={() => handleViewApplication(app)}
                                 className="text-indigo-600 hover:text-indigo-900 text-xs font-medium"
                             >
-                                View Profile
+                                View Application
                             </button>
                         </div>
                     </div>
@@ -174,9 +173,18 @@ const MentorApplications = () => {
                     </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap truncate max-w-xs" title={app.cover_letter}>
-                      {app.cover_letter}
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <p className="text-gray-900 whitespace-nowrap truncate max-w-[220px]" title={app.cover_letter}>
+                        {app.cover_letter}
+                      </p>
+                      <button
+                        onClick={() => handleViewApplication(app)}
+                        className="text-gray-700 hover:text-gray-900 text-xs font-semibold inline-flex items-center gap-1"
+                        title="View Cover Letter"
+                      >
+                        <FiFileText className="inline-block" /> View
+                      </button>
+                    </div>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">
@@ -197,32 +205,26 @@ const MentorApplications = () => {
                         <span className="text-gray-500">Updating...</span>
                       ) : (
                         <>
-                          {app.status === 'pending' && (
-                            <>
-                              <button
-                                onClick={() => handleStatusChange(app.id, 'reviewing')}
-                                className="text-yellow-600 hover:text-yellow-900 text-xs font-bold border border-yellow-200 px-2 py-1 rounded bg-yellow-50"
-                              >
-                                Review
-                              </button>
-                            </>
-                          )}
-                          {app.status === 'reviewing' && (
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => handleStatusChange(app.id, 'accepted')}
-                                className="text-green-600 hover:text-green-900 text-xs font-bold border border-green-200 px-2 py-1 rounded bg-green-50"
-                              >
-                                Pass (Accept)
-                              </button>
-                              <button
-                                onClick={() => handleStatusChange(app.id, 'rejected')}
-                                className="text-red-600 hover:text-red-900 text-xs font-bold border border-red-200 px-2 py-1 rounded bg-red-50"
-                              >
-                                Fail (Reject)
-                              </button>
-                            </div>
-                          )}
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleStatusChange(app.id, 'reviewing')}
+                              className="text-yellow-600 hover:text-yellow-900 text-xs font-bold border border-yellow-200 px-2 py-1 rounded bg-yellow-50"
+                            >
+                              Review
+                            </button>
+                            <button
+                              onClick={() => handleStatusChange(app.id, 'accepted')}
+                              className="text-green-600 hover:text-green-900 text-xs font-bold border border-green-200 px-2 py-1 rounded bg-green-50"
+                            >
+                              Accept
+                            </button>
+                            <button
+                              onClick={() => handleStatusChange(app.id, 'rejected')}
+                              className="text-red-600 hover:text-red-900 text-xs font-bold border border-red-200 px-2 py-1 rounded bg-red-50"
+                            >
+                              Reject
+                            </button>
+                          </div>
                           {(app.status === 'accepted' || app.status === 'rejected') && (
                               <span className="text-xs text-gray-400">Decision made</span>
                           )}
@@ -239,124 +241,183 @@ const MentorApplications = () => {
       </>
       )}
 
-      {/* Profile Modal */}
-      {showProfileModal && selectedStudent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                <div className="p-6">
-                    <div className="flex justify-between items-center mb-6 border-b pb-4">
-                        <h3 className="text-2xl font-bold text-gray-800">Student Profile</h3>
-                        <button onClick={() => setShowProfileModal(false)} className="text-gray-400 hover:text-gray-600">
-                            <FaTimes size={24} />
-                        </button>
+      {showDetailsModal && selectedApplication && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6 border-b pb-4">
+                <h3 className="text-2xl font-bold text-gray-800">Application Details</h3>
+                <button onClick={() => setShowDetailsModal(false)} className="text-gray-400 hover:text-gray-600">
+                  <FaTimes size={24} />
+                </button>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1">
+                  <div className="flex flex-col items-center">
+                    <div className="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-4xl font-bold mb-4">
+                      {selectedApplication.student?.name ? selectedApplication.student.name.charAt(0).toUpperCase() : 'S'}
                     </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-6">
-                        <div className="md:w-1/3 flex flex-col items-center">
-                            <div className="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-4xl font-bold mb-4">
-                                {selectedStudent.name ? selectedStudent.name.charAt(0).toUpperCase() : 'S'}
+                    <h4 className="text-xl font-bold text-center">{selectedApplication.student?.name}</h4>
+                    <p className="text-gray-500 text-sm text-center mb-1">{selectedApplication.student?.email}</p>
+                    {selectedApplication.student?.student_profile && (
+                      <>
+                        {(selectedApplication.student.student_profile.city || selectedApplication.student.student_profile.country) && (
+                          <div className="flex items-center justify-center gap-1 text-sm text-gray-500 mb-4">
+                            <FiMapPin size={14} />
+                            <span>
+                              {[selectedApplication.student.student_profile.city, selectedApplication.student.student_profile.country].filter(Boolean).join(', ')}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex gap-4 mb-6 justify-center">
+                          {selectedApplication.student.student_profile.github_url && (
+                            <a href={selectedApplication.student.student_profile.github_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black transition-colors" title="GitHub">
+                              <FiGithub size={20} />
+                            </a>
+                          )}
+                          {selectedApplication.student.student_profile.linkedin_url && (
+                            <a href={selectedApplication.student.student_profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors" title="LinkedIn">
+                              <FiLinkedin size={20} />
+                            </a>
+                          )}
+                          {selectedApplication.student.student_profile.website_url && (
+                            <a href={selectedApplication.student.student_profile.website_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-indigo-600 transition-colors" title="Portfolio">
+                              <FiGlobe size={20} />
+                            </a>
+                          )}
+                        </div>
+                        <div className="w-full space-y-2 text-sm text-gray-600">
+                          {selectedApplication.student.student_profile.university && (
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">Uni:</span> {selectedApplication.student.student_profile.university}
                             </div>
-                            <h4 className="text-xl font-bold text-center">{selectedStudent.name}</h4>
-                            <p className="text-gray-500 text-sm text-center mb-1">{selectedStudent.email}</p>
-                            
-                            {selectedStudent.student_profile && (
-                                <>
-                                    {(selectedStudent.student_profile.city || selectedStudent.student_profile.country) && (
-                                        <div className="flex items-center justify-center gap-1 text-sm text-gray-500 mb-4">
-                                            <FiMapPin size={14} />
-                                            <span>
-                                                {[selectedStudent.student_profile.city, selectedStudent.student_profile.country].filter(Boolean).join(', ')}
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    <div className="flex gap-4 mb-6 justify-center">
-                                        {selectedStudent.student_profile.github_url && (
-                                            <a href={selectedStudent.student_profile.github_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black transition-colors" title="GitHub">
-                                                <FiGithub size={20} />
-                                            </a>
-                                        )}
-                                        {selectedStudent.student_profile.linkedin_url && (
-                                            <a href={selectedStudent.student_profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors" title="LinkedIn">
-                                                <FiLinkedin size={20} />
-                                            </a>
-                                        )}
-                                        {selectedStudent.student_profile.website_url && (
-                                            <a href={selectedStudent.student_profile.website_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-indigo-600 transition-colors" title="Portfolio">
-                                                <FiGlobe size={20} />
-                                            </a>
-                                        )}
-                                    </div>
-                                    
-                                    <div className="w-full space-y-2 text-sm text-gray-600">
-                                        {selectedStudent.student_profile.university && (
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-semibold">Uni:</span> {selectedStudent.student_profile.university}
-                                            </div>
-                                        )}
-                                    {selectedStudent.student_profile.major && (
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-semibold">Major:</span> {selectedStudent.student_profile.major}
-                                        </div>
-                                    )}
-                                    {selectedStudent.student_profile.gpa && (
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-semibold">GPA:</span> {selectedStudent.student_profile.gpa}
-                                        </div>
-                                    )}
-                                </div>
-                                </>
-                            )}
+                          )}
+                          {selectedApplication.student.student_profile.major && (
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">Major:</span> {selectedApplication.student.student_profile.major}
+                            </div>
+                          )}
+                          {selectedApplication.student.student_profile.gpa && (
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">GPA:</span> {selectedApplication.student.student_profile.gpa}
+                            </div>
+                          )}
                         </div>
-                        
-                        <div className="md:w-2/3 space-y-6">
-                            {selectedStudent.student_profile ? (
-                                <>
-                                    {selectedStudent.student_profile.bio && (
-                                        <div>
-                                            <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Bio</h5>
-                                            <p className="text-gray-600 text-sm leading-relaxed">{selectedStudent.student_profile.bio}</p>
-                                        </div>
-                                    )}
-                                    
-                                    {selectedStudent.student_profile.primary_skills && (
-                                        <div>
-                                            <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Skills</h5>
-                                            <div className="flex flex-wrap gap-2">
-                                                {selectedStudent.student_profile.primary_skills.split(',').map((skill, i) => (
-                                                    <span key={i} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-semibold">
-                                                        {skill.trim()}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {selectedStudent.student_profile.research_interests && (
-                                        <div>
-                                            <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Research Interests</h5>
-                                            <p className="text-gray-600 text-sm">{selectedStudent.student_profile.research_interests}</p>
-                                        </div>
-                                    )}
-                                </>
-                            ) : (
-                                <div className="text-center py-8 text-gray-500 italic">
-                                    No detailed profile information available.
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    
-                    <div className="mt-8 flex justify-end">
-                        <button 
-                            onClick={() => setShowProfileModal(false)}
-                            className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors"
-                        >
-                            Close
-                        </button>
-                    </div>
+                      </>
+                    )}
+                  </div>
                 </div>
+                <div className="lg:col-span-2 space-y-8">
+                  {selectedApplication.student?.student_profile ? (
+                    <>
+                      {selectedApplication.student.student_profile.bio && (
+                        <div>
+                          <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Bio</h5>
+                          <p className="text-gray-600 text-sm leading-relaxed">{selectedApplication.student.student_profile.bio}</p>
+                        </div>
+                      )}
+                      {selectedApplication.student.student_profile.primary_skills && (
+                        <div>
+                          <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Skills</h5>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedApplication.student.student_profile.primary_skills.split(',').map((skill, i) => (
+                              <span key={i} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-semibold">
+                                {skill.trim()}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {selectedApplication.student.student_profile.educations && selectedApplication.student.student_profile.educations.length > 0 && (
+                        <div>
+                          <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Education</h5>
+                          <div className="space-y-2">
+                            {selectedApplication.student.student_profile.educations.map((edu) => (
+                              <div key={edu.id} className="text-sm text-gray-700">
+                                <div className="font-semibold">{edu.institution}</div>
+                                <div className="text-gray-600">{edu.degree} {edu.start_year && edu.end_year ? `(${edu.start_year} - ${edu.end_year})` : ''}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {selectedApplication.student.student_profile.projects && selectedApplication.student.student_profile.projects.length > 0 && (
+                        <div>
+                          <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Projects</h5>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {selectedApplication.student.student_profile.projects.map((proj) => (
+                              <div key={proj.id} className="p-4 border rounded-lg">
+                                <div className="font-semibold text-gray-800">{proj.title}</div>
+                                {proj.tech_stack && <div className="text-xs text-indigo-600 mt-1">{proj.tech_stack}</div>}
+                                {proj.description && <div className="text-sm text-gray-700 mt-2">{proj.description}</div>}
+                                {proj.url && (
+                                  <a href={proj.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-indigo-600 text-xs font-semibold">
+                                    View Project
+                                  </a>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {selectedApplication.student.student_profile.publications && selectedApplication.student.student_profile.publications.length > 0 && (
+                        <div>
+                          <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Publications</h5>
+                          <div className="space-y-2">
+                            {selectedApplication.student.student_profile.publications.map((pub) => (
+                              <div key={pub.id} className="text-sm text-gray-700">
+                                <div className="font-semibold">{pub.title}</div>
+                                {pub.journal_conference && <div className="text-gray-600">{pub.journal_conference}</div>}
+                                {pub.url && (
+                                  <a href={pub.url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 text-xs font-semibold">
+                                    Link
+                                  </a>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="text-center py-8 text-gray-500 italic">
+                      No detailed profile information available.
+                    </div>
+                  )}
+                  <div>
+                    <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Cover Letter</h5>
+                    {selectedApplication.cover_letter ? (
+                      <div className="p-4 bg-gray-50 rounded-lg text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                        {selectedApplication.cover_letter}
+                      </div>
+                    ) : (
+                      <div className="text-sm text-gray-500">No cover letter submitted.</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-8 flex flex-wrap gap-3 justify-end">
+                <button
+                  onClick={() => handleStatusChange(selectedApplication.id, 'reviewing')}
+                  className="px-4 py-2 rounded-lg border border-yellow-200 bg-yellow-50 text-yellow-700 font-semibold"
+                >
+                  Mark Reviewing
+                </button>
+                <button
+                  onClick={() => handleStatusChange(selectedApplication.id, 'accepted')}
+                  className="px-4 py-2 rounded-lg border border-green-200 bg-green-50 text-green-700 font-semibold"
+                >
+                  Accept
+                </button>
+                <button
+                  onClick={() => handleStatusChange(selectedApplication.id, 'rejected')}
+                  className="px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-red-700 font-semibold"
+                >
+                  Reject
+                </button>
+              </div>
             </div>
+          </div>
         </div>
       )}
     </div>
