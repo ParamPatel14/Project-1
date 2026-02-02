@@ -257,7 +257,7 @@ const Dashboard = () => {
             
             {activeTab === 'lab' && <ResearchLab />}
 
-            {activeTab === 'tools' && <LanguageTool />}
+
           </>
         )}
 

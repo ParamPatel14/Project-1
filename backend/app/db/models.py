@@ -428,3 +428,25 @@ class ProjectFile(Base):
     
     project = relationship("PublicationProject")
     uploader = relationship("User")
+
+class SavedResearchGap(Base):
+    __tablename__ = "saved_research_gaps"
+
+    id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey("users.id"))
+    mentor_id = Column(Integer, ForeignKey("mentor_profiles.id"))
+    
+    title = Column(String)
+    description = Column(Text)
+    type = Column(String)
+    why_gap = Column(Text)
+    reason_student = Column(Text)
+    reason_mentor = Column(Text)
+    feasibility_score = Column(Integer)
+    confidence_score = Column(Integer)
+    related_papers = Column(Text) # JSON string or comma-separated
+    
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    student = relationship("User", foreign_keys=[student_id])
+    mentor = relationship("MentorProfile", foreign_keys=[mentor_id])

@@ -9,7 +9,7 @@ import RoleSelection from "./pages/RoleSelection";
 import ImprovementPlanBoard from "./components/ImprovementPlanBoard";
 import CertificateVerification from "./components/CertificateVerification";
 import AnalyticsDashboard from "./components/AnalyticsDashboard";
-import LanguageTool from "./components/LanguageTool";
+
 import OpportunityDetail from "./components/OpportunityDetail";
 
 const ProtectedRoute = ({ children }) => {
