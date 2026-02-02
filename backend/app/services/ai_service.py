@@ -312,3 +312,89 @@ async def generate_research_gaps(mentor_name: str, mentor_domains: list[str], st
     except Exception as e:
         logger.error(f"Error in generate_research_gaps: {str(e)}")
         return []
+
+async def generate_proposal_guidance(student_profile: dict, mentor_profile: dict, research_gap: dict) -> dict:
+    """
+    Generates structured proposal guidance, supervisor talking points, and a readiness check.
+    """
+    try:
+        model = get_model()
+
+        student_context = f"""
+        Skills: {', '.join(student_profile.get('skills', []))}
+        Degree: {student_profile.get('degree', 'N/A')}
+        Major: {student_profile.get('major', 'N/A')}
+        Bio: {student_profile.get('bio', 'N/A')}
+        """
+
+        mentor_context = f"""
+        Name: {mentor_profile.get('name', 'N/A')}
+        Research Areas: {mentor_profile.get('research_areas', 'N/A')}
+        """
+
+        gap_context = f"""
+        Gap Title: {research_gap.get('title', 'N/A')}
+        Gap Description: {research_gap.get('description', 'N/A')}
+        """
+
+        prompt = f"""
+        You are a PhD Application Strategist. Help a student prepare a research proposal direction for a specific mentor.
+
+        Student Profile:
+        {student_context}
+
+        Mentor Profile:
+        {mentor_context}
+
+        Target Research Gap:
+        {gap_context}
+
+        Task:
+        Break the application into small, clear, honest steps. No automation pretending to "guarantee admission".
+
+        Generate a JSON object with the following keys:
+        1. "proposal_direction": A structured object containing:
+           - "problem_statement": Derived from the research gap.
+           - "why_it_matters": Societal/Academic relevance.
+           - "missing_current_research": What is missing.
+           - "methodology": High-level approach (no equations).
+           - "expected_contribution": Expected outcome.
+        
+        2. "talking_points": An array of strings.
+           - Respectful, realistic, non-pushy points to discuss with the supervisor.
+           - Example: "Mention interest in clinical decision systems", "Highlight lack of explainability", "Propose initial exploration".
+
+        3. "readiness_check": A structured object containing:
+           - "score": Integer (0-100).
+           - "breakdown": Object with keys "skill_alignment", "background_match", "gap_complexity", "data_feasibility" (Values: "Low", "Medium", "High").
+           - "suggestions": List of specific actions to improve readiness (e.g., "Improve statistics basics", "Read 5 more papers").
+
+        Output ONLY the JSON object.
+        """
+
+        response = model.generate_content(prompt)
+        text = response.text.strip()
+        if text.startswith("```json"):
+            text = text[7:]
+        if text.endswith("```"):
+            text = text[:-3]
+
+        return json.loads(text)
+
+    except Exception as e:
+        logger.error(f"Error in generate_proposal_guidance: {str(e)}")
+        return {
+            "proposal_direction": {
+                "problem_statement": "Error generating guidance.",
+                "why_it_matters": "",
+                "missing_current_research": "",
+                "methodology": "",
+                "expected_contribution": ""
+            },
+            "talking_points": ["Error generating talking points."],
+            "readiness_check": {
+                "score": 0,
+                "breakdown": {},
+                "suggestions": ["Please try again later."]
+            }
+        }

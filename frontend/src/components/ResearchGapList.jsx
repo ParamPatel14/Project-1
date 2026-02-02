@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getResearchGaps } from "../api";
-import { FaLightbulb } from "react-icons/fa";
+import { FaLightbulb, FaRobot } from "react-icons/fa";
+import ProposalGuidance from "./ProposalGuidance";
 import { 
   FiBookOpen, 
   FiTrendingUp, 
@@ -19,6 +20,7 @@ const ResearchGapList = ({ mentorId, studentId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [savedGaps, setSavedGaps] = useState(new Set());
+  const [selectedGap, setSelectedGap] = useState(null);
 
   useEffect(() => {
     const fetchGaps = async () => {
@@ -251,10 +253,16 @@ const ResearchGapList = ({ mentorId, studentId }) => {
                       {savedGaps.has(index) ? 'Saved' : 'Save'}
                    </button>
                    <button 
-                    onClick={() => handleExplore(gap.title)}
-                    className="flex-1 sm:flex-none items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg flex"
+                    onClick={() => setSelectedGap(gap)}
+                    className="flex-1 sm:flex-none items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg text-sm font-medium hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg flex"
                    >
-                      <FiSearch /> Explore <FiArrowRight className="hidden sm:inline" />
+                      <FaRobot /> Plan Proposal
+                   </button>
+                   <button 
+                    onClick={() => handleExplore(gap.title)}
+                    className="flex-1 sm:flex-none items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-800 transition-all shadow-sm flex"
+                   >
+                      <FiSearch /> Explore
                    </button>
                 </div>
               </div>
@@ -262,6 +270,14 @@ const ResearchGapList = ({ mentorId, studentId }) => {
           </div>
         ))}
       </div>
+      
+      {selectedGap && (
+        <ProposalGuidance 
+            mentorId={mentorId} 
+            gap={selectedGap} 
+            onClose={() => setSelectedGap(null)} 
+        />
+      )}
     </div>
   );
 };

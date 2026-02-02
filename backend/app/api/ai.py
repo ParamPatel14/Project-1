@@ -20,6 +20,16 @@ class MatchAnalysisResponse(BaseModel):
 class CoverLetterResponse(BaseModel):
     cover_letter: str
 
+class ProposalGuidanceRequest(BaseModel):
+    mentor_id: int
+    gap_title: str
+    gap_description: str
+
+class ProposalGuidanceResponse(BaseModel):
+    proposal_direction: dict
+    talking_points: List[str]
+    readiness_check: dict
+
 def format_student_profile(profile: models.StudentProfile) -> str:
     """Helper to convert structured profile data into a text resume format."""
     if not profile:
@@ -135,3 +145,52 @@ async def generate_cover_letter(
     cover_letter = await ai_service.generate_cover_letter(resume_text, job_desc)
     
     return {"cover_letter": cover_letter}
+
+@router.post("/proposal-guidance", response_model=ProposalGuidanceResponse)
+async def get_proposal_guidance(
+    request: ProposalGuidanceRequest,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    """
+    Generates structured proposal guidance, supervisor talking points, and a readiness check.
+    """
+    if current_user.role != "student":
+         raise HTTPException(status_code=403, detail="Only students can request proposal guidance")
+
+    # Fetch Student Profile
+    student = db.query(models.StudentProfile).filter(models.StudentProfile.user_id == current_user.id).first()
+    if not student:
+        raise HTTPException(status_code=404, detail="Student profile not found")
+
+    # Fetch Mentor Profile
+    mentor = db.query(models.MentorProfile).filter(models.MentorProfile.id == request.mentor_id).first()
+    if not mentor:
+        raise HTTPException(status_code=404, detail="Mentor not found")
+
+    # Prepare data for AI Service
+    student_skills = []
+    if student.primary_skills:
+        student_skills.extend([s.strip() for s in student.primary_skills.split(',')])
+    if student.tools_libraries:
+        student_skills.extend([s.strip() for s in student.tools_libraries.split(',')])
+
+    student_data = {
+        "skills": student_skills,
+        "degree": student.degree,
+        "major": student.major,
+        "bio": student.bio
+    }
+    
+    mentor_data = {
+        "name": mentor.user.name,
+        "research_areas": mentor.research_areas
+    }
+
+    gap_data = {
+        "title": request.gap_title,
+        "description": request.gap_description
+    }
+
+    result = await ai_service.generate_proposal_guidance(student_data, mentor_data, gap_data)
+    return result
