@@ -257,15 +257,43 @@ const MentorApplications = () => {
                                 {selectedStudent.name ? selectedStudent.name.charAt(0).toUpperCase() : 'S'}
                             </div>
                             <h4 className="text-xl font-bold text-center">{selectedStudent.name}</h4>
-                            <p className="text-gray-500 text-sm text-center mb-4">{selectedStudent.email}</p>
+                            <p className="text-gray-500 text-sm text-center mb-1">{selectedStudent.email}</p>
                             
                             {selectedStudent.student_profile && (
-                                <div className="w-full space-y-2 text-sm text-gray-600">
-                                    {selectedStudent.student_profile.university && (
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-semibold">Uni:</span> {selectedStudent.student_profile.university}
+                                <>
+                                    {(selectedStudent.student_profile.city || selectedStudent.student_profile.country) && (
+                                        <div className="flex items-center justify-center gap-1 text-sm text-gray-500 mb-4">
+                                            <FiMapPin size={14} />
+                                            <span>
+                                                {[selectedStudent.student_profile.city, selectedStudent.student_profile.country].filter(Boolean).join(', ')}
+                                            </span>
                                         </div>
                                     )}
+
+                                    <div className="flex gap-4 mb-6 justify-center">
+                                        {selectedStudent.student_profile.github_url && (
+                                            <a href={selectedStudent.student_profile.github_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black transition-colors" title="GitHub">
+                                                <FiGithub size={20} />
+                                            </a>
+                                        )}
+                                        {selectedStudent.student_profile.linkedin_url && (
+                                            <a href={selectedStudent.student_profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors" title="LinkedIn">
+                                                <FiLinkedin size={20} />
+                                            </a>
+                                        )}
+                                        {selectedStudent.student_profile.website_url && (
+                                            <a href={selectedStudent.student_profile.website_url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-indigo-600 transition-colors" title="Portfolio">
+                                                <FiGlobe size={20} />
+                                            </a>
+                                        )}
+                                    </div>
+                                    
+                                    <div className="w-full space-y-2 text-sm text-gray-600">
+                                        {selectedStudent.student_profile.university && (
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold">Uni:</span> {selectedStudent.student_profile.university}
+                                            </div>
+                                        )}
                                     {selectedStudent.student_profile.major && (
                                         <div className="flex items-center gap-2">
                                             <span className="font-semibold">Major:</span> {selectedStudent.student_profile.major}
@@ -277,6 +305,7 @@ const MentorApplications = () => {
                                         </div>
                                     )}
                                 </div>
+                                </>
                             )}
                         </div>
                         
