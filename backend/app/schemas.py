@@ -342,7 +342,11 @@ class IndustrialVisitBase(BaseModel):
     location: str
     visit_date: datetime
     description: Optional[str] = None
-    max_students: Optional[int] = 50
+    capacity: Optional[int] = 50
+    company_name: Optional[str] = None
+    industry_type: Optional[str] = None
+    requirements: Optional[str] = None
+    image_url: Optional[str] = None
 
 class IndustrialVisitCreate(IndustrialVisitBase):
     pass
@@ -351,6 +355,7 @@ class IndustrialVisitResponse(IndustrialVisitBase):
     id: int
     organizer_id: int
     created_at: datetime
+    status: str
     organizer: Optional[UserResponse] = None
     
     class Config:
@@ -360,7 +365,10 @@ class IndustrialVisitApplicationBase(BaseModel):
     statement_of_purpose: Optional[str] = None
 
 class IndustrialVisitApplicationCreate(IndustrialVisitApplicationBase):
-    visit_id: int
+    pass
+
+class IndustrialVisitApplicationUpdate(BaseModel):
+    status: str
 
 class IndustrialVisitApplicationResponse(IndustrialVisitApplicationBase):
     id: int
@@ -376,12 +384,17 @@ class IndustrialVisitApplicationResponse(IndustrialVisitApplicationBase):
 
 class BeehiveEventBase(BaseModel):
     title: str
-    topic: str
+    topic: Optional[str] = None
     event_date: datetime
     total_seats: Optional[int] = 30
-    entry_fee: Optional[float] = 1500.0
+    entry_fee: Optional[float] = 0.0
     description: Optional[str] = None
     is_active: Optional[bool] = True
+    type: Optional[str] = "workshop"
+    organizer_name: Optional[str] = None
+    location: Optional[str] = None
+    registration_link: Optional[str] = None
+    image_url: Optional[str] = None
 
 class BeehiveEventCreate(BeehiveEventBase):
     pass
@@ -399,7 +412,7 @@ class BeehiveEnrollmentBase(BaseModel):
     pass
 
 class BeehiveEnrollmentCreate(BeehiveEnrollmentBase):
-    event_id: int
+    pass
 
 class BeehiveEnrollmentResponse(BeehiveEnrollmentBase):
     id: int

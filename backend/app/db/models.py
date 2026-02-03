@@ -28,6 +28,13 @@ class User(Base):
     opportunities = relationship("Opportunity", back_populates="mentor")
     applications = relationship("Application", back_populates="student")
     improvement_plans = relationship("ImprovementPlan", back_populates="student")
+    
+    # Phase 8 Relationships
+    project_interests = relationship("IndustrialProjectInterest", back_populates="student")
+    organized_visits = relationship("IndustrialVisit", back_populates="organizer")
+    visit_applications = relationship("IndustrialVisitApplication", back_populates="student")
+    organized_events = relationship("BeehiveEvent", back_populates="organizer")
+    event_enrollments = relationship("BeehiveEnrollment", back_populates="student")
 
 class StudentProfile(Base):
     __tablename__ = "student_profiles"
@@ -298,6 +305,90 @@ class ImprovementPlan(Base):
     
     # Relationships
     student = relationship("User", back_populates="improvement_plans")
+
+# --- Phase 8: Real World Engagement ---
+
+class IndustrialProjectInterest(Base):
+    __tablename__ = "industrial_project_interests"
+
+    id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey("users.id"))
+    topic = Column(String)
+    description = Column(Text)
+    preferred_industry = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    student = relationship("User", back_populates="project_interests")
+
+class IndustrialVisit(Base):
+    __tablename__ = "industrial_visits"
+
+    id = Column(Integer, primary_key=True, index=True)
+    organizer_id = Column(Integer, ForeignKey("users.id"))
+    title = Column(String)
+    company_name = Column(String)
+    industry_type = Column(String)
+    visit_date = Column(DateTime)
+    location = Column(String)
+    description = Column(Text)
+    requirements = Column(Text) # Eligibility
+    capacity = Column(Integer)
+    status = Column(String, default="open") # open, closed, completed
+    created_at = Column(DateTime, default=datetime.utcnow)
+    image_url = Column(String, nullable=True)
+
+    # Relationships
+    organizer = relationship("User", back_populates="organized_visits")
+    applications = relationship("IndustrialVisitApplication", back_populates="visit", cascade="all, delete-orphan")
+
+class IndustrialVisitApplication(Base):
+    __tablename__ = "industrial_visit_applications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    visit_id = Column(Integer, ForeignKey("industrial_visits.id"))
+    student_id = Column(Integer, ForeignKey("users.id"))
+    statement_of_purpose = Column(Text)
+    status = Column(String, default="pending") # pending, approved, rejected, attended
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    visit = relationship("IndustrialVisit", back_populates="applications")
+    student = relationship("User", back_populates="visit_applications")
+
+class BeehiveEvent(Base):
+    __tablename__ = "beehive_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    organizer_id = Column(Integer, ForeignKey("users.id"))
+    title = Column(String)
+    type = Column(String) # hackathon, workshop, seminar, guest_lecture
+    topic = Column(String)
+    organizer_name = Column(String) # Display name of organizer (e.g. Club Name)
+    event_date = Column(DateTime)
+    location = Column(String) # Online or Physical Address
+    description = Column(Text)
+    total_seats = Column(Integer, default=30)
+    entry_fee = Column(Float, default=0.0)
+    registration_link = Column(String, nullable=True) # If external
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    image_url = Column(String, nullable=True)
+
+    # Relationships
+    organizer = relationship("User", back_populates="organized_events")
+    enrollments = relationship("BeehiveEnrollment", back_populates="event", cascade="all, delete-orphan")
+
+class BeehiveEnrollment(Base):
+    __tablename__ = "beehive_enrollments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    event_id = Column(Integer, ForeignKey("beehive_events.id"))
+    student_id = Column(Integer, ForeignKey("users.id"))
+    payment_status = Column(String, default="pending")
+    status = Column(String, default="registered") # registered, attended, cancelled
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    event = relationship("BeehiveEvent", back_populates="enrollments")
+    student = relationship("User", back_populates="event_enrollments")
     opportunity = relationship("Opportunity", back_populates="improvement_plans")
     items = relationship("PlanItem", back_populates="plan", cascade="all, delete-orphan")
 

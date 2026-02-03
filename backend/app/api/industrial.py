@@ -9,7 +9,8 @@ from app.schemas import (
     IndustrialVisitCreate,
     IndustrialVisitResponse,
     IndustrialVisitApplicationCreate,
-    IndustrialVisitApplicationResponse
+    IndustrialVisitApplicationResponse,
+    IndustrialVisitApplicationUpdate
 )
 from app.deps import get_current_user
 
@@ -129,4 +130,24 @@ def get_visit_applications(
     ).options(joinedload(IndustrialVisitApplication.student)).all()
 
 @router.put("/applications/{application_id}/status", response_model=IndustrialVisitApplicationResponse)
+def update_application_status(
+    application_id: int,
+    status_update: IndustrialVisitApplicationUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    application = db.query(IndustrialVisitApplication).filter(IndustrialVisitApplication.id == application_id).first()
+    if not application:
+        raise HTTPException(status_code=404, detail="Application not found")
+        
+    visit = db.query(IndustrialVisit).filter(IndustrialVisit.id == application.visit_id).first()
+    
+    # Only Admin or the Organizer can update status
+    if current_user.role != "admin" and (not visit or visit.organizer_id != current_user.id):
+        raise HTTPException(status_code=403, detail="Not authorized to update application status")
+        
+    application.status = status_update.status
+    db.commit()
+    db.refresh(application)
+    return application
 
