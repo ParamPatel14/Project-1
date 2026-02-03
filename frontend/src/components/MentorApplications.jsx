@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { getMentorApplications, updateApplicationStatus, getMentorImprovementPlans } from '../api';
-import { FaTimes } from 'react-icons/fa';
-import { FiUser, FiMail, FiMapPin, FiLinkedin, FiGithub, FiGlobe, FiFileText } from 'react-icons/fi';
+import { getMentorApplications, updateApplicationStatus } from '../api';
+import { FaTimes, FaCheck, FaBan, FaSearch, FaFilter } from 'react-icons/fa';
+import { FiUser, FiMail, FiMapPin, FiLinkedin, FiGithub, FiGlobe, FiFileText, FiBriefcase, FiBookOpen, FiAward } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const MentorApplications = () => {
   const [applications, setApplications] = useState([]);
-  const [improvementPlans, setImprovementPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState('applications'); // 'applications' or 'plans'
   const [statusUpdating, setStatusUpdating] = useState(null);
+  const [filterStatus, setFilterStatus] = useState('all');
   
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedApplication, setSelectedApplication] = useState(null);
+  const [activeTab, setActiveTab] = useState('profile');
 
   useEffect(() => {
     fetchData();
@@ -20,7 +22,6 @@ const MentorApplications = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Parallel fetch could be better but sticking to simple for now
       const appsData = await getMentorApplications();
       setApplications(appsData);
     } catch (err) {
@@ -33,16 +34,19 @@ const MentorApplications = () => {
   const handleViewApplication = (app) => {
     setSelectedApplication(app);
     setShowDetailsModal(true);
+    setActiveTab('profile');
   };
 
   const handleStatusChange = async (appId, newStatus) => {
     setStatusUpdating(appId);
     try {
       await updateApplicationStatus(appId, newStatus);
-      // Update local state
       setApplications(applications.map(app => 
         app.id === appId ? { ...app, status: newStatus } : app
       ));
+      if (selectedApplication && selectedApplication.id === appId) {
+        setSelectedApplication({ ...selectedApplication, status: newStatus });
+      }
     } catch (err) {
       console.error("Failed to update status", err);
       alert("Failed to update status");
@@ -53,423 +57,369 @@ const MentorApplications = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'accepted': return 'text-green-700 bg-green-50 border border-green-200';
-      case 'rejected': return 'text-red-700 bg-red-50 border border-red-200';
-      case 'reviewing': return 'text-[var(--color-academia-gold)] bg-yellow-50 border border-yellow-200';
-      default: return 'text-stone-600 bg-stone-100 border border-stone-200';
+      case 'accepted': return 'text-green-800 bg-green-100 border-green-300';
+      case 'rejected': return 'text-red-800 bg-red-100 border-red-300';
+      case 'reviewing': return 'text-amber-800 bg-amber-100 border-amber-300';
+      default: return 'text-stone-600 bg-stone-100 border-stone-300';
     }
   };
 
-  const getScoreColor = (score) => {
-      if (!score) return 'text-stone-400';
-      if (score >= 80) return 'text-green-700 font-bold';
-      if (score >= 50) return 'text-[var(--color-academia-gold)] font-bold';
-      return 'text-red-600';
-  };
+  const filteredApplications = applications.filter(app => {
+    if (filterStatus === 'all') return true;
+    return app.status === filterStatus;
+  });
 
-  if (loading) return <div className="p-8 text-center text-[var(--color-academia-charcoal)] font-serif animate-pulse">Loading applications...</div>;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-stone-50">
+      <div className="text-[var(--color-academia-charcoal)] font-serif text-xl animate-pulse">Loading Intelligence...</div>
+    </div>
+  );
 
   return (
-    <div className="bg-white p-6 rounded-sm shadow-md max-w-6xl mx-auto mt-8 border-t-4 border-[var(--color-academia-gold)] animate-fade-in">
-      <h2 className="text-2xl font-bold font-serif mb-6 text-[var(--color-academia-charcoal)]">Manage Applications</h2>
+    <div className="bg-stone-50 min-h-screen p-8 font-sans text-stone-800">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-10 border-b border-[var(--color-academia-gold)] pb-6">
+          <h1 className="text-4xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-2">Talent Identification</h1>
+          <p className="text-stone-600 max-w-2xl text-lg">Review and align with high-potential candidates for your research opportunities.</p>
+        </header>
 
-      {/* Basic Tab Switcher */}
-      <div className="flex gap-4 mb-6 border-b border-stone-200">
-        <button 
-            className={`py-2 px-4 font-serif transition-colors ${view === 'applications' ? 'border-b-2 border-[var(--color-academia-gold)] font-bold text-[var(--color-academia-charcoal)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)]'}`}
-            onClick={() => setView('applications')}
-        >
-            Applications
-        </button>
-        <button 
-            className={`py-2 px-4 font-serif transition-colors ${view === 'plans' ? 'border-b-2 border-[var(--color-academia-gold)] font-bold text-[var(--color-academia-charcoal)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)]'}`}
-            onClick={() => setView('plans')}
-        >
-            Improvement Plans (Candidate Progress)
-        </button>
-      </div>
-      
-      {view === 'plans' && (
-          <div className="p-8 bg-[var(--color-academia-cream)] rounded-sm border border-[var(--color-academia-gold)] text-center text-[var(--color-academia-charcoal)]">
-              <p className="font-serif text-lg mb-2">Select an opportunity to view active improvement plans.</p>
-              {/* This is a placeholder. A real implementation would list opportunities and let the mentor click to see plans. */}
-              {/* Since we don't have a "get all my opportunities" call here yet, we'll skip the full implementation for now 
-                  to focus on the student side which is the core of Phase 4. */}
-              <p className="text-sm text-stone-500">(Feature coming in next update: Full dashboard for tracking candidate improvement plans)</p>
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+          <div className="flex gap-2">
+            {['all', 'pending', 'reviewing', 'accepted', 'rejected'].map(status => (
+              <button
+                key={status}
+                onClick={() => setFilterStatus(status)}
+                className={`px-4 py-2 rounded-sm text-sm font-medium transition-all capitalize ${
+                  filterStatus === status 
+                    ? 'bg-[var(--color-academia-charcoal)] text-white shadow-md' 
+                    : 'bg-white text-stone-600 hover:bg-stone-200 border border-stone-300'
+                }`}
+              >
+                {status}
+              </button>
+            ))}
           </div>
-      )}
-
-      {view === 'applications' && (
-      <>
-      {applications.length === 0 ? (
-        <div className="p-8 text-center bg-stone-50 rounded-sm border border-stone-200">
-            <p className="text-stone-500">No applications received yet.</p>
+          <div className="text-stone-500 font-serif italic">
+            Showing {filteredApplications.length} candidates
+          </div>
         </div>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full leading-normal">
-            <thead>
-              <tr>
-                <th className="px-5 py-3 border-b-2 border-stone-200 bg-[var(--color-academia-cream)] text-left text-xs font-semibold text-[var(--color-academia-charcoal)] uppercase tracking-wider font-serif">
-                  Rank
-                </th>
-                <th className="px-5 py-3 border-b-2 border-stone-200 bg-[var(--color-academia-cream)] text-left text-xs font-semibold text-[var(--color-academia-charcoal)] uppercase tracking-wider font-serif">
-                  Score
-                </th>
-                <th className="px-5 py-3 border-b-2 border-stone-200 bg-[var(--color-academia-cream)] text-left text-xs font-semibold text-[var(--color-academia-charcoal)] uppercase tracking-wider font-serif">
-                  Applicant
-                </th>
-                <th className="px-5 py-3 border-b-2 border-stone-200 bg-[var(--color-academia-cream)] text-left text-xs font-semibold text-[var(--color-academia-charcoal)] uppercase tracking-wider font-serif">
-                  Opportunity
-                </th>
-                <th className="px-5 py-3 border-b-2 border-stone-200 bg-[var(--color-academia-cream)] text-left text-xs font-semibold text-[var(--color-academia-charcoal)] uppercase tracking-wider font-serif">
-                  Cover Letter
-                </th>
-                <th className="px-5 py-3 border-b-2 border-stone-200 bg-[var(--color-academia-cream)] text-left text-xs font-semibold text-[var(--color-academia-charcoal)] uppercase tracking-wider font-serif">
-                  Date
-                </th>
-                <th className="px-5 py-3 border-b-2 border-stone-200 bg-[var(--color-academia-cream)] text-left text-xs font-semibold text-[var(--color-academia-charcoal)] uppercase tracking-wider font-serif">
-                  Status
-                </th>
-                <th className="px-5 py-3 border-b-2 border-stone-200 bg-[var(--color-academia-cream)] text-left text-xs font-semibold text-[var(--color-academia-charcoal)] uppercase tracking-wider font-serif">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {applications.map((app, index) => (
-                <tr key={app.id} className="hover:bg-stone-50 transition-colors">
-                  <td className="px-5 py-5 border-b border-stone-200 bg-white text-sm">
-                    <span className="font-bold text-[var(--color-academia-charcoal)] font-serif">#{index + 1}</span>
-                  </td>
-                  <td className="px-5 py-5 border-b border-stone-200 bg-white text-sm">
-                    <span className={getScoreColor(app.match_score)}>
-                        {app.match_score ? `${app.match_score}%` : 'N/A'}
-                    </span>
-                  </td>
-                  <td className="px-5 py-5 border-b border-stone-200 bg-white text-sm">
-                    <div className="flex items-center">
-                        <div className="flex-shrink-0 w-10 h-10">
-                             <div className="w-10 h-10 rounded-full bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] font-bold font-serif">
-                                {app.student?.name ? app.student.name.charAt(0).toUpperCase() : 'S'}
-                             </div>
-                        </div>
-                        <div className="ml-3">
-                            <p className="text-[var(--color-academia-charcoal)] whitespace-no-wrap font-semibold font-serif">
-                                {app.student?.name || `Student ID: ${app.student_id}`}
-                            </p>
-                            <button 
-                                onClick={() => handleViewApplication(app)}
-                                className="text-[var(--color-academia-gold)] hover:text-[var(--color-academia-charcoal)] text-xs font-medium transition-colors uppercase tracking-wide"
-                            >
-                                View Application
-                            </button>
-                        </div>
-                    </div>
-                  </td>
-                  <td className="px-5 py-5 border-b border-stone-200 bg-white text-sm">
-                    <p className="text-stone-800 whitespace-no-wrap">
-                        <span className="bg-stone-100 px-2 py-1 rounded-sm text-xs font-medium text-stone-600 border border-stone-200">
-                            {app.opportunity?.title || `Opp ID: ${app.opportunity_id}`}
-                        </span>
-                    </p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-stone-200 bg-white text-sm">
+
+        {/* Grid Layout */}
+        {filteredApplications.length === 0 ? (
+          <div className="text-center py-20 bg-white rounded-sm shadow-sm border border-stone-200">
+            <p className="text-stone-400 text-xl font-serif">No candidates found in this category.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence>
+              {filteredApplications.map((app) => (
+                <motion.div
+                  key={app.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="bg-white rounded-sm border-t-4 border-[var(--color-academia-gold)] shadow-sm hover:shadow-lg transition-shadow p-6 flex flex-col"
+                >
+                  <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-3">
-                      <p className="text-stone-600 whitespace-nowrap truncate max-w-[220px]" title={app.cover_letter}>
-                        {app.cover_letter}
-                      </p>
-                      <button
-                        onClick={() => handleViewApplication(app)}
-                        className="text-stone-700 hover:text-[var(--color-academia-gold)] text-xs font-semibold inline-flex items-center gap-1 transition-colors"
-                        title="View Cover Letter"
-                      >
-                        <FiFileText className="inline-block" /> View
-                      </button>
+                      <div className="w-12 h-12 rounded-full bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] font-bold font-serif text-lg">
+                        {app.student?.name ? app.student.name.charAt(0).toUpperCase() : 'S'}
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-[var(--color-academia-charcoal)] font-serif text-lg leading-tight">
+                          {app.student?.name || "Unknown Candidate"}
+                        </h3>
+                        <p className="text-xs text-stone-500 uppercase tracking-wider">
+                          {app.student?.student_profile?.university || "University N/A"}
+                        </p>
+                      </div>
                     </div>
-                  </td>
-                  <td className="px-5 py-5 border-b border-stone-200 bg-white text-sm">
-                    <p className="text-stone-600 whitespace-no-wrap">
-                      {new Date(app.created_at).toLocaleDateString()}
+                    <div className={`px-2 py-1 rounded-sm text-xs font-bold border ${getStatusColor(app.status)}`}>
+                      {app.status}
+                    </div>
+                  </div>
+
+                  <div className="mb-4 bg-stone-50 p-3 rounded-sm border border-stone-100">
+                    <p className="text-xs text-stone-400 uppercase tracking-wide mb-1">Applying For</p>
+                    <p className="text-sm font-semibold text-[var(--color-academia-charcoal)] line-clamp-1">
+                      {app.opportunity?.title || "Unknown Opportunity"}
                     </p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-stone-200 bg-white text-sm">
-                    <span
-                      className={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-sm text-xs ${getStatusColor(app.status)}`}
-                    >
-                      <span className="relative capitalize">{app.status}</span>
-                    </span>
-                  </td>
-                  <td className="px-5 py-5 border-b border-stone-200 bg-white text-sm">
-                    <div className="flex flex-col gap-2">
-                      {statusUpdating === app.id ? (
-                        <span className="text-stone-400 italic text-xs">Updating...</span>
-                      ) : (
-                        <>
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleStatusChange(app.id, 'reviewing')}
-                              className="text-[var(--color-academia-charcoal)] hover:bg-[var(--color-academia-cream)] text-xs font-bold border border-[var(--color-academia-gold)] px-2 py-1 rounded-sm transition-colors"
-                            >
-                              Review
-                            </button>
-                            <button
-                              onClick={() => handleStatusChange(app.id, 'accepted')}
-                              className="text-green-700 hover:bg-green-50 text-xs font-bold border border-green-300 px-2 py-1 rounded-sm transition-colors"
-                            >
-                              Accept
-                            </button>
-                            <button
-                              onClick={() => handleStatusChange(app.id, 'rejected')}
-                              className="text-red-700 hover:bg-red-50 text-xs font-bold border border-red-300 px-2 py-1 rounded-sm transition-colors"
-                            >
-                              Reject
-                            </button>
-                          </div>
-                          {(app.status === 'accepted' || app.status === 'rejected') && (
-                              <span className="text-xs text-stone-400 italic">Decision made</span>
-                          )}
-                        </>
+                  </div>
+
+                  <div className="flex items-center justify-between mb-6">
+                     <div className="text-center">
+                        <span className="block text-2xl font-bold text-[var(--color-academia-gold)] font-serif">
+                          {app.match_score}%
+                        </span>
+                        <span className="text-xs text-stone-400 uppercase">Match</span>
+                     </div>
+                     <div className="text-right">
+                        <span className="block text-sm font-semibold text-stone-600">
+                          {new Date(app.created_at).toLocaleDateString()}
+                        </span>
+                        <span className="text-xs text-stone-400 uppercase">Date</span>
+                     </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleViewApplication(app)}
+                    className="mt-auto w-full py-3 bg-[var(--color-academia-charcoal)] text-white text-sm font-medium tracking-wide hover:bg-stone-800 transition-colors rounded-sm flex items-center justify-center gap-2"
+                  >
+                    <FiSearch /> Review Profile
+                  </button>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        )}
+      </div>
+
+      {/* Detailed Modal */}
+      <AnimatePresence>
+        {showDetailsModal && selectedApplication && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowDetailsModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-sm w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="bg-[var(--color-academia-charcoal)] text-white p-6 flex justify-between items-start shrink-0">
+                <div className="flex gap-6 items-center">
+                  <div className="w-20 h-20 bg-white rounded-full border-4 border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] text-3xl font-bold font-serif">
+                    {selectedApplication.student?.name ? selectedApplication.student.name.charAt(0).toUpperCase() : 'S'}
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold font-serif mb-1">{selectedApplication.student?.name}</h2>
+                    <div className="flex gap-4 text-stone-300 text-sm">
+                      <span className="flex items-center gap-1"><FiMail /> {selectedApplication.student?.email}</span>
+                      {selectedApplication.student?.student_profile?.city && (
+                        <span className="flex items-center gap-1"><FiMapPin /> {selectedApplication.student.student_profile.city}</span>
                       )}
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-      </>
-      )}
-
-      {showDetailsModal && selectedApplication && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white rounded-sm shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border-t-4 border-[var(--color-academia-gold)]">
-            <div className="p-8">
-              <div className="flex justify-between items-center mb-6 border-b border-stone-200 pb-4">
-                <h3 className="text-2xl font-bold font-serif text-[var(--color-academia-charcoal)]">Application Details</h3>
-                <button onClick={() => setShowDetailsModal(false)} className="text-stone-400 hover:text-[var(--color-academia-charcoal)] transition-colors">
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setShowDetailsModal(false)}
+                  className="text-stone-400 hover:text-white transition-colors"
+                >
                   <FaTimes size={24} />
                 </button>
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-1">
-                  <div className="flex flex-col items-center">
-                    <div className="w-24 h-24 bg-[var(--color-academia-cream)] rounded-full border-2 border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] text-4xl font-bold mb-4 font-serif">
-                      {selectedApplication.student?.name ? selectedApplication.student.name.charAt(0).toUpperCase() : 'S'}
+
+              {/* Tabs */}
+              <div className="bg-stone-100 border-b border-stone-200 px-6 flex gap-6 shrink-0 overflow-x-auto">
+                {['profile', 'projects', 'experience', 'cover_letter'].map(tab => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`py-4 px-2 text-sm font-bold uppercase tracking-wider transition-all border-b-2 ${
+                      activeTab === tab 
+                        ? 'border-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)]' 
+                        : 'border-transparent text-stone-500 hover:text-stone-800'
+                    }`}
+                  >
+                    {tab.replace('_', ' ')}
+                  </button>
+                ))}
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="p-8 overflow-y-auto grow bg-white">
+                
+                {activeTab === 'profile' && (
+                  <div className="space-y-8 max-w-3xl mx-auto animate-fade-in">
+                    {/* Key Metrics */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                       <div className="p-4 bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] rounded-sm text-center">
+                          <div className="text-2xl font-bold text-[var(--color-academia-charcoal)] font-serif">{selectedApplication.match_score}%</div>
+                          <div className="text-xs text-stone-500 uppercase">Match Score</div>
+                       </div>
+                       <div className="p-4 bg-stone-50 border border-stone-200 rounded-sm text-center">
+                          <div className="text-lg font-bold text-[var(--color-academia-charcoal)]">
+                            {selectedApplication.student?.student_profile?.gpa || "N/A"}
+                          </div>
+                          <div className="text-xs text-stone-500 uppercase">GPA</div>
+                       </div>
+                       <div className="p-4 bg-stone-50 border border-stone-200 rounded-sm text-center">
+                          <div className="text-lg font-bold text-[var(--color-academia-charcoal)] line-clamp-1">
+                            {selectedApplication.student?.student_profile?.major || "N/A"}
+                          </div>
+                          <div className="text-xs text-stone-500 uppercase">Major</div>
+                       </div>
                     </div>
-                    <h4 className="text-xl font-bold font-serif text-center text-[var(--color-academia-charcoal)]">{selectedApplication.student?.name}</h4>
-                    <p className="text-stone-500 text-sm text-center mb-1">{selectedApplication.student?.email}</p>
-                    {selectedApplication.student?.student_profile && (
-                      <>
-                        {(selectedApplication.student.student_profile.city || selectedApplication.student.student_profile.country) && (
-                          <div className="flex items-center justify-center gap-1 text-sm text-stone-500 mb-4">
-                            <FiMapPin size={14} />
-                            <span>
-                              {[selectedApplication.student.student_profile.city, selectedApplication.student.student_profile.country].filter(Boolean).join(', ')}
-                            </span>
+
+                    <div className="prose max-w-none">
+                      <h3 className="font-serif text-[var(--color-academia-charcoal)] border-b border-[var(--color-academia-gold)] pb-2 mb-4">About</h3>
+                      <p className="text-stone-700 leading-relaxed">
+                        {selectedApplication.student?.student_profile?.bio || "No bio available."}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div>
+                        <h3 className="font-serif text-[var(--color-academia-charcoal)] border-b border-stone-200 pb-2 mb-4">Education</h3>
+                        {selectedApplication.student?.student_profile?.educations?.length > 0 ? (
+                           selectedApplication.student.student_profile.educations.map((edu, i) => (
+                             <div key={i} className="mb-4 last:mb-0">
+                               <div className="font-bold text-[var(--color-academia-charcoal)]">{edu.institution}</div>
+                               <div className="text-stone-600">{edu.degree}</div>
+                               <div className="text-xs text-stone-400">{edu.start_year} - {edu.end_year}</div>
+                             </div>
+                           ))
+                        ) : (
+                          <div className="mb-4">
+                             <div className="font-bold text-[var(--color-academia-charcoal)]">
+                                {selectedApplication.student?.student_profile?.university || "University not listed"}
+                             </div>
+                             <div className="text-stone-600">
+                                {selectedApplication.student?.student_profile?.degree}
+                             </div>
                           </div>
                         )}
-                        <div className="flex gap-4 mb-6 justify-center">
-                          {selectedApplication.student.student_profile.github_url && (
-                            <a href={selectedApplication.student.student_profile.github_url} target="_blank" rel="noopener noreferrer" className="text-stone-600 hover:text-[var(--color-academia-charcoal)] transition-colors" title="GitHub">
-                              <FiGithub size={20} />
-                            </a>
-                          )}
-                          {selectedApplication.student.student_profile.linkedin_url && (
-                            <a href={selectedApplication.student.student_profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-stone-600 hover:text-[#0077b5] transition-colors" title="LinkedIn">
-                              <FiLinkedin size={20} />
-                            </a>
-                          )}
-                          {selectedApplication.student.student_profile.website_url && (
-                            <a href={selectedApplication.student.student_profile.website_url} target="_blank" rel="noopener noreferrer" className="text-stone-600 hover:text-[var(--color-academia-gold)] transition-colors" title="Portfolio">
-                              <FiGlobe size={20} />
-                            </a>
+                      </div>
+                      
+                      <div>
+                        <h3 className="font-serif text-[var(--color-academia-charcoal)] border-b border-stone-200 pb-2 mb-4">Skills</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedApplication.student?.student_profile?.primary_skills ? (
+                            selectedApplication.student.student_profile.primary_skills.split(',').map((skill, i) => (
+                              <span key={i} className="px-3 py-1 bg-stone-100 text-stone-700 text-sm rounded-full border border-stone-200">
+                                {skill.trim()}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-stone-500 italic">No skills listed.</span>
                           )}
                         </div>
-                        <div className="w-full space-y-2 text-sm text-stone-600">
-                          {selectedApplication.student.student_profile.university && (
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold text-[var(--color-academia-charcoal)]">Uni:</span> {selectedApplication.student.student_profile.university}
-                            </div>
-                          )}
-                          {selectedApplication.student.student_profile.major && (
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold text-[var(--color-academia-charcoal)]">Major:</span> {selectedApplication.student.student_profile.major}
-                            </div>
-                          )}
-                          {selectedApplication.student.student_profile.gpa && (
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold text-[var(--color-academia-charcoal)]">GPA:</span> {selectedApplication.student.student_profile.gpa}
-                            </div>
-                          )}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-                <div className="lg:col-span-2 space-y-8">
-                  {/* Application Specifics */}
-                  <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-[var(--color-academia-gold)]">
-                    <h5 className="font-bold font-serif text-[var(--color-academia-charcoal)] mb-2 border-b border-[var(--color-academia-gold)] pb-2 flex items-center gap-2">
-                      <FiFileText /> Cover Letter
-                    </h5>
-                    <p className="text-stone-700 text-sm whitespace-pre-wrap leading-relaxed font-serif">
-                      {selectedApplication.cover_letter || "No cover letter provided."}
-                    </p>
-                    
-                    <div className="mt-6 flex gap-3 pt-4 border-t border-[var(--color-academia-gold)]/30">
-                       {statusUpdating === selectedApplication.id ? (
-                          <span className="text-stone-500 text-sm font-medium animate-pulse">Updating status...</span>
-                       ) : (
-                          <>
-                            <button
-                              onClick={() => handleStatusChange(selectedApplication.id, 'reviewing')}
-                              className={`flex-1 py-2 rounded-sm text-sm font-bold border transition-colors ${
-                                selectedApplication.status === 'reviewing' 
-                                  ? 'bg-[var(--color-academia-gold)] text-white border-[var(--color-academia-gold)]' 
-                                  : 'bg-white text-[var(--color-academia-charcoal)] border-stone-300 hover:bg-[var(--color-academia-cream)]'
-                              }`}
-                            >
-                              Review
-                            </button>
-                            <button
-                              onClick={() => handleStatusChange(selectedApplication.id, 'accepted')}
-                              className={`flex-1 py-2 rounded-sm text-sm font-bold border transition-colors ${
-                                selectedApplication.status === 'accepted' 
-                                  ? 'bg-green-700 text-white border-green-700' 
-                                  : 'bg-white text-green-700 border-green-200 hover:bg-green-50'
-                              }`}
-                            >
-                              Accept
-                            </button>
-                            <button
-                              onClick={() => handleStatusChange(selectedApplication.id, 'rejected')}
-                              className={`flex-1 py-2 rounded-sm text-sm font-bold border transition-colors ${
-                                selectedApplication.status === 'rejected' 
-                                  ? 'bg-red-700 text-white border-red-700' 
-                                  : 'bg-white text-red-700 border-red-200 hover:bg-red-50'
-                              }`}
-                            >
-                              Reject
-                            </button>
-                          </>
-                       )}
+                      </div>
+                    </div>
+
+                    {/* Social Links */}
+                    <div className="flex gap-4 pt-4">
+                        {selectedApplication.student?.student_profile?.github_url && (
+                            <a href={selectedApplication.student.student_profile.github_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-stone-600 hover:text-[var(--color-academia-charcoal)]">
+                              <FiGithub /> GitHub
+                            </a>
+                        )}
+                        {selectedApplication.student?.student_profile?.linkedin_url && (
+                            <a href={selectedApplication.student.student_profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-stone-600 hover:text-[#0077b5]">
+                              <FiLinkedin /> LinkedIn
+                            </a>
+                        )}
+                        {selectedApplication.student?.student_profile?.website_url && (
+                            <a href={selectedApplication.student.student_profile.website_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-stone-600 hover:text-[var(--color-academia-gold)]">
+                              <FiGlobe /> Portfolio
+                            </a>
+                        )}
                     </div>
                   </div>
+                )}
 
-                  {selectedApplication.student?.student_profile ? (
-                    <>
-                      {selectedApplication.student.student_profile.bio && (
-                        <div>
-                          <h5 className="font-bold font-serif text-[var(--color-academia-charcoal)] mb-2 border-b border-stone-200 pb-1">Bio</h5>
-                          <p className="text-stone-600 text-sm leading-relaxed">{selectedApplication.student.student_profile.bio}</p>
-                        </div>
-                      )}
-                      {selectedApplication.student.student_profile.primary_skills && (
-                        <div>
-                          <h5 className="font-bold font-serif text-[var(--color-academia-charcoal)] mb-2 border-b border-stone-200 pb-1">Skills</h5>
+                {activeTab === 'projects' && (
+                  <div className="space-y-6 max-w-4xl mx-auto animate-fade-in">
+                    {selectedApplication.student?.student_profile?.projects?.length > 0 ? (
+                      selectedApplication.student.student_profile.projects.map((project, i) => (
+                        <div key={i} className="bg-stone-50 border border-stone-200 p-6 rounded-sm hover:border-[var(--color-academia-gold)] transition-colors">
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="text-xl font-bold font-serif text-[var(--color-academia-charcoal)]">{project.title}</h4>
+                            {project.url && (
+                              <a href={project.url} target="_blank" rel="noopener noreferrer" className="text-[var(--color-academia-gold)] hover:underline text-sm flex items-center gap-1">
+                                View Project <FiGlobe />
+                              </a>
+                            )}
+                          </div>
+                          <p className="text-stone-600 mb-4">{project.description}</p>
                           <div className="flex flex-wrap gap-2">
-                            {selectedApplication.student.student_profile.primary_skills.split(',').map((skill, i) => (
-                              <span key={i} className="bg-stone-100 text-[var(--color-academia-charcoal)] px-3 py-1 rounded-sm text-xs font-semibold border border-stone-200">
-                                {skill.trim()}
+                            {project.tech_stack && project.tech_stack.split(',').map((tech, j) => (
+                              <span key={j} className="text-xs font-mono bg-white border border-stone-200 px-2 py-1 text-stone-500 rounded-sm">
+                                {tech.trim()}
                               </span>
                             ))}
                           </div>
                         </div>
-                      )}
-                      {selectedApplication.student.student_profile.educations && selectedApplication.student.student_profile.educations.length > 0 && (
-                        <div>
-                          <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Education</h5>
-                          <div className="space-y-2">
-                            {selectedApplication.student.student_profile.educations.map((edu) => (
-                              <div key={edu.id} className="text-sm text-gray-700">
-                                <div className="font-semibold">{edu.institution}</div>
-                                <div className="text-gray-600">{edu.degree} {edu.start_year && edu.end_year ? `(${edu.start_year} - ${edu.end_year})` : ''}</div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {selectedApplication.student.student_profile.projects && selectedApplication.student.student_profile.projects.length > 0 && (
-                        <div>
-                          <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Projects</h5>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {selectedApplication.student.student_profile.projects.map((proj) => (
-                              <div key={proj.id} className="p-4 border rounded-lg">
-                                <div className="font-semibold text-gray-800">{proj.title}</div>
-                                {proj.tech_stack && <div className="text-xs text-indigo-600 mt-1">{proj.tech_stack}</div>}
-                                {proj.description && <div className="text-sm text-gray-700 mt-2">{proj.description}</div>}
-                                {proj.url && (
-                                  <a href={proj.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-indigo-600 text-xs font-semibold">
-                                    View Project
-                                  </a>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      {selectedApplication.student.student_profile.publications && selectedApplication.student.student_profile.publications.length > 0 && (
-                        <div>
-                          <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Publications</h5>
-                          <div className="space-y-2">
-                            {selectedApplication.student.student_profile.publications.map((pub) => (
-                              <div key={pub.id} className="text-sm text-gray-700">
-                                <div className="font-semibold">{pub.title}</div>
-                                {pub.journal_conference && <div className="text-gray-600">{pub.journal_conference}</div>}
-                                {pub.url && (
-                                  <a href={pub.url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 text-xs font-semibold">
-                                    Link
-                                  </a>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="text-center py-8 text-gray-500 italic">
-                      No detailed profile information available.
-                    </div>
-                  )}
-                  <div>
-                    <h5 className="font-bold text-gray-800 mb-2 border-b pb-1">Cover Letter</h5>
-                    {selectedApplication.cover_letter ? (
-                      <div className="p-4 bg-gray-50 rounded-lg text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                        {selectedApplication.cover_letter}
-                      </div>
+                      ))
                     ) : (
-                      <div className="text-sm text-gray-500">No cover letter submitted.</div>
+                      <div className="text-center py-12 text-stone-400 italic">
+                        No projects listed in this profile.
+                      </div>
                     )}
                   </div>
+                )}
+
+                {activeTab === 'experience' && (
+                  <div className="space-y-8 max-w-3xl mx-auto animate-fade-in">
+                    {selectedApplication.student?.student_profile?.work_experiences?.length > 0 ? (
+                      selectedApplication.student.student_profile.work_experiences.map((exp, i) => (
+                        <div key={i} className="relative pl-8 border-l-2 border-stone-200 last:border-0 pb-8">
+                           <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[var(--color-academia-gold)] border-2 border-white"></div>
+                           <h4 className="text-lg font-bold text-[var(--color-academia-charcoal)]">{exp.title}</h4>
+                           <div className="text-stone-600 font-medium mb-1">{exp.company}</div>
+                           <div className="text-xs text-stone-400 uppercase mb-3">{exp.start_date} - {exp.end_date}</div>
+                           <p className="text-stone-600 text-sm leading-relaxed">{exp.description}</p>
+                        </div>
+                      ))
+                    ) : (
+                       <div className="text-center py-12 text-stone-400 italic">
+                        No work experience listed.
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'cover_letter' && (
+                  <div className="max-w-3xl mx-auto animate-fade-in">
+                    <div className="bg-[var(--color-academia-cream)] p-8 rounded-sm border border-[var(--color-academia-gold)] shadow-inner">
+                      <h3 className="font-serif text-2xl mb-6 text-[var(--color-academia-charcoal)]">Statement of Purpose</h3>
+                      <div className="prose prose-stone font-serif leading-loose text-stone-800 whitespace-pre-wrap">
+                        {selectedApplication.cover_letter || "No cover letter provided."}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+
+              {/* Footer Actions */}
+              <div className="bg-stone-50 border-t border-stone-200 p-6 shrink-0 flex justify-between items-center">
+                <div className="text-stone-500 text-sm">
+                  Status: <span className={`font-bold uppercase ${
+                    selectedApplication.status === 'accepted' ? 'text-green-700' :
+                    selectedApplication.status === 'rejected' ? 'text-red-700' : 'text-stone-700'
+                  }`}>{selectedApplication.status}</span>
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => handleStatusChange(selectedApplication.id, 'rejected')}
+                    disabled={statusUpdating === selectedApplication.id}
+                    className="px-6 py-2 border border-red-300 text-red-700 hover:bg-red-50 font-bold rounded-sm transition-colors flex items-center gap-2"
+                  >
+                    <FaTimes /> Reject
+                  </button>
+                  <button
+                    onClick={() => handleStatusChange(selectedApplication.id, 'accepted')}
+                    disabled={statusUpdating === selectedApplication.id}
+                    className="px-8 py-2 bg-[var(--color-academia-charcoal)] text-white hover:bg-stone-800 font-bold rounded-sm transition-colors shadow-lg flex items-center gap-2"
+                  >
+                    {statusUpdating === selectedApplication.id ? 'Processing...' : <><FaCheck /> Accept Candidate</>}
+                  </button>
                 </div>
               </div>
-              <div className="mt-8 flex flex-wrap gap-3 justify-end">
-                <button
-                  onClick={() => handleStatusChange(selectedApplication.id, 'reviewing')}
-                  className="px-4 py-2 rounded-lg border border-yellow-200 bg-yellow-50 text-yellow-700 font-semibold"
-                >
-                  Mark Reviewing
-                </button>
-                <button
-                  onClick={() => handleStatusChange(selectedApplication.id, 'accepted')}
-                  className="px-4 py-2 rounded-lg border border-green-200 bg-green-50 text-green-700 font-semibold"
-                >
-                  Accept
-                </button>
-                <button
-                  onClick={() => handleStatusChange(selectedApplication.id, 'rejected')}
-                  className="px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-red-700 font-semibold"
-                >
-                  Reject
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

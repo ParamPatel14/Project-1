@@ -1,25 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getOpportunities } from '../api';
 import { useNavigate } from 'react-router-dom';
-import { FiClock, FiBriefcase, FiArrowRight } from 'react-icons/fi';
+import { FiClock, FiBriefcase, FiArrowRight, FiUser, FiSearch, FiFilter } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const OpportunityList = ({ initialFilters = {} }) => {
   const navigate = useNavigate();
   const [opportunities, setOpportunities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState('');
+  
+  // Ref to track if we've already fetched for these filters to prevent loops
+  const lastFiltersRef = useRef(null);
 
-  // Use JSON.stringify to ensure deep comparison of initialFilters object
-  // preventing infinite loops when a new object reference is passed or generated
   useEffect(() => {
-    fetchOpportunities();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const currentFilters = { ...initialFilters, ...(filterType ? { type: filterType } : {}) };
+    const filtersString = JSON.stringify(currentFilters);
+
+    // Only fetch if filters have actually changed
+    if (lastFiltersRef.current !== filtersString) {
+      fetchOpportunities(currentFilters);
+      lastFiltersRef.current = filtersString;
+    }
   }, [filterType, JSON.stringify(initialFilters)]);
 
-  const fetchOpportunities = async () => {
+  const fetchOpportunities = async (filters) => {
     setLoading(true);
     try {
-      const filters = { ...initialFilters, ...(filterType ? { type: filterType } : {}) };
       const data = await getOpportunities(filters);
       setOpportunities(data);
     } catch (err) {
@@ -29,87 +36,151 @@ const OpportunityList = ({ initialFilters = {} }) => {
     }
   };
 
+  const getTypeColor = (type) => {
+    switch (type) {
+      case 'internship': return 'bg-blue-50 text-blue-900 border-blue-200';
+      case 'research_assistant': return 'bg-purple-50 text-purple-900 border-purple-200';
+      case 'phd_guidance': return 'bg-amber-50 text-amber-900 border-amber-200';
+      case 'grant': return 'bg-emerald-50 text-emerald-900 border-emerald-200';
+      default: return 'bg-stone-50 text-stone-900 border-stone-200';
+    }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="max-w-6xl mx-auto mt-8 px-4">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-bold font-serif text-[var(--color-academia-charcoal)]">Explore Opportunities</h2>
+    <div className="max-w-7xl mx-auto mt-8 px-4 pb-12">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-stone-200 pb-6">
+        <div>
+          <h2 className="text-4xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">
+            Academic Opportunities
+          </h2>
+          <p className="text-stone-500 max-w-xl text-lg font-light">
+            Identify research gaps and align with mentors for internships, PhD guidance, and grants.
+          </p>
+        </div>
         
-        {/* Filter */}
-        <select
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
-          className="px-4 py-2 border border-stone-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] bg-white shadow-sm font-serif text-[var(--color-academia-charcoal)]"
-        >
-          <option value="">All Types</option>
-          <option value="internship">Internship</option>
-          <option value="research_assistant">Research Assistant</option>
-          <option value="phd_guidance">PhD Guidance</option>
-          <option value="grant">Grant / Collaboration</option>
-        </select>
+        {/* Filter Control */}
+        <div className="mt-6 md:mt-0 flex items-center gap-3">
+          <div className="relative">
+            <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="pl-10 pr-8 py-2.5 bg-white border border-stone-300 rounded-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] shadow-sm font-serif text-[var(--color-academia-charcoal)] appearance-none min-w-[200px]"
+            >
+              <option value="">All Disciplines</option>
+              <option value="internship">Research Internship</option>
+              <option value="research_assistant">Research Assistant</option>
+              <option value="phd_guidance">PhD Guidance</option>
+              <option value="grant">Grant / Collaboration</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-academia-gold)]"></div>
+        <div className="flex flex-col justify-center items-center py-32">
+          <div className="w-12 h-12 border-4 border-stone-200 border-t-[var(--color-academia-gold)] rounded-full animate-spin mb-4"></div>
+          <p className="text-stone-400 font-serif tracking-wider text-sm uppercase">Loading Opportunities...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {opportunities.length === 0 ? (
-            <p className="text-stone-500 col-span-full text-center py-10 font-serif">No opportunities found.</p>
+            <div className="col-span-full py-20 text-center bg-stone-50 rounded-sm border border-stone-100">
+              <FiSearch className="mx-auto h-12 w-12 text-stone-300 mb-4" />
+              <h3 className="text-xl font-serif text-[var(--color-academia-charcoal)] mb-2">No opportunities found</h3>
+              <p className="text-stone-500">Try adjusting your filters to see more results.</p>
+            </div>
           ) : (
             opportunities.map((opp) => (
-              <div 
+              <motion.div 
                 key={opp.id} 
+                variants={itemVariants}
+                layoutId={`opp-${opp.id}`}
                 onClick={() => navigate(`/opportunities/${opp.id}`)}
-                className="bg-white rounded-sm shadow-md hover:shadow-xl transition-all duration-300 border border-stone-200 cursor-pointer group transform hover:-translate-y-1 overflow-hidden flex flex-col h-full hover:border-[var(--color-academia-gold)]"
+                className="group bg-white rounded-sm border border-stone-200 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col h-full relative overflow-hidden"
               >
-                <div className="p-6 flex-grow">
-                    <div className="flex justify-between items-start mb-4">
-                        <span className={`px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wide border ${
-                            opp.type === 'internship' ? 'bg-blue-50 text-blue-800 border-blue-200' :
-                            opp.type === 'grant' ? 'bg-green-50 text-green-800 border-green-200' :
-                            'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-[var(--color-academia-gold)]'
-                        }`}>
-                            {opp.type.replace('_', ' ')}
-                        </span>
-                        {opp.is_open ? (
-                            <span className="flex items-center text-green-700 text-xs font-semibold">
-                                <span className="w-2 h-2 bg-green-600 rounded-full mr-1 animate-pulse"></span> Open
-                            </span>
-                        ) : (
-                            <span className="text-red-600 text-xs font-semibold">Closed</span>
-                        )}
-                    </div>
-                    
-                    <h3 className="text-xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-2 group-hover:text-[var(--color-academia-gold)] transition-colors line-clamp-2">{opp.title}</h3>
-                    
-                    {opp.mentor && (
-                      <div className="flex items-center gap-2 mb-3 text-sm text-stone-600">
-                         <div className="w-6 h-6 rounded-full bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] font-bold text-xs font-serif">
-                            {opp.mentor.name ? opp.mentor.name.charAt(0).toUpperCase() : 'M'}
-                         </div>
-                         <span className="font-serif">{opp.mentor.name || 'Unknown Mentor'}</span>
-                      </div>
-                    )}
+                {/* Decorative Top Line */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--color-academia-charcoal)] to-[var(--color-academia-gold)] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
 
-                    <p className="text-stone-600 text-sm mb-4 line-clamp-3 leading-relaxed">{opp.description}</p>
-                    
-                    {opp.deadline && (
-                        <div className="flex items-center text-stone-500 text-xs mt-auto">
-                            <FiClock className="mr-1 text-[var(--color-academia-gold)]" />
-                            Open till: {new Date(opp.deadline).toLocaleDateString()}
-                        </div>
+                <div className="p-6 flex-grow">
+                  {/* Header: Type & Status */}
+                  <div className="flex justify-between items-start mb-4">
+                    <span className={`px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider border ${getTypeColor(opp.type)}`}>
+                      {opp.type.replace(/_/g, ' ')}
+                    </span>
+                    {opp.is_open ? (
+                      <span className="flex items-center text-emerald-700 text-xs font-bold tracking-wide">
+                        <span className="w-1.5 h-1.5 bg-emerald-600 rounded-full mr-1.5 animate-pulse"></span> OPEN
+                      </span>
+                    ) : (
+                      <span className="text-rose-600 text-xs font-bold tracking-wide uppercase">Closed</span>
                     )}
+                  </div>
+                  
+                  {/* Title */}
+                  <h3 className="text-xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-3 group-hover:text-[var(--color-academia-gold)] transition-colors leading-tight min-h-[3.5rem] line-clamp-2">
+                    {opp.title}
+                  </h3>
+                  
+                  {/* Mentor Info - PROMINENTLY DISPLAYED */}
+                  <div className="flex items-center gap-3 mb-5 p-3 bg-stone-50 rounded-sm border border-stone-100 group-hover:border-[var(--color-academia-gold)]/30 transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-white border border-stone-200 flex items-center justify-center text-[var(--color-academia-charcoal)] font-bold font-serif shadow-sm text-lg">
+                      {opp.mentor?.name ? opp.mentor.name.charAt(0).toUpperCase() : <FiUser className="w-5 h-5 text-stone-400" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-stone-500 uppercase tracking-wide font-semibold mb-0.5">Posted By</p>
+                      <p className="text-sm font-bold text-[var(--color-academia-charcoal)] truncate font-serif">
+                        {opp.mentor?.name || 'Unknown Faculty'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-stone-600 text-sm mb-4 line-clamp-3 leading-relaxed font-light">
+                    {opp.description}
+                  </p>
                 </div>
                 
-                <div className="bg-[var(--color-academia-cream)] px-6 py-4 border-t border-stone-200 flex justify-between items-center group-hover:bg-[var(--color-academia-gold)]/10 transition-colors">
-                    <span className="text-sm text-[var(--color-academia-charcoal)] font-medium font-serif">View Details</span>
-                    <FiArrowRight className="text-[var(--color-academia-gold)] transform group-hover:translate-x-1 transition-transform" />
+                {/* Footer */}
+                <div className="px-6 py-4 border-t border-stone-100 bg-stone-50/50 flex justify-between items-center group-hover:bg-[var(--color-academia-cream)]/30 transition-colors">
+                  {opp.deadline ? (
+                    <div className="flex items-center text-stone-500 text-xs font-medium">
+                      <FiClock className="mr-1.5 text-[var(--color-academia-gold)]" />
+                      <span>Due: {new Date(opp.deadline).toLocaleDateString()}</span>
+                    </div>
+                  ) : (
+                    <div className="text-xs text-stone-400">No deadline</div>
+                  )}
+                  
+                  <span className="flex items-center text-xs font-bold uppercase tracking-wider text-[var(--color-academia-charcoal)] group-hover:translate-x-1 transition-transform">
+                    View Details <FiArrowRight className="ml-1 text-[var(--color-academia-gold)]" />
+                  </span>
                 </div>
-              </div>
+              </motion.div>
             ))
           )}
-        </div>
+        </motion.div>
       )}
     </div>
   );

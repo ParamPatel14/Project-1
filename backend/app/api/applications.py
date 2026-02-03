@@ -116,10 +116,10 @@ def update_application_status(
         db.add(new_message)
 
         # Send WhatsApp Notification
-        # Use the specific test number as requested
+        # Use the specific test number as requested by user
         student_phone = "+918105350692"
         
-        # In production, we would use:
+        # In production, use real profile phone:
         # if application.student and application.student.student_profile and application.student.student_profile.phone_number:
         #     student_phone = application.student.student_profile.phone_number
 
@@ -134,6 +134,8 @@ def update_application_status(
                 f"Please contact {contact_number} for further information."
             )
             
+            # Log the attempt
+            print(f"Sending WhatsApp to {student_phone} from {settings.TWILIO_WHATSAPP_NUMBER}")
             send_whatsapp_message(student_phone, whatsapp_body)
         
     db.commit()

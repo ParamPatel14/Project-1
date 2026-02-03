@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # Twilio Configuration
     TWILIO_ACCOUNT_SID: str = ""
     TWILIO_AUTH_TOKEN: str = ""
-    TWILIO_WHATSAPP_NUMBER: str = "" # e.g. "whatsapp:+14155238886"
+    TWILIO_WHATSAPP_NUMBER: str = "+12548575066" # User provided number
     TWILIO_CONTACT_NUMBER: str = "+1234567890" # Number for students to contact
 
     class Config:

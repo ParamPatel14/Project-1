@@ -89,7 +89,8 @@ const OpportunityDetail = () => {
       setMatchPreview(data);
     } catch (err) {
       if (err.response && err.response.status === 401) {
-         setPreviewError("Session expired or unauthorized. Please log in again.");
+         setPreviewError("Session expired or unauthorized. Redirecting to login...");
+         setTimeout(() => navigate('/login'), 2000);
       } else {
          setPreviewError(err.response?.data?.detail || "Failed to analyze match");
       }
