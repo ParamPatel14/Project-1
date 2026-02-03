@@ -162,13 +162,13 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
   const exactMatch = filteredSkills.some(s => s.name.toLowerCase() === skillSearch.toLowerCase());
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
-          <h2 className="text-2xl font-bold flex items-center gap-3">
-              <FiZap className="text-yellow-300" />
+    <div className="bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden font-sans">
+      <div className="bg-[var(--color-academia-charcoal)] p-8 text-[var(--color-academia-cream)]">
+          <h2 className="text-3xl font-serif font-bold flex items-center gap-3 tracking-wide">
+              <FiZap className="text-[var(--color-academia-gold)]" />
               Post New Opportunity
           </h2>
-          <p className="text-blue-100 mt-2">Create an exciting role for students to apply to.</p>
+          <p className="text-stone-300 mt-2 text-lg">Create an exciting role for students to apply to.</p>
       </div>
       
       <div className="p-8">
@@ -195,17 +195,17 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
         <form onSubmit={handleSubmit} className="space-y-8">
             {/* Basic Info Section */}
             <div className="space-y-6">
-                <div className="flex items-center gap-2 text-gray-800 border-b pb-2">
-                    <FiLayout className="text-blue-600" />
-                    <h3 className="text-lg font-semibold">Basic Information</h3>
+                <div className="flex items-center gap-3 text-[var(--color-academia-charcoal)] border-b border-stone-200 pb-4">
+                    <FiLayout className="text-[var(--color-academia-gold)] text-xl" />
+                    <h3 className="text-xl font-serif font-bold tracking-wide">Basic Information</h3>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="col-span-2">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Opportunity Title</label>
+                        <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Opportunity Title</label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <FiBriefcase className="text-gray-400" />
+                                <FiBriefcase className="text-stone-400" />
                             </div>
                             <input
                                 type="text"
@@ -213,23 +213,23 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                                 value={formData.title}
                                 onChange={handleChange}
                                 placeholder="e.g. AI Research Intern, Backend Developer"
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 hover:bg-white"
+                                className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-transparent transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
                                 required
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Type</label>
+                        <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Type</label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <FiLayers className="text-gray-400" />
+                                <FiLayers className="text-stone-400" />
                             </div>
                             <select
                                 name="type"
                                 value={formData.type}
                                 onChange={handleChange}
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 hover:bg-white appearance-none"
+                                className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-transparent transition bg-[var(--color-academia-cream)] hover:bg-white appearance-none text-[var(--color-academia-charcoal)]"
                             >
                                 <option value="internship">Internship</option>
                                 <option value="research_assistant">Research Assistant</option>
@@ -240,10 +240,10 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                     </div>
 
                     <div>
-                         <label className="block text-gray-700 text-sm font-bold mb-2">Total Slots</label>
+                         <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Total Slots</label>
                          <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <FiTarget className="text-gray-400" />
+                                <FiTarget className="text-stone-400" />
                             </div>
                             <input
                                 type="number"
@@ -251,7 +251,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                                 value={formData.total_slots}
                                 onChange={handleChange}
                                 min="1"
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50 hover:bg-white"
+                                className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
                             />
                          </div>
                     </div>
@@ -259,17 +259,17 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Application Deadline</label>
+                        <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Application Deadline</label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <FiCalendar className="text-gray-400" />
+                                <FiCalendar className="text-stone-400" />
                             </div>
                             <input
                                 type="date"
                                 name="deadline"
                                 value={formData.deadline}
                                 onChange={handleChange}
-                                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50 hover:bg-white"
+                                className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
                             />
                         </div>
                     </div>
@@ -284,10 +284,10 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                                     onChange={handleChange}
                                     className="sr-only"
                                 />
-                                <div className={`block w-14 h-8 rounded-full transition-colors ${formData.is_open ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                                <div className={`block w-14 h-8 rounded-full transition-colors ${formData.is_open ? 'bg-[var(--color-academia-gold)]' : 'bg-stone-300'}`}></div>
                                 <div className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${formData.is_open ? 'transform translate-x-6' : ''}`}></div>
                             </div>
-                            <div className="ml-3 text-gray-700 font-medium">
+                            <div className="ml-3 text-[var(--color-academia-charcoal)] font-medium">
                                 Immediately Open
                             </div>
                         </label>
@@ -297,30 +297,30 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
 
             {/* Grant Details (Conditional) */}
             {formData.type === 'grant' && (
-                <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 space-y-4 animate-fade-in">
-                    <div className="flex items-center gap-2 text-blue-800 border-b border-blue-200 pb-2 mb-2">
-                        <FiDollarSign />
-                        <h3 className="text-lg font-semibold">Grant Details</h3>
+                <div className="bg-[var(--color-academia-cream)] p-6 rounded-xl border border-stone-200 space-y-4 animate-fade-in">
+                    <div className="flex items-center gap-2 text-[var(--color-academia-charcoal)] border-b border-stone-200 pb-2 mb-2">
+                        <FiDollarSign className="text-[var(--color-academia-gold)]" />
+                        <h3 className="text-lg font-serif font-semibold">Grant Details</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label className="block text-blue-800 text-sm font-bold mb-2">Amount</label>
+                            <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Amount</label>
                             <input
                                 type="number"
                                 name="funding_amount"
                                 value={formData.funding_amount}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-stone-200 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] bg-white text-[var(--color-academia-charcoal)]"
                                 min="0"
                             />
                         </div>
                         <div>
-                            <label className="block text-blue-800 text-sm font-bold mb-2">Currency</label>
+                            <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Currency</label>
                             <select
                                 name="currency"
                                 value={formData.currency}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-blue-200 rounded-lg"
+                                className="w-full px-3 py-2 border border-stone-200 rounded-lg bg-white text-[var(--color-academia-charcoal)] focus:ring-[var(--color-academia-gold)]"
                             >
                                 <option value="USD">USD ($)</option>
                                 <option value="EUR">EUR (€)</option>
@@ -329,13 +329,13 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-blue-800 text-sm font-bold mb-2">Agency</label>
+                            <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Agency</label>
                             <input
                                 type="text"
                                 name="grant_agency"
                                 value={formData.grant_agency}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-blue-200 rounded-lg"
+                                className="w-full px-3 py-2 border border-stone-200 rounded-lg bg-white text-[var(--color-academia-charcoal)] focus:ring-[var(--color-academia-gold)]"
                                 placeholder="e.g. NSF"
                             />
                         </div>
@@ -345,63 +345,63 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
 
             {/* Description Section */}
             <div className="space-y-4">
-                 <div className="flex items-center gap-2 text-gray-800 border-b pb-2">
-                    <FiAlignLeft className="text-blue-600" />
-                    <h3 className="text-lg font-semibold">Details & Requirements</h3>
+                 <div className="flex items-center gap-3 text-[var(--color-academia-charcoal)] border-b border-stone-200 pb-4">
+                    <FiAlignLeft className="text-[var(--color-academia-gold)] text-xl" />
+                    <h3 className="text-xl font-serif font-bold tracking-wide">Details & Requirements</h3>
                 </div>
                 
                 <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                    <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Description</label>
                     <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
                         rows="4"
                         placeholder="Describe the role, responsibilities, and what the student will learn..."
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50 hover:bg-white"
+                        className="w-full px-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
                         required
                     />
                 </div>
                 
                 <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Detailed Requirements</label>
+                    <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Detailed Requirements</label>
                     <textarea
                         name="requirements"
                         value={formData.requirements}
                         onChange={handleChange}
                         rows="3"
                         placeholder="Specific prerequisites, eligibility criteria, etc."
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50 hover:bg-white"
+                        className="w-full px-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Curriculum / Learning Plan</label>
+                    <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Curriculum / Learning Plan</label>
                     <textarea
                         name="curriculum"
                         value={formData.curriculum}
                         onChange={handleChange}
                         rows="3"
                         placeholder="Outline the learning modules, weekly plan, or syllabus..."
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50 hover:bg-white"
+                        className="w-full px-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
                     />
                 </div>
             </div>
 
             {/* Skills Section - Dynamic */}
             <div className="space-y-4">
-                <div className="flex items-center gap-2 text-gray-800 border-b pb-2">
-                    <FiAward className="text-blue-600" />
-                    <h3 className="text-lg font-semibold">Required Skills</h3>
+                <div className="flex items-center gap-3 text-[var(--color-academia-charcoal)] border-b border-stone-200 pb-4">
+                    <FiAward className="text-[var(--color-academia-gold)] text-xl" />
+                    <h3 className="text-xl font-serif font-bold tracking-wide">Required Skills</h3>
                 </div>
                 
-                <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Add Skills (Type to search or create)</label>
+                <div className="bg-[var(--color-academia-cream)] p-6 rounded-xl border border-stone-200">
+                    <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Add Skills (Type to search or create)</label>
                     <div className="relative" ref={skillInputRef}>
                         <div className="flex gap-2">
                             <div className="relative flex-1">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <FiSearch className="text-gray-400" />
+                                    <FiSearch className="text-stone-400" />
                                 </div>
                                 <input
                                     type="text"
@@ -412,29 +412,29 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                                     }}
                                     onFocus={() => setShowSkillDropdown(true)}
                                     placeholder="e.g. Python, React, Machine Learning..."
-                                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-white"
+                                    className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-white text-[var(--color-academia-charcoal)]"
                                 />
                             </div>
                         </div>
 
                         {/* Dropdown */}
                         {showSkillDropdown && skillSearch && (
-                            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                            <div className="absolute z-10 w-full mt-1 bg-white border border-stone-200 rounded-lg shadow-xl max-h-60 overflow-y-auto">
                                 {filteredSkills.map(skill => (
                                     <div 
                                         key={skill.id}
                                         onClick={() => handleAddSkill(skill)}
-                                        className="px-4 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between group"
+                                        className="px-4 py-3 hover:bg-[var(--color-academia-cream)] cursor-pointer flex items-center justify-between group"
                                     >
-                                        <span className="font-medium text-gray-700 group-hover:text-blue-700">{skill.name}</span>
-                                        <FiPlus className="text-gray-400 group-hover:text-blue-600" />
+                                        <span className="font-medium text-[#222222] group-hover:text-[#C5A028]">{skill.name}</span>
+                                        <FiPlus className="text-stone-400 group-hover:text-[#C5A028]" />
                                     </div>
                                 ))}
                                 
                                 {!exactMatch && skillSearch.trim() && (
                                     <div 
                                         onClick={handleCreateAndAddSkill}
-                                        className="px-4 py-3 hover:bg-green-50 cursor-pointer flex items-center gap-2 text-green-700 border-t border-gray-100"
+                                        className="px-4 py-3 hover:bg-[#F7F5F0] cursor-pointer flex items-center gap-2 text-[#C5A028] border-t border-stone-100"
                                     >
                                         <FiPlus className="font-bold" />
                                         <span>Create new skill: <strong>"{skillSearch}"</strong></span>
@@ -442,7 +442,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                                 )}
                                 
                                 {filteredSkills.length === 0 && exactMatch && (
-                                    <div className="px-4 py-3 text-gray-500 italic text-center">
+                                    <div className="px-4 py-3 text-stone-500 italic text-center">
                                         Skill already selected
                                     </div>
                                 )}
@@ -454,19 +454,19 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                     {selectedSkills.length > 0 ? (
                         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
                             {selectedSkills.map((item) => (
-                                <div key={item.skill_id} className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-200 shadow-sm animate-fade-in">
+                                <div key={item.skill_id} className="flex items-center justify-between bg-white p-3 rounded-lg border border-stone-200 shadow-sm animate-fade-in">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                        <div className="w-8 h-8 rounded-full bg-[var(--color-academia-charcoal)] flex items-center justify-center text-[var(--color-academia-gold)] font-bold text-sm border border-[var(--color-academia-gold)]">
                                             {item.name.substring(0,2).toUpperCase()}
                                         </div>
-                                        <span className="font-semibold text-gray-800">{item.name}</span>
+                                        <span className="font-semibold text-[var(--color-academia-charcoal)]">{item.name}</span>
                                     </div>
                                     
                                     <div className="flex items-center gap-3">
                                         <select
                                             value={item.weight}
                                             onChange={(e) => handleSkillWeightChange(item.skill_id, e.target.value)}
-                                            className="text-xs bg-gray-50 border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                            className="text-xs bg-[var(--color-academia-cream)] border border-stone-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)]"
                                             title="Skill Importance"
                                         >
                                             <option value="1">Nice to have</option>
@@ -476,7 +476,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveSkill(item.skill_id)}
-                                            className="text-gray-400 hover:text-red-500 transition"
+                                            className="text-stone-400 hover:text-red-500 transition"
                                         >
                                             <FiX />
                                         </button>
@@ -485,28 +485,28 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                             ))}
                         </div>
                     ) : (
-                        <div className="mt-4 text-center py-6 bg-gray-50 border border-dashed border-gray-300 rounded-lg text-gray-500">
-                            <FiAward className="mx-auto text-2xl mb-2 opacity-50" />
+                        <div className="mt-4 text-center py-6 bg-[var(--color-academia-cream)] border border-dashed border-stone-300 rounded-lg text-stone-500">
+                            <FiAward className="mx-auto text-2xl mb-2 opacity-50 text-[var(--color-academia-gold)]" />
                             <p>No skills added yet. Add skills to help students match.</p>
                         </div>
                     )}
                 </div>
             </div>
 
-            <div className="pt-6 border-t border-gray-100">
+            <div className="pt-6 border-t border-stone-200">
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold py-4 px-6 rounded-xl hover:shadow-lg transform transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg"
+                    className="w-full bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] font-serif font-bold py-4 px-6 rounded-xl hover:shadow-lg hover:shadow-yellow-500/20 transform transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-academia-gold)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg border border-[var(--color-academia-charcoal)] hover:border-[var(--color-academia-gold)]"
                 >
                     {loading ? (
                         <>
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[var(--color-academia-gold)]"></div>
                             Posting...
                         </>
                     ) : (
                         <>
-                            Post Opportunity <FiCheck />
+                            Post Opportunity <FiCheck className="text-[var(--color-academia-gold)]" />
                         </>
                     )}
                 </button>
