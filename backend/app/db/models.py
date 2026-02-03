@@ -285,7 +285,7 @@ class Application(Base):
 
     # Relationships
     student = relationship("User", back_populates="applications")
-    opportunity = relationship("Opportunity", back_populates="applications")
+    opportunity = relationship("Opportunity", back_populates="opportunity")
 
 class ImprovementPlan(Base):
     __tablename__ = "improvement_plans"
@@ -451,3 +451,75 @@ class SavedResearchGap(Base):
 
     student = relationship("User", foreign_keys=[student_id])
     mentor = relationship("MentorProfile", foreign_keys=[mentor_id])
+
+# --- New Models for Industrial Visits & Beehive Events ---
+
+class IndustrialProjectInterest(Base):
+    __tablename__ = "industrial_project_interests"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey("users.id"))
+    project_idea = Column(Text)
+    preferred_industries = Column(String) # Comma separated
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    student = relationship("User", foreign_keys=[student_id])
+
+class IndustrialVisit(Base):
+    __tablename__ = "industrial_visits"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organizer_id = Column(Integer, ForeignKey("users.id"))
+    title = Column(String)
+    company_name = Column(String)
+    visit_date = Column(DateTime)
+    location = Column(String)
+    description = Column(Text)
+    project_alignment = Column(Text) # How it aligns with student projects
+    max_students = Column(Integer)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    organizer = relationship("User", foreign_keys=[organizer_id])
+    applications = relationship("IndustrialVisitApplication", back_populates="visit")
+
+class IndustrialVisitApplication(Base):
+    __tablename__ = "industrial_visit_applications"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    visit_id = Column(Integer, ForeignKey("industrial_visits.id"))
+    student_id = Column(Integer, ForeignKey("users.id"))
+    status = Column(String, default="pending") # pending, approved, rejected
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    visit = relationship("IndustrialVisit", back_populates="applications")
+    student = relationship("User", foreign_keys=[student_id])
+
+class BeehiveEvent(Base):
+    __tablename__ = "beehive_events"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organizer_id = Column(Integer, ForeignKey("users.id")) # Must be admin
+    title = Column(String)
+    topic = Column(String) # RealWorld Scenario
+    event_date = Column(DateTime)
+    total_seats = Column(Integer, default=30)
+    entry_fee = Column(Float, default=1500.0)
+    description = Column(Text)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    organizer = relationship("User", foreign_keys=[organizer_id])
+    enrollments = relationship("BeehiveEnrollment", back_populates="event")
+
+class BeehiveEnrollment(Base):
+    __tablename__ = "beehive_enrollments"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    event_id = Column(Integer, ForeignKey("beehive_events.id"))
+    student_id = Column(Integer, ForeignKey("users.id"))
+    payment_status = Column(String, default="pending") # pending, paid
+    status = Column(String, default="enrolled")
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    event = relationship("BeehiveEvent", back_populates="enrollments")
+    student = relationship("User", foreign_keys=[student_id])

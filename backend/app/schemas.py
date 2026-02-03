@@ -318,3 +318,98 @@ class ApplicationResponse(ApplicationBase):
 
     class Config:
         from_attributes = True
+
+# --- Industrial & Beehive Schemas (New) ---
+
+class IndustrialProjectInterestBase(BaseModel):
+    topic: str
+    description: Optional[str] = None
+    preferred_industry: Optional[str] = None
+
+class IndustrialProjectInterestCreate(IndustrialProjectInterestBase):
+    pass
+
+class IndustrialProjectInterestResponse(IndustrialProjectInterestBase):
+    id: int
+    student_id: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class IndustrialVisitBase(BaseModel):
+    title: str
+    location: str
+    visit_date: datetime
+    description: Optional[str] = None
+    max_students: Optional[int] = 50
+
+class IndustrialVisitCreate(IndustrialVisitBase):
+    pass
+
+class IndustrialVisitResponse(IndustrialVisitBase):
+    id: int
+    organizer_id: int
+    created_at: datetime
+    organizer: Optional[UserResponse] = None
+    
+    class Config:
+        from_attributes = True
+
+class IndustrialVisitApplicationBase(BaseModel):
+    statement_of_purpose: Optional[str] = None
+
+class IndustrialVisitApplicationCreate(IndustrialVisitApplicationBase):
+    visit_id: int
+
+class IndustrialVisitApplicationResponse(IndustrialVisitApplicationBase):
+    id: int
+    visit_id: int
+    student_id: int
+    status: str
+    created_at: datetime
+    student: Optional[UserResponse] = None
+    visit: Optional[IndustrialVisitResponse] = None
+    
+    class Config:
+        from_attributes = True
+
+class BeehiveEventBase(BaseModel):
+    title: str
+    topic: str
+    event_date: datetime
+    total_seats: Optional[int] = 30
+    entry_fee: Optional[float] = 1500.0
+    description: Optional[str] = None
+    is_active: Optional[bool] = True
+
+class BeehiveEventCreate(BeehiveEventBase):
+    pass
+
+class BeehiveEventResponse(BeehiveEventBase):
+    id: int
+    organizer_id: int
+    created_at: datetime
+    organizer: Optional[UserResponse] = None
+    
+    class Config:
+        from_attributes = True
+
+class BeehiveEnrollmentBase(BaseModel):
+    pass
+
+class BeehiveEnrollmentCreate(BeehiveEnrollmentBase):
+    event_id: int
+
+class BeehiveEnrollmentResponse(BeehiveEnrollmentBase):
+    id: int
+    event_id: int
+    student_id: int
+    payment_status: str
+    status: str
+    created_at: datetime
+    student: Optional[UserResponse] = None
+    event: Optional[BeehiveEventResponse] = None
+    
+    class Config:
+        from_attributes = True

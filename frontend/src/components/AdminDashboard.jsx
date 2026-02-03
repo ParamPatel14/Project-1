@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { getPendingMentors, verifyMentor, getAllStudents, getAllMentors, getOpportunities, createAdminOpportunity, getAllApplications } from "../api";
-import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu, FiBarChart2 } from "react-icons/fi";
+import { getPendingMentors, verifyMentor, getAllStudents, getAllMentors, getOpportunities, createAdminOpportunity, getAllApplications, getProjectInterests } from "../api";
+import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu, FiBarChart2, FiLogOut } from "react-icons/fi";
 import OpportunityForm from "./OpportunityForm";
-import AnalyticsDashboard from "./AnalyticsDashboard";
+import BeehiveEventList from "./BeehiveEventList";
+import IndustrialVisitList from "./IndustrialVisitList";
+import ProjectInterestForm from "./ProjectInterestForm";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -11,6 +13,7 @@ const AdminDashboard = () => {
   const [mentors, setMentors] = useState([]);
   const [opportunities, setOpportunities] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [projectInterests, setProjectInterests] = useState([]);
   const [loading, setLoading] = useState(false);
   
   // Modal State
@@ -40,6 +43,9 @@ const AdminDashboard = () => {
       } else if (activeTab === 'applications') {
         const data = await getAllApplications();
         setApplications(data);
+      } else if (activeTab === 'real-world') {
+        const data = await getProjectInterests();
+        setProjectInterests(data);
       }
     } catch (error) {
       console.error(`Failed to fetch ${activeTab} data`, error);
@@ -71,48 +77,69 @@ const AdminDashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-600">
-        <h2 className="text-2xl font-bold text-gray-800 flex items-center">
-          <FiShield className="mr-2" /> Admin Portal
-        </h2>
-        <p className="text-gray-600 mt-2">Platform Management & Monitoring</p>
-      </div>
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b border-stone-200 mb-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <div className="flex items-center">
+            <h1 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">Admin Portal</h1>
+            <span className="ml-3 px-2 py-1 bg-[var(--color-academia-gold)] text-white text-xs rounded-full uppercase tracking-wider font-bold">
+              Administrator
+            </span>
+          </div>
+          <button
+            onClick={() => {
+                localStorage.removeItem('token');
+                window.location.href = '/login';
+            }}
+            className="flex items-center text-stone-500 hover:text-[var(--color-academia-charcoal)] transition-colors"
+          >
+            <FiLogOut className="mr-2" />
+            Logout
+          </button>
+        </div>
+      </header>
 
       {/* Tabs */}
-      <div className="flex space-x-4 border-b border-gray-200 pb-2 overflow-x-auto">
+      <div className="flex space-x-4 border-b border-stone-200 pb-2 overflow-x-auto">
         <button 
           onClick={() => setActiveTab('overview')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'overview' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+          className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${activeTab === 'overview' ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-b-2 border-[var(--color-academia-gold)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'}`}
         >
           Overview (Pending)
         </button>
         <button 
           onClick={() => setActiveTab('students')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'students' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+          className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${activeTab === 'students' ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-b-2 border-[var(--color-academia-gold)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'}`}
         >
           Students
         </button>
         <button 
           onClick={() => setActiveTab('mentors')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'mentors' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+          className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${activeTab === 'mentors' ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-b-2 border-[var(--color-academia-gold)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'}`}
         >
           Mentors
         </button>
         <button 
           onClick={() => setActiveTab('internships')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'internships' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+          className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${activeTab === 'internships' ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-b-2 border-[var(--color-academia-gold)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'}`}
         >
           Internships
         </button>
         <button 
           onClick={() => setActiveTab('applications')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'applications' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+          className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${activeTab === 'applications' ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-b-2 border-[var(--color-academia-gold)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'}`}
         >
           Applications
         </button>
         <button 
+          onClick={() => setActiveTab('real-world')} 
+          className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${activeTab === 'real-world' ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-b-2 border-[var(--color-academia-gold)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'}`}
+        >
+          Real World
+        </button>
+        <button 
           onClick={() => setActiveTab('analytics')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'analytics' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+          className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${activeTab === 'analytics' ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-b-2 border-[var(--color-academia-gold)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'}`}
         >
           Analytics
         </button>
@@ -335,6 +362,45 @@ const AdminDashboard = () => {
                     )}
                   </tbody>
                 </table>
+              </div>
+            )}
+            {/* REAL WORLD TAB */}
+            {activeTab === 'real-world' && (
+              <div className="p-6 space-y-8">
+                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <BeehiveEventList />
+                    </div>
+                    <div>
+                        <IndustrialVisitList />
+                    </div>
+                 </div>
+
+                 <div className="border-t border-gray-200 pt-6">
+                    <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <FiCpu className="mr-2 text-indigo-600" /> Student Project Interests
+                    </h3>
+                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        {projectInterests.length === 0 ? (
+                            <p className="text-gray-500 text-center">No student interests submitted yet.</p>
+                        ) : (
+                            <div className="space-y-4">
+                                {projectInterests.map((interest) => (
+                                    <div key={interest.id} className="bg-white p-4 rounded shadow-sm border border-gray-100">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <div>
+                                                <h4 className="font-bold text-gray-900">{interest.student?.name || "Unknown Student"}</h4>
+                                                <p className="text-sm text-gray-500">{interest.student?.email}</p>
+                                            </div>
+                                            <span className="text-xs text-gray-400">{new Date(interest.created_at).toLocaleDateString()}</span>
+                                        </div>
+                                        <p className="text-gray-700 bg-gray-50 p-3 rounded text-sm">{interest.interest_area}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                 </div>
               </div>
             )}
           </>

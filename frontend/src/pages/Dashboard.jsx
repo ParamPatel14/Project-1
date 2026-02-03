@@ -11,8 +11,11 @@ import StudentApplications from "../components/StudentApplications";
 import ResearchLab from "../components/ResearchLab";
 import AnalyticsDashboard from "../components/AnalyticsDashboard";
 import SmartMatchList from "../components/SmartMatchList";
+import IndustrialVisitList from "../components/IndustrialVisitList";
+import BeehiveEventList from "../components/BeehiveEventList";
+import ProjectInterestForm from "../components/ProjectInterestForm";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase, FiCpu } from "react-icons/fi";
+import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase, FiCpu, FiGlobe } from "react-icons/fi";
 
 const Dashboard = () => {
   const { user, logout, loading: authLoading, refreshUser } = useAuth();
@@ -92,6 +95,7 @@ const Dashboard = () => {
                   <button onClick={() => setActiveTab('browse')} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all ${activeTab === 'browse' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'}`}>Browse Opportunities</button>
                   <button onClick={() => setActiveTab('applications')} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all ${activeTab === 'applications' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'}`}>My Applications</button>
                   <button onClick={() => setActiveTab('lab')} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all ${activeTab === 'lab' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'}`}>Research Lab</button>
+                  <button onClick={() => setActiveTab('real-world')} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all ${activeTab === 'real-world' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'}`}>Real World</button>
                 </div>
               )}
               {displayRole === "mentor" && (
@@ -102,6 +106,7 @@ const Dashboard = () => {
                     { id: 'my-opportunities', label: 'My Opportunities' },
                     { id: 'applications', label: 'Manage Applications' },
                     { id: 'lab', label: 'Research Lab' },
+                    { id: 'real-world', label: 'Real World' },
                     { id: 'analytics', label: 'Analytics' }
                   ].map(tab => (
                     <button
@@ -272,6 +277,20 @@ const Dashboard = () => {
             
             {activeTab === 'lab' && <ResearchLab />}
 
+            {activeTab === 'real-world' && (
+              <div className="space-y-8 animate-fade-in">
+                <ProjectInterestForm />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="lg:col-span-2">
+                     <IndustrialVisitList />
+                  </div>
+                  <div className="lg:col-span-2">
+                     <BeehiveEventList />
+                  </div>
+                </div>
+              </div>
+            )}
+
 
           </>
         )}
@@ -348,6 +367,20 @@ const Dashboard = () => {
             )}
 
             {activeTab === 'lab' && <ResearchLab />}
+
+            {activeTab === 'real-world' && (
+              <div className="space-y-8 animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="lg:col-span-2">
+                     <IndustrialVisitList />
+                  </div>
+                  {/* Mentors can view Beehive events but only Admin creates, Students enroll */}
+                  <div className="lg:col-span-2">
+                     <BeehiveEventList />
+                  </div>
+                </div>
+              </div>
+            )}
 
             {activeTab === 'analytics' && <AnalyticsDashboard title="My Engagement Analytics" />}
           </>
