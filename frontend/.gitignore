@@ -11,6 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
+.agents/
+.claude/
+.codex/
+.opencode/
+
 
 # Editor directories and files
 .vscode/*

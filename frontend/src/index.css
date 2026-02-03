@@ -1,4 +1,27 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+@theme {
+  --color-academia-charcoal: #222222;
+  --color-academia-cream: #FDFBF7;
+  --color-academia-gold: #C5A028;
+  --color-academia-gold-hover: #B08D1F;
+  
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-academia-cream);
+    color: var(--color-academia-charcoal);
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+  }
+}
 
 @keyframes fade-in-up {
   0% {

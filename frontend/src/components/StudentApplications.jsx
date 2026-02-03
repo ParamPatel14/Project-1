@@ -4,6 +4,7 @@ import {
   FiFileText, FiCalendar, FiClock, FiCheckCircle, FiXCircle, 
   FiAlertCircle, FiChevronRight, FiBriefcase, FiHash, FiTarget 
 } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
 const StudentApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -29,104 +30,111 @@ const StudentApplications = () => {
   const getStatusConfig = (status) => {
     switch (status) {
       case 'accepted': 
-        return { color: 'bg-green-100 text-green-700 border-green-200', icon: <FiCheckCircle /> };
+        return { color: 'bg-green-100 text-green-800 border-green-200', icon: <FiCheckCircle /> };
       case 'rejected': 
-        return { color: 'bg-red-100 text-red-700 border-red-200', icon: <FiXCircle /> };
+        return { color: 'bg-red-100 text-red-800 border-red-200', icon: <FiXCircle /> };
       case 'reviewing': 
         return { color: 'bg-yellow-100 text-yellow-800 border-yellow-200', icon: <FiClock /> };
       default: 
-        return { color: 'bg-blue-50 text-blue-700 border-blue-200', icon: <FiAlertCircle /> };
+        return { color: 'bg-blue-50 text-blue-800 border-blue-200', icon: <FiAlertCircle /> };
     }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="flex items-center justify-center min-h-[400px] bg-[var(--color-academia-cream)]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-academia-charcoal)]"></div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="max-w-7xl mx-auto px-4 py-12 bg-[var(--color-academia-cream)] min-h-screen">
+      <div className="flex items-center justify-between mb-12">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">My Applications</h2>
-          <p className="text-gray-500 mt-2">Track the status of your internship applications</p>
+          <h2 className="text-4xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">My Applications</h2>
+          <p className="text-stone-500 font-serif text-lg">Track the status of your research proposals and internships</p>
         </div>
-        <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 text-sm font-medium text-gray-600">
-          Total Applications: <span className="text-indigo-600 font-bold">{applications.length}</span>
+        <div className="bg-white px-6 py-3 rounded-sm shadow-sm border border-[var(--color-academia-gold)] text-sm font-bold text-[var(--color-academia-charcoal)]">
+          Total Applications: <span className="text-[var(--color-academia-gold)] text-lg ml-2">{applications.length}</span>
         </div>
       </div>
       
       {applications.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
-          <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 text-indigo-500">
-            <FiFileText size={32} />
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-sm shadow-md border-t-4 border-[var(--color-academia-charcoal)] p-16 text-center"
+        >
+          <div className="w-24 h-24 bg-[var(--color-academia-cream)] rounded-full flex items-center justify-center mx-auto mb-8 border border-[var(--color-academia-gold)]">
+            <FiFileText size={40} className="text-[var(--color-academia-charcoal)]" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">No Applications Yet</h3>
-          <p className="text-gray-500 mb-6 max-w-md mx-auto">
-            You haven't applied to any opportunities yet. Browse available internships and start your journey!
+          <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4">No Applications Yet</h3>
+          <p className="text-stone-500 mb-8 max-w-md mx-auto text-lg leading-relaxed">
+            You haven't submitted any research proposals yet. Identify gaps in current research and apply to align with a mentor.
           </p>
-          <a href="/opportunities" className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm">
-            Browse Opportunities
+          <a href="/opportunities" className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-sm text-[var(--color-academia-cream)] bg-[var(--color-academia-charcoal)] hover:bg-stone-800 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            Browse Research Opportunities
           </a>
-        </div>
+        </motion.div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {applications.map((app) => {
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {applications.map((app, index) => {
             const statusConfig = getStatusConfig(app.status);
             const opportunity = app.opportunity || {};
             
             return (
-              <div 
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
                 key={app.id} 
                 onClick={() => setSelectedApp(app)}
-                className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300 cursor-pointer group flex flex-col h-full"
+                className="bg-white rounded-sm shadow-sm border border-stone-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group flex flex-col h-full hover:border-[var(--color-academia-gold)]"
               >
                 {/* Card Header */}
-                <div className="p-6 pb-4 flex-grow">
-                  <div className="flex justify-between items-start mb-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 ${statusConfig.color}`}>
+                <div className="p-8 pb-6 flex-grow">
+                  <div className="flex justify-between items-start mb-6">
+                    <span className={`px-4 py-1.5 rounded-sm text-xs font-bold uppercase tracking-wider flex items-center gap-2 ${statusConfig.color}`}>
                       {statusConfig.icon}
                       {app.status}
                     </span>
-                    <span className="text-gray-400 text-xs flex items-center gap-1 bg-gray-50 px-2 py-1 rounded">
+                    <span className="text-stone-400 text-xs flex items-center gap-1 font-mono">
                       <FiCalendar size={12} />
                       {new Date(app.created_at).toLocaleDateString()}
                     </span>
                   </div>
                   
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 line-clamp-2 group-hover:text-[var(--color-academia-gold)] transition-colors leading-snug">
                     {opportunity.title || `Opportunity #${app.opportunity_id}`}
                   </h3>
                   
                   {opportunity.mentor && (
-                    <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
-                        <div className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-[10px]">
+                    <div className="flex items-center gap-3 mb-4 text-sm text-stone-600">
+                        <div className="w-8 h-8 rounded-full bg-[var(--color-academia-cream)] flex items-center justify-center text-[var(--color-academia-charcoal)] font-bold text-xs border border-[var(--color-academia-gold)]">
                         {opportunity.mentor.name ? opportunity.mentor.name.charAt(0).toUpperCase() : 'M'}
                         </div>
-                        <span className="truncate">{opportunity.mentor.name || 'Unknown Mentor'}</span>
+                        <span className="truncate font-medium">{opportunity.mentor.name || 'Unknown Mentor'}</span>
                     </div>
                   )}
 
-                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                    <FiBriefcase className="flex-shrink-0" />
-                    <span className="truncate">{opportunity.type ? opportunity.type.replace('_', ' ') : 'Internship'}</span>
+                  <div className="flex items-center gap-2 text-sm text-stone-500 mb-4 font-medium">
+                    <FiBriefcase className="flex-shrink-0 text-[var(--color-academia-gold)]" />
+                    <span className="truncate uppercase tracking-wide text-xs">{opportunity.type ? opportunity.type.replace('_', ' ') : 'Internship'}</span>
                   </div>
                 </div>
 
                 {/* Card Footer */}
-                <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2 text-gray-600">
-                        <FiTarget className="text-indigo-500" />
-                        <span className="font-medium">Match: {Math.round(app.match_score)}%</span>
+                <div className="px-8 py-5 bg-[var(--color-academia-cream)] border-t border-stone-100 flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2 text-[var(--color-academia-charcoal)]">
+                        <FiTarget className="text-[var(--color-academia-gold)]" />
+                        <span className="font-bold">Match: {Math.round(app.match_score)}%</span>
                     </div>
-                    <span className="text-indigo-600 font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        View Details <FiChevronRight />
+                    <span className="text-[var(--color-academia-charcoal)] font-bold flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                        Details <FiChevronRight />
                     </span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -134,18 +142,20 @@ const StudentApplications = () => {
 
       {/* Detail Modal */}
       {selectedApp && (
-        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in p-4">
-          <div 
-            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-fade-in-up"
+        <div className="fixed inset-0 bg-[var(--color-academia-charcoal)]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-sm shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border-t-4 border-[var(--color-academia-gold)]"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="p-6 border-b border-gray-100 flex justify-between items-start bg-gray-50/50">
+            <div className="p-8 border-b border-stone-100 flex justify-between items-start bg-[var(--color-academia-cream)]">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                <h3 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">
                   {selectedApp.opportunity?.title || 'Application Details'}
                 </h3>
-                <div className="flex items-center gap-3 text-sm text-gray-500">
+                <div className="flex items-center gap-4 text-sm text-stone-500 font-mono">
                     <span className="flex items-center gap-1">
                         <FiHash /> ID: {selectedApp.id}
                     </span>
@@ -155,59 +165,59 @@ const StudentApplications = () => {
               </div>
               <button 
                 onClick={() => setSelectedApp(null)}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition"
+                className="p-2 text-stone-400 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100 rounded-full transition"
               >
-                <FiXCircle size={24} />
+                <FiXCircle size={28} />
               </button>
             </div>
 
             {/* Modal Content */}
-            <div className="p-6 space-y-8">
+            <div className="p-8 space-y-10">
               {/* Status Section */}
-              <div className="flex items-center justify-between bg-white border border-gray-100 p-4 rounded-xl shadow-sm">
+              <div className="flex items-center justify-between bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
                 <div>
-                    <p className="text-sm text-gray-500 mb-1">Current Status</p>
-                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold capitalize ${getStatusConfig(selectedApp.status).color}`}>
+                    <p className="text-xs uppercase font-bold text-stone-500 mb-2 tracking-wider">Current Status</p>
+                    <div className={`inline-flex items-center gap-3 px-4 py-2 rounded-sm text-base font-bold capitalize ${getStatusConfig(selectedApp.status).color}`}>
                         {getStatusConfig(selectedApp.status).icon}
                         {selectedApp.status}
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="text-sm text-gray-500 mb-1">Match Score</p>
-                    <div className="text-2xl font-bold text-indigo-600">{Math.round(selectedApp.match_score)}%</div>
+                    <p className="text-xs uppercase font-bold text-stone-500 mb-2 tracking-wider">Alignment Score</p>
+                    <div className="text-4xl font-serif font-bold text-[var(--color-academia-charcoal)]">{Math.round(selectedApp.match_score)}%</div>
                 </div>
               </div>
 
               {/* Cover Letter Section */}
               <div>
-                <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <FiFileText className="text-indigo-500" />
+                <h4 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-3 border-b border-[var(--color-academia-gold)] pb-2">
+                    <FiFileText className="text-[var(--color-academia-gold)]" />
                     Cover Letter
                 </h4>
-                <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-gray-700 leading-relaxed whitespace-pre-wrap font-serif text-base">
+                <div className="bg-stone-50 p-8 rounded-sm border-l-4 border-[var(--color-academia-charcoal)] text-stone-700 leading-relaxed whitespace-pre-wrap font-serif text-lg">
                   {selectedApp.cover_letter}
                 </div>
               </div>
 
-              {/* Additional Details (Future placeholder) */}
+              {/* Additional Details */}
               {selectedApp.opportunity && (
                  <div>
-                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                        <FiTarget className="text-indigo-500" />
+                    <h4 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-3 border-b border-[var(--color-academia-gold)] pb-2">
+                        <FiTarget className="text-[var(--color-academia-gold)]" />
                         Opportunity Summary
                     </h4>
-                    <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                    <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-[var(--color-academia-gold)]/30">
                         {selectedApp.opportunity.mentor && (
-                            <p className="text-gray-700 mb-2 flex items-center gap-2">
-                                <span className="font-semibold">Mentor:</span> 
-                                <span className="bg-white px-2 py-0.5 rounded text-sm border border-blue-100">{selectedApp.opportunity.mentor.name}</span>
+                            <p className="text-stone-700 mb-3 flex items-center gap-2 text-lg">
+                                <span className="font-bold text-[var(--color-academia-charcoal)]">Mentor:</span> 
+                                <span className="bg-white px-3 py-1 rounded-sm text-sm border border-stone-200 font-serif">{selectedApp.opportunity.mentor.name}</span>
                             </p>
                         )}
-                        <p className="text-gray-700 mb-2">
-                            <span className="font-semibold">Type:</span> {selectedApp.opportunity.type}
+                        <p className="text-stone-700 mb-3 text-lg">
+                            <span className="font-bold text-[var(--color-academia-charcoal)]">Type:</span> {selectedApp.opportunity.type}
                         </p>
-                         <p className="text-gray-700 line-clamp-3">
-                            <span className="font-semibold">Description:</span> {selectedApp.opportunity.description}
+                         <p className="text-stone-700 leading-relaxed">
+                            <span className="font-bold text-[var(--color-academia-charcoal)] block mb-1">Description:</span> {selectedApp.opportunity.description}
                         </p>
                     </div>
                  </div>
@@ -216,11 +226,11 @@ const StudentApplications = () => {
               {/* Curriculum Section (Only if Accepted) */}
               {selectedApp.status === 'accepted' && selectedApp.opportunity && selectedApp.opportunity.curriculum && (
                  <div>
-                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                        <FiBriefcase className="text-indigo-500" />
-                        Course Curriculum
+                    <h4 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-3 border-b border-[var(--color-academia-gold)] pb-2">
+                        <FiBriefcase className="text-[var(--color-academia-gold)]" />
+                        Research Curriculum
                     </h4>
-                    <div className="bg-green-50 p-6 rounded-xl border border-green-100 text-gray-700 leading-relaxed whitespace-pre-wrap">
+                    <div className="bg-green-50 p-8 rounded-sm border border-green-200 text-stone-800 leading-relaxed whitespace-pre-wrap text-lg">
                         {selectedApp.opportunity.curriculum}
                     </div>
                  </div>
@@ -228,15 +238,15 @@ const StudentApplications = () => {
             </div>
             
             {/* Modal Footer */}
-            <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
+            <div className="p-8 border-t border-stone-100 bg-stone-50 flex justify-end">
                 <button 
                     onClick={() => setSelectedApp(null)}
-                    className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition shadow-sm"
+                    className="px-8 py-3 bg-white border border-stone-300 text-[var(--color-academia-charcoal)] font-bold rounded-sm hover:bg-stone-50 transition shadow-sm uppercase tracking-wide text-sm"
                 >
                     Close
                 </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

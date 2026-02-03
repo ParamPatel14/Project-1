@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiMail, FiLock } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { motion } from "framer-motion";
+import ConnectingNodes from "../components/ConnectingNodes";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -36,32 +38,43 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
-            <p className="text-gray-500 mt-2">Sign in to your account</p>
+    <div className="flex min-h-screen bg-[var(--color-academia-cream)]">
+      {/* Left Side - Form */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-12 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-md w-full mx-auto"
+        >
+          <div className="mb-10">
+            <h1 className="text-4xl lg:text-5xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 leading-tight">
+              Welcome <br />
+              <span className="text-[var(--color-academia-gold)]">Back</span>
+            </h1>
+            <p className="text-stone-600 text-lg">
+              Sign in to continue your research journey.
+            </p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded">
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-sm">
               <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+              <label className="block text-sm font-medium text-[var(--color-academia-charcoal)] mb-2 uppercase tracking-wide">Email Address</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMail className="h-5 w-5 text-gray-400" />
+                  <FiMail className="h-5 w-5 text-stone-400" />
                 </div>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-stone-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-colors shadow-sm"
                   placeholder="you@example.com"
                   required
                 />
@@ -69,16 +82,16 @@ const Login = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+              <label className="block text-sm font-medium text-[var(--color-academia-charcoal)] mb-2 uppercase tracking-wide">Password</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="h-5 w-5 text-gray-400" />
+                  <FiLock className="h-5 w-5 text-stone-400" />
                 </div>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-stone-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-colors shadow-sm"
                   placeholder="••••••••"
                   required
                 />
@@ -88,7 +101,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`w-full bg-[var(--color-academia-gold)] text-white py-4 rounded-sm font-bold tracking-wide shadow-md hover:bg-[var(--color-academia-gold-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-academia-gold)] transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -97,17 +110,17 @@ const Login = () => {
           <div className="mt-8">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
+                <div className="w-full border-t border-stone-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                <span className="px-2 bg-[var(--color-academia-cream)] text-stone-500">Or continue with</span>
               </div>
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3">
               <button
                 onClick={handleGoogleLogin}
-                className="w-full inline-flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="w-full inline-flex justify-center items-center py-2.5 px-4 border border-stone-200 rounded-sm shadow-sm bg-white text-sm font-medium text-[var(--color-academia-charcoal)] hover:bg-stone-50 transition-colors"
               >
                 <FcGoogle className="h-5 w-5 mr-2" />
                 Google
@@ -115,23 +128,27 @@ const Login = () => {
 
               <button
                 onClick={handleGithubLogin}
-                className="w-full inline-flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="w-full inline-flex justify-center items-center py-2.5 px-4 border border-stone-200 rounded-sm shadow-sm bg-white text-sm font-medium text-[var(--color-academia-charcoal)] hover:bg-stone-50 transition-colors"
               >
                 <FaGithub className="h-5 w-5 mr-2" />
                 GitHub
               </button>
             </div>
           </div>
-        </div>
-        
-        <div className="px-8 py-4 bg-gray-50 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-600">
+
+          <p className="mt-8 text-center text-sm text-stone-500">
             Don't have an account?{" "}
-            <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <Link to="/register" className="font-semibold text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] transition-colors">
               Sign up
             </Link>
           </p>
-        </div>
+        </motion.div>
+      </div>
+
+      {/* Right Side - 3D Visual */}
+      <div className="hidden lg:block w-1/2 relative overflow-hidden">
+        <ConnectingNodes />
+        <div className="absolute inset-0 bg-[var(--color-academia-charcoal)] opacity-20 pointer-events-none"></div>
       </div>
     </div>
   );

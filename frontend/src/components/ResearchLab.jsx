@@ -11,6 +11,7 @@ import {
     gradeSubmission
 } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FiPlus, FiMessageSquare, FiVideo, FiFileText, FiLayers, FiCheckCircle } from 'react-icons/fi';
 
 import ChatBox from './ChatBox';
 import MeetingScheduler from './MeetingScheduler';
@@ -84,99 +85,77 @@ const ResearchLab = () => {
         }
     };
 
-    if (loading) return <div className="p-8">Loading Research Lab...</div>;
+    if (loading) return <div className="p-8 text-center text-[var(--color-academia-charcoal)] font-serif animate-pulse">Loading Research Lab...</div>;
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-900">Research Lab</h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+            <div className="flex justify-between items-center mb-8 border-b border-stone-200 pb-4">
+                <div>
+                    <h1 className="text-3xl font-bold font-serif text-[var(--color-academia-charcoal)]">Research Lab</h1>
+                    <p className="text-stone-500 mt-1 font-serif italic">Collaborative workspace for mentors and students</p>
+                </div>
                 {user.role === 'mentor' && (
                     <button 
                         onClick={() => setShowCreateModal(true)}
-                        className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                        className="bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-5 py-2 rounded-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2 font-medium"
                     >
-                        Start New Project
+                        <FiPlus /> Start New Project
                     </button>
                 )}
             </div>
 
             {/* Project Selector */}
-            <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
-                {projects.map(project => (
+            <div className="flex gap-3 mb-8 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-transparent">
+                {projects.length === 0 ? (
+                    <div className="text-stone-500 italic px-4">No active projects. {user.role === 'mentor' ? 'Start one above.' : 'Wait for a mentor to initiate.'}</div>
+                ) : projects.map(project => (
                     <button
                         key={project.id}
                         onClick={() => setSelectedProject(project)}
-                        className={`flex-shrink-0 px-4 py-2 rounded-full border ${
+                        className={`flex-shrink-0 px-5 py-2.5 rounded-sm border transition-all duration-300 ${
                             selectedProject?.id === project.id 
-                            ? 'bg-indigo-100 border-indigo-500 text-indigo-700' 
-                            : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                            ? 'bg-[var(--color-academia-charcoal)] border-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md transform -translate-y-0.5' 
+                            : 'bg-white border-stone-200 text-stone-600 hover:border-[var(--color-academia-gold)] hover:text-[var(--color-academia-charcoal)]'
                         }`}
                     >
-                        {project.title} <span className="text-xs ml-2 opacity-75">({project.status})</span>
+                        <span className="font-serif font-bold">{project.title}</span> 
+                        <span className={`text-xs ml-2 px-1.5 py-0.5 rounded-sm ${selectedProject?.id === project.id ? 'bg-[var(--color-academia-gold)] text-black' : 'bg-stone-100 text-stone-500'}`}>
+                            {project.status}
+                        </span>
                     </button>
                 ))}
             </div>
 
             {selectedProject ? (
-                <div className="bg-white shadow rounded-lg overflow-hidden">
-                    <div className="border-b border-gray-200">
-                        <nav className="flex -mb-px">
-                            <button
-                                onClick={() => setView('pipeline')}
-                                className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
-                                    view === 'pipeline'
-                                    ? 'border-indigo-500 text-indigo-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                }`}
-                            >
-                                Pipeline
-                            </button>
-                            <button
-                                onClick={() => setView('assignments')}
-                                className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
-                                    view === 'assignments'
-                                    ? 'border-indigo-500 text-indigo-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                }`}
-                            >
-                                Assignments
-                            </button>
-                            <button
-                                onClick={() => setView('chat')}
-                                className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
-                                    view === 'chat'
-                                    ? 'border-indigo-500 text-indigo-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                }`}
-                            >
-                                Chat
-                            </button>
-                            <button
-                                onClick={() => setView('meetings')}
-                                className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
-                                    view === 'meetings'
-                                    ? 'border-indigo-500 text-indigo-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                }`}
-                            >
-                                Meetings
-                            </button>
-                            {user.role === 'mentor' && (
-                                <button
-                                    onClick={() => setView('references')}
-                                    className={`w-1/5 py-4 px-1 text-center border-b-2 font-medium text-sm ${
-                                        view === 'references'
-                                        ? 'border-indigo-500 text-indigo-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                    }`}
-                                >
-                                    Reference
-                                </button>
-                            )}
+                <div className="bg-white shadow-lg rounded-sm overflow-hidden border border-stone-100">
+                    <div className="border-b border-stone-200 bg-[var(--color-academia-cream)]">
+                        <nav className="flex -mb-px overflow-x-auto">
+                            {[
+                                { id: 'pipeline', label: 'Pipeline', icon: FiLayers },
+                                { id: 'assignments', label: 'Assignments', icon: FiFileText },
+                                { id: 'chat', label: 'Chat', icon: FiMessageSquare },
+                                { id: 'meetings', label: 'Meetings', icon: FiVideo },
+                                { id: 'references', label: 'References', icon: FiCheckCircle, condition: user.role === 'mentor' }
+                            ].map(tab => (
+                                (!tab.condition && tab.condition !== undefined) ? null : (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => setView(tab.id)}
+                                        className={`flex-1 min-w-[120px] py-4 px-4 text-center border-b-2 font-serif font-medium text-sm transition-colors flex items-center justify-center gap-2 ${
+                                            view === tab.id
+                                            ? 'border-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)] bg-white'
+                                            : 'border-transparent text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'
+                                        }`}
+                                    >
+                                        <tab.icon className={view === tab.id ? 'text-[var(--color-academia-gold)]' : ''} />
+                                        {tab.label}
+                                    </button>
+                                )
+                            ))}
                         </nav>
                     </div>
 
-                    <div className="p-6">
+                    <div className="p-6 min-h-[400px]">
                         {view === 'pipeline' && (
                             <PipelineBoard project={selectedProject} onStatusUpdate={handleStatusUpdate} />
                         )}
@@ -195,32 +174,36 @@ const ResearchLab = () => {
                     </div>
                 </div>
             ) : (
-                <div className="text-center py-12 bg-white rounded-lg shadow">
-                    <p className="text-gray-500 text-lg">Select a project to view details or start a new one.</p>
+                <div className="text-center py-20 bg-white rounded-sm shadow-sm border border-stone-200">
+                    <div className="w-16 h-16 bg-[var(--color-academia-cream)] rounded-full flex items-center justify-center mx-auto mb-4 border border-[var(--color-academia-gold)]">
+                        <FiLayers className="text-2xl text-[var(--color-academia-gold)]" />
+                    </div>
+                    <p className="text-[var(--color-academia-charcoal)] text-lg font-serif">Select a project to view details or start a new one.</p>
                 </div>
             )}
 
             {/* Create Project Modal */}
             {showCreateModal && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-lg max-w-md w-full p-6">
-                        <h3 className="text-lg font-medium text-gray-900 mb-4">Start New Research Project</h3>
+                <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-sm max-w-md w-full p-8 shadow-2xl border-t-4 border-[var(--color-academia-gold)] animate-scale-up">
+                        <h3 className="text-xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-6">Start New Research Project</h3>
                         <form onSubmit={handleCreateProject}>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Project Title</label>
+                            <div className="mb-6">
+                                <label className="block text-sm font-bold text-[var(--color-academia-charcoal)] mb-2 font-serif">Project Title</label>
                                 <input 
                                     type="text" 
                                     required
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border"
+                                    className="w-full px-4 py-2 border border-stone-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)]"
                                     value={newProjectData.title}
                                     onChange={e => setNewProjectData({...newProjectData, title: e.target.value})}
+                                    placeholder="e.g., Analysis of..."
                                 />
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Student (Accepted)</label>
+                            <div className="mb-8">
+                                <label className="block text-sm font-bold text-[var(--color-academia-charcoal)] mb-2 font-serif">Student (Accepted)</label>
                                 <select 
                                     required
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border"
+                                    className="w-full px-4 py-2 border border-stone-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] bg-white"
                                     value={newProjectData.student_id}
                                     onChange={e => {
                                         const studentId = e.target.value;
@@ -245,13 +228,13 @@ const ResearchLab = () => {
                                 <button 
                                     type="button"
                                     onClick={() => setShowCreateModal(false)}
-                                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                                    className="px-5 py-2 border border-stone-300 rounded-sm text-stone-600 hover:bg-stone-50 font-medium transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button 
                                     type="submit"
-                                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                                    className="px-5 py-2 bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] rounded-sm hover:opacity-90 font-medium shadow-md transition-all"
                                 >
                                     Create Project
                                 </button>
@@ -269,19 +252,29 @@ const PipelineBoard = ({ project, onStatusUpdate }) => {
     const stages = ["Ideation", "Literature Review", "Experimentation", "Drafting", "Submission", "Published"];
     
     return (
-        <div className="flex gap-4 overflow-x-auto pb-4">
-            {stages.map(stage => (
-                <div key={stage} className={`flex-shrink-0 w-64 p-4 rounded-lg ${project.status === stage ? 'bg-indigo-50 border-2 border-indigo-500' : 'bg-gray-50'}`}>
-                    <h4 className="font-semibold text-gray-700 mb-2">{stage}</h4>
+        <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-transparent">
+            {stages.map((stage, idx) => (
+                <div key={stage} className={`flex-shrink-0 w-64 p-4 rounded-sm transition-all duration-300 ${
+                    project.status === stage 
+                    ? 'bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] shadow-md transform -translate-y-1' 
+                    : 'bg-stone-50 border border-stone-100 opacity-80 hover:opacity-100'
+                }`}>
+                    <div className="flex items-center justify-between mb-3">
+                        <h4 className={`font-serif font-bold ${project.status === stage ? 'text-[var(--color-academia-charcoal)]' : 'text-stone-500'}`}>
+                            {idx + 1}. {stage}
+                        </h4>
+                        {project.status === stage && <div className="w-2 h-2 rounded-full bg-[var(--color-academia-gold)] animate-pulse"></div>}
+                    </div>
+                    
                     {project.status === stage ? (
-                        <div className="bg-white p-3 rounded shadow border-l-4 border-indigo-500">
-                            <p className="font-medium">{project.title}</p>
-                            <p className="text-xs text-gray-500 mt-1">Current Stage</p>
+                        <div className="bg-white p-4 rounded-sm shadow-sm border-l-2 border-[var(--color-academia-gold)]">
+                            <p className="font-medium text-[var(--color-academia-charcoal)]">{project.title}</p>
+                            <p className="text-xs text-[var(--color-academia-gold-hover)] mt-2 font-bold uppercase tracking-wider">Current Stage</p>
                         </div>
                     ) : (
                         <button 
                             onClick={() => onStatusUpdate(project.id, stage)}
-                            className="w-full py-2 text-sm text-gray-400 hover:text-indigo-600 hover:bg-gray-100 rounded border border-dashed border-gray-300"
+                            className="w-full py-3 text-sm text-stone-400 hover:text-[var(--color-academia-charcoal)] hover:bg-white hover:border-[var(--color-academia-charcoal)] rounded-sm border border-dashed border-stone-300 transition-all"
                         >
                             Move Here
                         </button>
@@ -325,12 +318,12 @@ const AssignmentsManager = ({ project, user }) => {
 
     return (
         <div>
-            <div className="flex justify-between mb-4">
-                <h3 className="text-lg font-medium">Assignments</h3>
+            <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)]">Assignments</h3>
                 {user.role === 'mentor' && (
                     <button 
                         onClick={() => setShowAssignModal(true)}
-                        className="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-200"
+                        className="text-sm bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-charcoal)] px-4 py-2 rounded-sm hover:bg-[var(--color-academia-charcoal)] hover:text-white transition-colors"
                     >
                         + Create Assignment
                     </button>
@@ -338,18 +331,22 @@ const AssignmentsManager = ({ project, user }) => {
             </div>
 
             <div className="space-y-4">
-                {assignments.length === 0 && <p className="text-gray-500">No assignments yet.</p>}
+                {assignments.length === 0 && (
+                    <div className="text-center py-10 border border-dashed border-stone-300 rounded-sm">
+                        <p className="text-stone-500 italic">No assignments yet.</p>
+                    </div>
+                )}
                 {assignments.map(assign => (
-                    <div key={assign.id} className="border p-4 rounded-lg flex justify-between items-start">
+                    <div key={assign.id} className="border border-stone-200 p-5 rounded-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row justify-between items-start gap-4 bg-white">
                         <div>
-                            <h4 className="font-semibold">{assign.title}</h4>
-                            <p className="text-sm text-gray-600 mt-1">{assign.description}</p>
-                            <div className="flex gap-2 mt-2 text-xs">
-                                <span className="bg-gray-100 px-2 py-1 rounded">Type: {assign.type}</span>
-                                {assign.due_date && <span className="bg-red-50 text-red-700 px-2 py-1 rounded">Due: {new Date(assign.due_date).toLocaleDateString()}</span>}
+                            <h4 className="font-bold text-lg font-serif text-[var(--color-academia-charcoal)]">{assign.title}</h4>
+                            <p className="text-stone-600 mt-2 leading-relaxed">{assign.description}</p>
+                            <div className="flex gap-3 mt-3 text-xs font-semibold uppercase tracking-wide">
+                                <span className="bg-stone-100 text-stone-600 px-2 py-1 rounded-sm border border-stone-200">Type: {assign.type}</span>
+                                {assign.due_date && <span className="bg-red-50 text-red-800 px-2 py-1 rounded-sm border border-red-100">Due: {new Date(assign.due_date).toLocaleDateString()}</span>}
                             </div>
                         </div>
-                        <div>
+                        <div className="flex-shrink-0">
                            {/* Add Submission Status or Grade here */}
                            {user.role === 'student' && <SubmissionButton assignment={assign} />}
                            {user.role === 'mentor' && <ViewSubmissionsButton assignment={assign} />}
@@ -360,23 +357,23 @@ const AssignmentsManager = ({ project, user }) => {
 
              {/* Create Assignment Modal */}
              {showAssignModal && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-lg max-w-md w-full p-6">
-                        <h3 className="text-lg font-medium mb-4">Create Assignment</h3>
+                <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-sm max-w-md w-full p-8 shadow-2xl border-t-4 border-[var(--color-academia-gold)] animate-scale-up">
+                        <h3 className="text-xl font-bold font-serif mb-6 text-[var(--color-academia-charcoal)]">Create Assignment</h3>
                         <form onSubmit={handleCreateAssignment}>
                             <div className="space-y-4">
-                                <input className="w-full border p-2 rounded" placeholder="Title" required value={newAssign.title} onChange={e => setNewAssign({...newAssign, title: e.target.value})} />
-                                <textarea className="w-full border p-2 rounded" placeholder="Description" required value={newAssign.description} onChange={e => setNewAssign({...newAssign, description: e.target.value})} />
-                                <select className="w-full border p-2 rounded" value={newAssign.type} onChange={e => setNewAssign({...newAssign, type: e.target.value})}>
+                                <input className="w-full border border-stone-300 p-3 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)]" placeholder="Title" required value={newAssign.title} onChange={e => setNewAssign({...newAssign, title: e.target.value})} />
+                                <textarea className="w-full border border-stone-300 p-3 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)]" placeholder="Description" required value={newAssign.description} onChange={e => setNewAssign({...newAssign, description: e.target.value})} rows={3} />
+                                <select className="w-full border border-stone-300 p-3 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] bg-white" value={newAssign.type} onChange={e => setNewAssign({...newAssign, type: e.target.value})}>
                                     <option value="pdf">PDF Upload</option>
                                     <option value="code">Code Submission</option>
                                     <option value="analysis">Analysis Text</option>
                                 </select>
-                                <input type="date" className="w-full border p-2 rounded" value={newAssign.due_date} onChange={e => setNewAssign({...newAssign, due_date: e.target.value})} />
+                                <input type="date" className="w-full border border-stone-300 p-3 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)]" value={newAssign.due_date} onChange={e => setNewAssign({...newAssign, due_date: e.target.value})} />
                             </div>
-                            <div className="mt-4 flex justify-end gap-2">
-                                <button type="button" onClick={() => setShowAssignModal(false)} className="px-3 py-1 border rounded">Cancel</button>
-                                <button type="submit" className="px-3 py-1 bg-indigo-600 text-white rounded">Create</button>
+                            <div className="mt-8 flex justify-end gap-3">
+                                <button type="button" onClick={() => setShowAssignModal(false)} className="px-5 py-2 border border-stone-300 rounded-sm text-stone-600 hover:bg-stone-50 font-medium">Cancel</button>
+                                <button type="submit" className="px-5 py-2 bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] rounded-sm hover:opacity-90 font-medium shadow-md">Create</button>
                             </div>
                         </form>
                     </div>
@@ -405,14 +402,14 @@ const SubmissionButton = ({ assignment }) => {
 
     return (
         <>
-            <button onClick={() => setShowModal(true)} className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded">
+            <button onClick={() => setShowModal(true)} className="text-sm bg-[var(--color-academia-gold)] text-white px-4 py-2 rounded-sm hover:bg-[var(--color-academia-gold-hover)] font-medium shadow-sm transition-colors">
                 Submit Work
             </button>
             {showModal && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-                     <div className="bg-white rounded p-6 max-w-md w-full">
-                        <h3 className="font-bold mb-4">Submit: {assignment.title}</h3>
-                        <form onSubmit={handleSubmit} className="space-y-3">
+                <div className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                     <div className="bg-white rounded-sm p-8 max-w-md w-full shadow-2xl border-t-4 border-[var(--color-academia-gold)] animate-scale-up">
+                        <h3 className="text-xl font-bold font-serif mb-6 text-[var(--color-academia-charcoal)]">Submit: {assignment.title}</h3>
+                        <form onSubmit={handleSubmit} className="space-y-4">
                             <textarea className="w-full border p-2 rounded" placeholder="Notes/Analysis" value={content} onChange={e => setContent(e.target.value)} />
                             <input className="w-full border p-2 rounded" placeholder="File/Link URL" value={link} onChange={e => setLink(e.target.value)} />
                             <div className="flex justify-end gap-2">
