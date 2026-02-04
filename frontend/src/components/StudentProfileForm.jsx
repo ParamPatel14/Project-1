@@ -544,107 +544,107 @@ const StudentProfileForm = ({ user, onUpdate }) => {
       </section>
 
       {/* PhD Matcher Section */}
-      <section className="bg-purple-50 p-6 rounded-lg border border-purple-200">
-        <div className="flex items-center gap-4 mb-4">
+      <section className="bg-white p-4 rounded-sm border border-[var(--color-academia-gold)] shadow-sm">
+        <div className="flex items-center gap-3 mb-4">
             <input 
                 type="checkbox" 
                 name="is_phd_seeker" 
                 id="is_phd_seeker"
                 checked={formData.is_phd_seeker} 
                 onChange={handleChange} 
-                className="w-6 h-6 text-purple-600 rounded focus:ring-purple-500 border-gray-300"
+                className="w-5 h-5 text-[var(--color-academia-charcoal)] rounded focus:ring-[var(--color-academia-gold)] border-stone-300 cursor-pointer"
             />
-            <label htmlFor="is_phd_seeker" className="text-xl font-bold text-purple-900 cursor-pointer">
+            <label htmlFor="is_phd_seeker" className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] cursor-pointer">
                 I am looking for a PhD Supervisor
             </label>
         </div>
         
         {formData.is_phd_seeker && (
-            <div className="space-y-6 animate-fade-in">
+            <div className="space-y-4 animate-fade-in pl-1">
                 <div>
-                    <label className="block text-sm font-medium text-purple-900">Research Interests & Goals (Detailed)</label>
+                    <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Research Interests & Goals (Detailed)</label>
                     <textarea 
                         name="research_interests" 
                         value={formData.research_interests} 
                         onChange={handleChange} 
-                        rows={4}
+                        rows={3}
                         placeholder="Describe your research interests, potential topics, and career goals..."
-                        className="w-full mt-1 p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                        className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400 resize-none"
                     />
                 </div>
                 
                 <div className="grid grid-cols-3 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-purple-900">Overall GPA</label>
-                        <input type="text" name="gpa" value={formData.gpa} onChange={handleChange} placeholder="e.g. 3.8/4.0" className="w-full mt-1 p-2 border border-purple-300 rounded-lg" />
+                        <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Overall GPA</label>
+                        <input type="text" name="gpa" value={formData.gpa} onChange={handleChange} placeholder="e.g. 3.8/4.0" className="w-full p-2 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-purple-900">GRE Score</label>
-                        <input type="text" name="gre_score" value={formData.gre_score} onChange={handleChange} placeholder="e.g. 320" className="w-full mt-1 p-2 border border-purple-300 rounded-lg" />
+                        <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">GRE Score</label>
+                        <input type="text" name="gre_score" value={formData.gre_score} onChange={handleChange} placeholder="e.g. 320" className="w-full p-2 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-purple-900">TOEFL/IELTS</label>
-                        <input type="text" name="toefl_score" value={formData.toefl_score} onChange={handleChange} placeholder="e.g. 110" className="w-full mt-1 p-2 border border-purple-300 rounded-lg" />
+                        <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">TOEFL/IELTS</label>
+                        <input type="text" name="toefl_score" value={formData.toefl_score} onChange={handleChange} placeholder="e.g. 110" className="w-full p-2 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
                     </div>
                 </div>
 
                 {/* Publications List */}
                 <div>
-                    <div className="flex justify-between items-center mb-2">
-                        <label className="block text-sm font-medium text-purple-900">Publications / Papers</label>
-                        <button type="button" onClick={addPublication} className="text-sm text-purple-600 hover:text-purple-800 flex items-center gap-1">
+                    <div className="flex justify-between items-center mb-3">
+                        <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)]">Publications / Papers</label>
+                        <button type="button" onClick={addPublication} className="text-sm text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center gap-1 font-medium transition-colors">
                             <FiPlus /> Add Paper
                         </button>
                     </div>
                     <div className="space-y-4">
                         {publications.map((pub, index) => (
-                            <div key={index} className="bg-white p-6 rounded-xl border border-purple-200 shadow-sm hover:shadow-md transition-all duration-300 relative group">
-                                <button type="button" onClick={() => removePublication(index)} className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition bg-gray-50 p-2 rounded-full hover:bg-red-50">
+                            <div key={index} className="bg-[var(--color-academia-cream)] p-5 rounded-sm border border-stone-200 relative group hover:border-[var(--color-academia-gold)] transition-colors">
+                                <button type="button" onClick={() => removePublication(index)} className="absolute top-3 right-3 text-stone-400 hover:text-red-600 transition p-1">
                                     <FiTrash2 />
                                 </button>
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <div className="relative">
-                                        <FiType className="absolute top-3.5 left-3 text-gray-400" />
+                                        <FiType className="absolute top-3.5 left-3 text-stone-400" />
                                         <input 
                                             type="text" 
                                             placeholder="Paper Title" 
                                             value={pub.title} 
                                             onChange={(e) => updatePublication(index, 'title', e.target.value)} 
-                                            className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                            className="w-full pl-10 p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400"
                                         />
                                     </div>
                                     <div className="relative">
-                                        <FiBook className="absolute top-3.5 left-3 text-gray-400" />
+                                        <FiBook className="absolute top-3.5 left-3 text-stone-400" />
                                         <input 
                                             type="text" 
                                             placeholder="Journal / Conference Name" 
                                             value={pub.journal_conference} 
                                             onChange={(e) => updatePublication(index, 'journal_conference', e.target.value)} 
-                                            className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                            className="w-full pl-10 p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400"
                                         />
                                     </div>
                                 </div>
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                      <div className="relative">
-                                        <FiCalendar className="absolute top-3.5 left-3 text-gray-400" />
+                                        <FiCalendar className="absolute top-3.5 left-3 text-stone-400" />
                                         <input 
                                             type="text" 
                                             placeholder="Publication Date (YYYY-MM)" 
                                             value={pub.publication_date} 
                                             onChange={(e) => updatePublication(index, 'publication_date', e.target.value)} 
-                                            className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                            className="w-full pl-10 p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400"
                                         />
                                     </div>
                                      <div className="relative">
-                                        <FiLink className="absolute top-3.5 left-3 text-gray-400" />
+                                        <FiLink className="absolute top-3.5 left-3 text-stone-400" />
                                         <input 
                                             type="text" 
                                             placeholder="Link to Paper (URL)" 
                                             value={pub.url} 
                                             onChange={(e) => updatePublication(index, 'url', e.target.value)} 
-                                            className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                            className="w-full pl-10 p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400"
                                         />
                                     </div>
                                 </div>
@@ -653,7 +653,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
                                     placeholder="Abstract / Short Description..." 
                                     value={pub.description} 
                                     onChange={(e) => updatePublication(index, 'description', e.target.value)} 
-                                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition h-24 resize-none"
+                                    className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors h-24 resize-none placeholder-stone-400"
                                 />
                             </div>
                         ))}
@@ -665,44 +665,44 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 2. Socials */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiGlobe /> Socials & Portfolio</h3>
+        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2"><FiGlobe className="text-[var(--color-academia-gold)]" /> Socials & Portfolio</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex items-center gap-2">
-                <FiGithub className="text-xl" />
-                <input type="text" name="github_url" value={formData.github_url} onChange={handleChange} placeholder="GitHub URL" className="w-full p-2 border rounded-lg" />
+            <div className="relative">
+                <FiGithub className="absolute top-3.5 left-3 text-stone-400" />
+                <input type="text" name="github_url" value={formData.github_url} onChange={handleChange} placeholder="GitHub URL" className="w-full pl-10 p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400" />
             </div>
-            <div className="flex items-center gap-2">
-                <FiLinkedin className="text-xl text-blue-600" />
-                <input type="text" name="linkedin_url" value={formData.linkedin_url} onChange={handleChange} placeholder="LinkedIn URL" className="w-full p-2 border rounded-lg" />
+            <div className="relative">
+                <FiLinkedin className="absolute top-3.5 left-3 text-stone-400" />
+                <input type="text" name="linkedin_url" value={formData.linkedin_url} onChange={handleChange} placeholder="LinkedIn URL" className="w-full pl-10 p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400" />
             </div>
-            <div className="flex items-center gap-2">
-                <FiTwitter className="text-xl text-blue-400" />
-                <input type="text" name="twitter_url" value={formData.twitter_url} onChange={handleChange} placeholder="Twitter URL" className="w-full p-2 border rounded-lg" />
+            <div className="relative">
+                <FiTwitter className="absolute top-3.5 left-3 text-stone-400" />
+                <input type="text" name="twitter_url" value={formData.twitter_url} onChange={handleChange} placeholder="Twitter URL" className="w-full pl-10 p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400" />
             </div>
-            <div className="flex items-center gap-2">
-                <FiGlobe className="text-xl" />
-                <input type="text" name="website_url" value={formData.website_url} onChange={handleChange} placeholder="Personal Website" className="w-full p-2 border rounded-lg" />
+            <div className="relative">
+                <FiGlobe className="absolute top-3.5 left-3 text-stone-400" />
+                <input type="text" name="website_url" value={formData.website_url} onChange={handleChange} placeholder="Personal Website" className="w-full pl-10 p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400" />
             </div>
         </div>
       </section>
 
       {/* 3. Work Experience */}
       <section>
-        <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2"><FiBook /> Work Experience</h3>
-            <button type="button" onClick={addWorkExperience} className="text-sm bg-indigo-50 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-100 flex items-center gap-1"><FiPlus /> Add</button>
+        <div className="flex justify-between items-center mb-6 border-b border-stone-200 pb-2">
+            <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiBook className="text-[var(--color-academia-gold)]" /> Work Experience</h3>
+            <button type="button" onClick={addWorkExperience} className="text-sm text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center gap-1 font-medium transition-colors"><FiPlus /> Add</button>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-6">
             {workExperiences.map((exp, index) => (
-                <div key={index} className="p-4 border rounded-lg bg-gray-50 relative">
-                    <button type="button" onClick={() => removeWorkExperience(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><FiTrash2 /></button>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-                        <input type="text" placeholder="Job Title" value={exp.title} onChange={(e) => updateWorkExperience(index, 'title', e.target.value)} className="p-2 border rounded" />
-                        <input type="text" placeholder="Company" value={exp.company} onChange={(e) => updateWorkExperience(index, 'company', e.target.value)} className="p-2 border rounded" />
-                        <input type="text" placeholder="Start Date (e.g. 2020)" value={exp.start_date} onChange={(e) => updateWorkExperience(index, 'start_date', e.target.value)} className="p-2 border rounded" />
-                        <input type="text" placeholder="End Date (e.g. Present)" value={exp.end_date} onChange={(e) => updateWorkExperience(index, 'end_date', e.target.value)} className="p-2 border rounded" />
+                <div key={index} className="p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
+                    <button type="button" onClick={() => removeWorkExperience(index)} className="absolute top-3 right-3 text-stone-400 hover:text-red-600 transition p-1"><FiTrash2 /></button>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                        <input type="text" placeholder="Job Title" value={exp.title} onChange={(e) => updateWorkExperience(index, 'title', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="Company" value={exp.company} onChange={(e) => updateWorkExperience(index, 'company', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="Start Date (e.g. 2020)" value={exp.start_date} onChange={(e) => updateWorkExperience(index, 'start_date', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="End Date (e.g. Present)" value={exp.end_date} onChange={(e) => updateWorkExperience(index, 'end_date', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
                     </div>
-                    <textarea placeholder="Description (Bullet points)" value={exp.description} onChange={(e) => updateWorkExperience(index, 'description', e.target.value)} className="w-full p-2 border rounded h-20" />
+                    <textarea placeholder="Description (Bullet points)" value={exp.description} onChange={(e) => updateWorkExperience(index, 'description', e.target.value)} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors h-24 resize-none" />
                 </div>
             ))}
         </div>
@@ -710,20 +710,20 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 4. Education */}
       <section>
-        <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2"><FiBook /> Education</h3>
-            <button type="button" onClick={addEducation} className="text-sm bg-indigo-50 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-100 flex items-center gap-1"><FiPlus /> Add</button>
+        <div className="flex justify-between items-center mb-6 border-b border-stone-200 pb-2">
+            <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiBook className="text-[var(--color-academia-gold)]" /> Education</h3>
+            <button type="button" onClick={addEducation} className="text-sm text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center gap-1 font-medium transition-colors"><FiPlus /> Add</button>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-6">
             {educations.map((edu, index) => (
-                <div key={index} className="p-4 border rounded-lg bg-gray-50 relative">
-                    <button type="button" onClick={() => removeEducation(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><FiTrash2 /></button>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="text" placeholder="Institution" value={edu.institution} onChange={(e) => updateEducation(index, 'institution', e.target.value)} className="p-2 border rounded" />
-                        <input type="text" placeholder="Degree" value={edu.degree} onChange={(e) => updateEducation(index, 'degree', e.target.value)} className="p-2 border rounded" />
-                        <input type="text" placeholder="Start Year" value={edu.start_year} onChange={(e) => updateEducation(index, 'start_year', e.target.value)} className="p-2 border rounded" />
-                        <input type="text" placeholder="End Year" value={edu.end_year} onChange={(e) => updateEducation(index, 'end_year', e.target.value)} className="p-2 border rounded" />
-                        <input type="text" placeholder="Grade/CGPA" value={edu.grade} onChange={(e) => updateEducation(index, 'grade', e.target.value)} className="p-2 border rounded" />
+                <div key={index} className="p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
+                    <button type="button" onClick={() => removeEducation(index)} className="absolute top-3 right-3 text-stone-400 hover:text-red-600 transition p-1"><FiTrash2 /></button>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <input type="text" placeholder="Institution" value={edu.institution} onChange={(e) => updateEducation(index, 'institution', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="Degree" value={edu.degree} onChange={(e) => updateEducation(index, 'degree', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="Start Year" value={edu.start_year} onChange={(e) => updateEducation(index, 'start_year', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="End Year" value={edu.end_year} onChange={(e) => updateEducation(index, 'end_year', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="Grade/CGPA" value={edu.grade} onChange={(e) => updateEducation(index, 'grade', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
                     </div>
                 </div>
             ))}
@@ -732,20 +732,20 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 5. Projects */}
       <section>
-        <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2"><FiBook /> Projects</h3>
-            <button type="button" onClick={addProject} className="text-sm bg-indigo-50 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-100 flex items-center gap-1"><FiPlus /> Add</button>
+        <div className="flex justify-between items-center mb-6 border-b border-stone-200 pb-2">
+            <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiCpu className="text-[var(--color-academia-gold)]" /> Projects</h3>
+            <button type="button" onClick={addProject} className="text-sm text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center gap-1 font-medium transition-colors"><FiPlus /> Add</button>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-6">
             {projects.map((proj, index) => (
-                <div key={index} className="p-4 border rounded-lg bg-gray-50 relative">
-                    <button type="button" onClick={() => removeProject(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><FiTrash2 /></button>
-                    <div className="grid grid-cols-1 gap-4 mb-2">
-                        <input type="text" placeholder="Project Title" value={proj.title} onChange={(e) => updateProject(index, 'title', e.target.value)} className="w-full p-2 border rounded" />
-                        <input type="text" placeholder="Project URL" value={proj.url} onChange={(e) => updateProject(index, 'url', e.target.value)} className="w-full p-2 border rounded" />
-                        <input type="text" placeholder="Tech Stack (comma separated)" value={proj.tech_stack} onChange={(e) => updateProject(index, 'tech_stack', e.target.value)} className="w-full p-2 border rounded" />
+                <div key={index} className="p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
+                    <button type="button" onClick={() => removeProject(index)} className="absolute top-3 right-3 text-stone-400 hover:text-red-600 transition p-1"><FiTrash2 /></button>
+                    <div className="grid grid-cols-1 gap-5 mb-4">
+                        <input type="text" placeholder="Project Title" value={proj.title} onChange={(e) => updateProject(index, 'title', e.target.value)} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="Project URL" value={proj.url} onChange={(e) => updateProject(index, 'url', e.target.value)} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                        <input type="text" placeholder="Tech Stack (comma separated)" value={proj.tech_stack} onChange={(e) => updateProject(index, 'tech_stack', e.target.value)} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
                     </div>
-                    <textarea placeholder="Description" value={proj.description} onChange={(e) => updateProject(index, 'description', e.target.value)} className="w-full p-2 border rounded h-20" />
+                    <textarea placeholder="Description" value={proj.description} onChange={(e) => updateProject(index, 'description', e.target.value)} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors h-24 resize-none" />
                 </div>
             ))}
         </div>
@@ -753,39 +753,39 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 6. Skills */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiCheck /> Skills</h3>
-        <div className="space-y-4">
+        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2"><FiCheck className="text-[var(--color-academia-gold)]" /> Skills</h3>
+        <div className="space-y-6">
             <div>
-                <label className="block text-sm font-medium text-gray-700">Primary Skills (Top 5)</label>
-                <input type="text" value={primarySkills} onChange={(e) => setPrimarySkills(e.target.value)} placeholder="e.g. Python, React, Node.js (Comma separated)" className="w-full mt-1 p-2 border rounded-lg" />
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Primary Skills (Top 5)</label>
+                <input type="text" value={primarySkills} onChange={(e) => setPrimarySkills(e.target.value)} placeholder="e.g. Python, React, Node.js (Comma separated)" className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">Tools & Libraries</label>
-                <input type="text" value={tools} onChange={(e) => setTools(e.target.value)} placeholder="e.g. Pandas, Docker, Git (Comma separated)" className="w-full mt-1 p-2 border rounded-lg" />
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Tools & Libraries</label>
+                <input type="text" value={tools} onChange={(e) => setTools(e.target.value)} placeholder="e.g. Pandas, Docker, Git (Comma separated)" className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
         </div>
       </section>
 
       {/* 7. Additional Info */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">Interests & Languages</h3>
-        <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Interests</label>
+        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 border-b border-stone-200 pb-2">Interests & Languages</h3>
+        <div className="mb-6">
+            <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">Interests</label>
             <div className="flex flex-wrap gap-2">
                 {INTEREST_OPTIONS.map(interest => (
                     <button key={interest} type="button" onClick={() => toggleSelection(interest, selectedInterests, setSelectedInterests)}
-                        className={`px-3 py-1 rounded-full text-sm border ${selectedInterests.includes(interest) ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                        className={`px-4 py-1.5 rounded-sm text-sm border transition-colors ${selectedInterests.includes(interest) ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]' : 'bg-white text-stone-600 border-stone-300 hover:border-[var(--color-academia-gold)]'}`}>
                         {interest}
                     </button>
                 ))}
             </div>
         </div>
         <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Languages</label>
+            <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">Languages</label>
             <div className="flex flex-wrap gap-2">
                 {LANGUAGE_OPTIONS.map(lang => (
                     <button key={lang} type="button" onClick={() => toggleSelection(lang, selectedLanguages, setSelectedLanguages)}
-                        className={`px-3 py-1 rounded-full text-sm border ${selectedLanguages.includes(lang) ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                        className={`px-4 py-1.5 rounded-sm text-sm border transition-colors ${selectedLanguages.includes(lang) ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]' : 'bg-white text-stone-600 border-stone-300 hover:border-[var(--color-academia-gold)]'}`}>
                         {lang}
                     </button>
                 ))}
@@ -793,17 +793,17 @@ const StudentProfileForm = ({ user, onUpdate }) => {
         </div>
       </section>
 
-      <div className="pt-6 border-t">
+      <div className="pt-8 border-t border-[var(--color-academia-gold)]">
         <button
           type="submit"
           disabled={isLoading || !formData.resume_url}
-          className={`w-full py-4 rounded-lg font-bold text-lg text-white shadow-lg ${
-            isLoading || !formData.resume_url ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 transition'
+          className={`w-full py-4 rounded-sm font-serif font-bold text-lg text-[var(--color-academia-cream)] shadow-sm hover:shadow-md transition-all duration-300 ${
+            isLoading || !formData.resume_url ? 'bg-stone-400 cursor-not-allowed' : 'bg-[var(--color-academia-charcoal)] hover:bg-black'
           }`}
         >
           {isLoading ? 'Saving Profile...' : 'Save & Complete Profile'}
         </button>
-        {!formData.resume_url && <p className="text-center text-red-500 mt-2 text-sm">Please upload your CV/Resume to continue</p>}
+        {!formData.resume_url && <p className="text-center text-red-700 mt-3 text-sm font-medium">Please upload your CV/Resume to continue</p>}
       </div>
     </form>
   );

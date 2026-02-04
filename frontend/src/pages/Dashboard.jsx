@@ -207,16 +207,16 @@ const Dashboard = () => {
                 {/* Left Column: Profile */}
                 <div className="lg:col-span-2 space-y-8">
                   {/* Completeness Hero Section */}
-                  <div className="bg-white p-6 rounded-sm border border-[var(--color-academia-gold)] relative overflow-hidden">
+                  <div className="bg-white p-4 rounded-sm border border-[var(--color-academia-gold)] relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                       <FiActivity className="text-6xl text-[var(--color-academia-charcoal)]" />
                     </div>
                     
-                    <div className="flex items-center gap-6 relative z-10">
+                    <div className="flex items-center gap-5 relative z-10">
                       {/* Circular Chart */}
                       <div className="relative flex-shrink-0">
-                         <div className="relative w-24 h-24">
-                            <svg className="w-full h-full transform -rotate-90">
+                         <div className="relative w-20 h-20">
+                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 96 96">
                               <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-stone-100" />
                               <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" 
                                 strokeDasharray={263.89} 
@@ -226,7 +226,7 @@ const Dashboard = () => {
                               />
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                               <span className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
+                               <span className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)]">
                                   {completeness.score}%
                                </span>
                             </div>
@@ -235,10 +235,10 @@ const Dashboard = () => {
 
                       {/* Text Content */}
                       <div className="flex-1">
-                        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-1">
+                        <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-1">
                           {displayRole === 'student' ? 'Readiness Score' : 'Profile Completeness'}
                         </h3>
-                        <p className="text-stone-600 text-sm leading-relaxed font-light">
+                        <p className="text-stone-600 text-xs leading-relaxed font-light">
                           {completeness.score < 80 
                             ? "Complete your details to increase your chances of matching." 
                             : "Excellent! Your profile is robust and ready for premium opportunities."}
