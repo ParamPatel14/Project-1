@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { getPendingMentors, verifyMentor, getAllStudents, getAllMentors, getOpportunities, createAdminOpportunity, getAllApplications, getProjectInterests } from "../api";
-import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu, FiBarChart2, FiLogOut } from "react-icons/fi";
+import { getPendingMentors, verifyMentor, getAllStudents, getAllMentors, getOpportunities, createAdminOpportunity, getAllApplications } from "../api";
+import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu, FiBarChart2 } from "react-icons/fi";
 import OpportunityForm from "./OpportunityForm";
-import BeehiveEventList from "./BeehiveEventList";
-import IndustrialVisitList from "./IndustrialVisitList";
-import ProjectInterestForm from "./ProjectInterestForm";
+import AnalyticsDashboard from "./AnalyticsDashboard";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -13,7 +11,6 @@ const AdminDashboard = () => {
   const [mentors, setMentors] = useState([]);
   const [opportunities, setOpportunities] = useState([]);
   const [applications, setApplications] = useState([]);
-  const [projectInterests, setProjectInterests] = useState([]);
   const [loading, setLoading] = useState(false);
   
   // Modal State
@@ -43,9 +40,6 @@ const AdminDashboard = () => {
       } else if (activeTab === 'applications') {
         const data = await getAllApplications();
         setApplications(data);
-      } else if (activeTab === 'real-world') {
-        const data = await getProjectInterests();
-        setProjectInterests(data);
       }
     } catch (error) {
       console.error(`Failed to fetch ${activeTab} data`, error);
@@ -77,48 +71,57 @@ const AdminDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-stone-200 mb-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <h1 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">Admin Portal</h1>
-            <span className="ml-3 px-2 py-1 bg-[var(--color-academia-gold)] text-white text-xs rounded-full uppercase tracking-wider font-bold">
-              Administrator
-            </span>
-          </div>
-          <button
-            onClick={() => {
-                localStorage.removeItem('token');
-                window.location.href = '/login';
-            }}
-            className="flex items-center text-stone-500 hover:text-[var(--color-academia-charcoal)] transition-colors"
-          >
-            <FiLogOut className="mr-2" />
-            Logout
-          </button>
-        </div>
-      </header>
+      <div className="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-600">
+        <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+          <FiShield className="mr-2" /> Admin Portal
+        </h2>
+        <p className="text-gray-600 mt-2">Platform Management & Monitoring</p>
+      </div>
 
       {/* Tabs */}
-      <div className="flex space-x-4 border-b border-stone-200 pb-2 overflow-x-auto">
-        {['overview', 'students', 'mentors', 'internships', 'applications', 'real-world', 'analytics'].map((tab) => (
-            <button 
-              key={tab}
-              onClick={() => setActiveTab(tab)} 
-              className={`px-4 py-2 font-medium rounded-t-lg transition-colors capitalize ${activeTab === tab ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-b-2 border-[var(--color-academia-gold)]' : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'}`}
-            >
-              {tab.replace('-', ' ')} {tab === 'overview' && '(Pending)'}
-            </button>
-        ))}
+      <div className="flex space-x-4 border-b border-gray-200 pb-2 overflow-x-auto">
+        <button 
+          onClick={() => setActiveTab('overview')} 
+          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'overview' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+        >
+          Overview (Pending)
+        </button>
+        <button 
+          onClick={() => setActiveTab('students')} 
+          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'students' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+        >
+          Students
+        </button>
+        <button 
+          onClick={() => setActiveTab('mentors')} 
+          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'mentors' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+        >
+          Mentors
+        </button>
+        <button 
+          onClick={() => setActiveTab('internships')} 
+          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'internships' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+        >
+          Internships
+        </button>
+        <button 
+          onClick={() => setActiveTab('applications')} 
+          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'applications' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+        >
+          Applications
+        </button>
+        <button 
+          onClick={() => setActiveTab('analytics')} 
+          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'analytics' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+        >
+          Analytics
+        </button>
       </div>
 
       {/* Content */}
-      <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-[400px] border border-stone-200">
+      <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-[400px]">
         {loading ? (
-           <div className="p-8 text-center text-stone-500 flex flex-col items-center">
-               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-academia-gold)] mb-4"></div>
-               Loading data...
-           </div>
+           <div className="p-8 text-center text-gray-500">Loading data...</div>
         ) : (
           <>
             {/* ANALYTICS TAB */}
@@ -131,21 +134,21 @@ const AdminDashboard = () => {
             {/* OVERVIEW TAB */}
             {activeTab === 'overview' && (
               <div className="p-6">
-                 <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4">Pending Mentor Verifications</h3>
+                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Pending Mentor Verifications</h3>
                  {pendingMentors.length === 0 ? (
-                  <p className="text-stone-500 italic">No pending verifications.</p>
+                  <p className="text-gray-500">No pending verifications.</p>
                 ) : (
-                  <ul className="divide-y divide-stone-200">
+                  <ul className="divide-y divide-gray-200">
                     {pendingMentors.map((mentor) => (
-                      <li key={mentor.id} className="py-4 hover:bg-[var(--color-academia-cream)]/30 transition-colors rounded-lg px-2">
+                      <li key={mentor.id} className="py-4">
                         <div className="flex justify-between items-center">
                           <div>
-                            <p className="font-bold text-[var(--color-academia-charcoal)]">{mentor.lab_name}</p>
-                            <p className="text-sm text-stone-600">{mentor.university} - {mentor.position}</p>
+                            <p className="font-bold">{mentor.lab_name}</p>
+                            <p className="text-sm text-gray-600">{mentor.university} - {mentor.position}</p>
                           </div>
                           <button
                             onClick={() => handleVerify(mentor.user_id)}
-                            className="flex items-center bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded hover:bg-emerald-100 transition-colors"
+                            className="flex items-center bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200"
                           >
                             <FiCheck className="mr-1" /> Verify
                           </button>
@@ -160,26 +163,26 @@ const AdminDashboard = () => {
             {/* STUDENTS TAB */}
             {activeTab === 'students' && (
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-stone-200">
-                  <thead className="bg-[var(--color-academia-cream)]">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">University</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Major</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Readiness</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">University</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Major</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Readiness</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-stone-200">
+                  <tbody className="bg-white divide-y divide-gray-200">
                     {students.map((student) => (
-                      <tr key={student.id} className="hover:bg-stone-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--color-academia-charcoal)]">{student.name || "N/A"}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">{student.email}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">{student.student_profile?.university || "-"}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">{student.student_profile?.major || "-"}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">
+                      <tr key={student.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{student.name || "N/A"}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.email}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.student_profile?.university || "-"}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.student_profile?.major || "-"}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {student.student_profile?.readiness_score ? (
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)]">
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                               {student.student_profile.readiness_score}%
                             </span>
                           ) : "-"}
@@ -194,28 +197,28 @@ const AdminDashboard = () => {
             {/* MENTORS TAB */}
             {activeTab === 'mentors' && (
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-stone-200">
-                  <thead className="bg-[var(--color-academia-cream)]">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Lab / Institution</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab / Institution</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-stone-200">
+                  <tbody className="bg-white divide-y divide-gray-200">
                     {mentors.map((mentor) => (
-                      <tr key={mentor.id} className="hover:bg-stone-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--color-academia-charcoal)]">{mentor.name || "N/A"}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">{mentor.email}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">
+                      <tr key={mentor.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mentor.name || "N/A"}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mentor.email}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {mentor.mentor_profile ? `${mentor.mentor_profile.lab_name || ""} (${mentor.mentor_profile.university || ""})` : "-"}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {mentor.mentor_profile?.is_verified ? (
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Verified</span>
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Verified</span>
                           ) : (
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-amber-50 text-amber-700 border border-amber-200">Pending</span>
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
                           )}
                         </td>
                       </tr>
@@ -229,10 +232,10 @@ const AdminDashboard = () => {
             {activeTab === 'internships' && (
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)]">All Opportunities</h3>
+                  <h3 className="text-lg font-semibold text-gray-800">All Opportunities</h3>
                   <button 
                     onClick={() => setShowOppModal(true)}
-                    className="flex items-center bg-[var(--color-academia-charcoal)] text-white px-4 py-2 rounded-md hover:bg-stone-800 transition shadow-sm"
+                    className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
                   >
                     <FiPlus className="mr-2" /> Add Internship
                   </button>
@@ -240,11 +243,11 @@ const AdminDashboard = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {opportunities.map((opp) => (
-                    <div key={opp.id} className="border border-stone-200 rounded-lg p-4 hover:shadow-md transition bg-white group">
-                      <h4 className="font-serif font-bold text-[var(--color-academia-charcoal)] group-hover:text-[var(--color-academia-gold)] transition-colors">{opp.title}</h4>
-                      <p className="text-sm text-stone-600 mt-1 line-clamp-2 font-sans">{opp.description}</p>
-                      <div className="mt-3 flex items-center justify-between text-xs text-stone-500 border-t border-stone-100 pt-3">
-                        <span className="bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-stone-200 px-2 py-1 rounded capitalize">{opp.type.replace('_', ' ')}</span>
+                    <div key={opp.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                      <h4 className="font-bold text-indigo-600">{opp.title}</h4>
+                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">{opp.description}</p>
+                      <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
+                        <span className="bg-gray-100 px-2 py-1 rounded capitalize">{opp.type.replace('_', ' ')}</span>
                         <span>{new Date(opp.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
@@ -256,57 +259,57 @@ const AdminDashboard = () => {
             {/* APPLICATIONS TAB */}
             {activeTab === 'applications' && (
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-stone-200">
-                  <thead className="bg-[var(--color-academia-cream)]">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Applicant</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Opportunity</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Match Score</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-bold text-stone-500 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applicant</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Opportunity</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match Score</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-stone-200">
+                  <tbody className="bg-white divide-y divide-gray-200">
                     {applications.map((app) => (
-                      <tr key={app.id} className="hover:bg-stone-50 transition-colors">
+                      <tr key={app.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div>
-                              <div className="text-sm font-medium text-[var(--color-academia-charcoal)]">{app.student?.name || "Unknown Student"}</div>
-                              <div className="text-sm text-stone-500">{app.student?.email}</div>
+                              <div className="text-sm font-medium text-gray-900">{app.student?.name || "Unknown Student"}</div>
+                              <div className="text-sm text-gray-500">{app.student?.email}</div>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-[var(--color-academia-charcoal)]">{app.opportunity?.title || "Unknown Opportunity"}</div>
-                          <div className="text-xs text-stone-500 capitalize">{app.opportunity?.type?.replace('_', ' ')}</div>
+                          <div className="text-sm text-gray-900">{app.opportunity?.title || "Unknown Opportunity"}</div>
+                          <div className="text-xs text-gray-500 capitalize">{app.opportunity?.type?.replace('_', ' ')}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full border ${
-                            app.match_score >= 80 ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                            app.match_score >= 50 ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                            'bg-rose-50 text-rose-700 border-rose-200'
+                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            app.match_score >= 80 ? 'bg-green-100 text-green-800' :
+                            app.match_score >= 50 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
                           }`}>
                             {app.match_score}% Match
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full border ${
-                            app.status === 'accepted' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                            app.status === 'rejected' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-                            'bg-sky-50 text-sky-700 border-sky-200'
+                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            app.status === 'accepted' ? 'bg-green-100 text-green-800' :
+                            app.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                            'bg-blue-100 text-blue-800'
                           }`}>
                             {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           <div className="flex space-x-3">
                              {app.student?.student_profile?.resume_url && (
                                 <a 
                                   href={getResumeUrl(app.student.student_profile.resume_url)} 
                                   target="_blank" 
                                   rel="noopener noreferrer"
-                                  className="text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center transition-colors"
+                                  className="text-indigo-600 hover:text-indigo-900 flex items-center"
                                   title="View Resume"
                                 >
                                   <FiDownload className="mr-1" /> Resume
@@ -314,7 +317,7 @@ const AdminDashboard = () => {
                              )}
                              <button 
                                onClick={() => handleViewProfile(app.student)}
-                               className="text-stone-600 hover:text-[var(--color-academia-charcoal)] flex items-center transition-colors" 
+                               className="text-gray-600 hover:text-gray-900 flex items-center" 
                                title="View Full Profile"
                              >
                                <FiExternalLink className="mr-1" /> Profile
@@ -325,7 +328,7 @@ const AdminDashboard = () => {
                     ))}
                     {applications.length === 0 && (
                         <tr>
-                            <td colSpan="5" className="px-6 py-12 text-center text-stone-500">
+                            <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
                                 No applications found.
                             </td>
                         </tr>
@@ -334,59 +337,20 @@ const AdminDashboard = () => {
                 </table>
               </div>
             )}
-            {/* REAL WORLD TAB */}
-            {activeTab === 'real-world' && (
-              <div className="p-6 space-y-8">
-                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div>
-                        <BeehiveEventList />
-                    </div>
-                    <div>
-                        <IndustrialVisitList />
-                    </div>
-                 </div>
-
-                 <div className="border-t border-stone-200 pt-6">
-                    <h3 className="text-xl font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center">
-                        <FiCpu className="mr-2 text-[var(--color-academia-gold)]" /> Student Project Interests
-                    </h3>
-                    <div className="bg-stone-50 rounded-lg p-4 border border-stone-200">
-                        {projectInterests.length === 0 ? (
-                            <p className="text-stone-500 text-center">No student interests submitted yet.</p>
-                        ) : (
-                            <div className="space-y-4">
-                                {projectInterests.map((interest) => (
-                                    <div key={interest.id} className="bg-white p-4 rounded shadow-sm border border-stone-100">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <div>
-                                                <h4 className="font-bold text-[var(--color-academia-charcoal)]">{interest.student?.name || "Unknown Student"}</h4>
-                                                <p className="text-sm text-stone-500">{interest.student?.email}</p>
-                                            </div>
-                                            <span className="text-xs text-gray-400">{new Date(interest.created_at).toLocaleDateString()}</span>
-                                        </div>
-                                        <p className="text-gray-700 bg-gray-50 p-3 rounded text-sm">{interest.interest_area}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                 </div>
-              </div>
-            )}
           </>
         )}
       </div>
 
       {/* Add Internship Modal */}
       {showOppModal && (
-        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4 border border-stone-100">
-            <div className="p-4 border-b border-stone-100 flex justify-between items-center bg-[var(--color-academia-cream)]">
-              <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2">
-                <FiBriefcase className="text-[var(--color-academia-gold)]"/> 
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4 border border-gray-100">
+            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <FiBriefcase className="text-blue-600"/> 
                 Add New Internship
               </h3>
-              <button onClick={() => setShowOppModal(false)} className="text-stone-400 hover:text-rose-500 transition-colors p-1 hover:bg-rose-50 rounded-full">
+              <button onClick={() => setShowOppModal(false)} className="text-gray-400 hover:text-red-500 transition-colors p-1 hover:bg-red-50 rounded-full">
                 <FiX size={24} />
               </button>
             </div>
@@ -404,36 +368,36 @@ const AdminDashboard = () => {
       )}
       {/* Profile Modal */}
       {showProfileModal && selectedStudent && (
-        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-xl max-w-2xl w-full mx-4 shadow-2xl overflow-hidden border border-stone-100 max-h-[90vh] overflow-y-auto">
-            <div className="bg-[var(--color-academia-charcoal)] p-6 text-white flex justify-between items-start">
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-xl max-w-2xl w-full mx-4 shadow-2xl overflow-hidden border border-gray-100 max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-6 text-white flex justify-between items-start">
               <div>
-                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-gold)]">{selectedStudent.name}</h3>
-                <p className="text-stone-300">{selectedStudent.email}</p>
+                <h3 className="text-2xl font-bold">{selectedStudent.name}</h3>
+                <p className="text-indigo-100">{selectedStudent.email}</p>
                 <div className="mt-2 flex gap-2">
-                    {selectedStudent.student_profile?.university && <span className="bg-white/10 px-2 py-1 rounded text-xs text-stone-200 border border-white/20">{selectedStudent.student_profile.university}</span>}
-                    {selectedStudent.student_profile?.major && <span className="bg-white/10 px-2 py-1 rounded text-xs text-stone-200 border border-white/20">{selectedStudent.student_profile.major}</span>}
+                    {selectedStudent.student_profile?.university && <span className="bg-white/20 px-2 py-1 rounded text-xs">{selectedStudent.student_profile.university}</span>}
+                    {selectedStudent.student_profile?.major && <span className="bg-white/20 px-2 py-1 rounded text-xs">{selectedStudent.student_profile.major}</span>}
                 </div>
               </div>
-              <button onClick={() => setShowProfileModal(false)} className="text-stone-400 hover:text-white text-2xl transition-colors">&times;</button>
+              <button onClick={() => setShowProfileModal(false)} className="text-white/80 hover:text-white text-2xl">&times;</button>
             </div>
             
             <div className="p-6 space-y-6">
                 {/* About */}
                 {selectedStudent.student_profile?.bio && (
                     <section>
-                        <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-2 flex items-center"><FiUsers className="mr-2 text-[var(--color-academia-gold)]"/> About</h4>
-                        <p className="text-stone-600 leading-relaxed">{selectedStudent.student_profile.bio}</p>
+                        <h4 className="text-lg font-bold text-gray-800 mb-2 flex items-center"><FiUsers className="mr-2 text-indigo-500"/> About</h4>
+                        <p className="text-gray-600 leading-relaxed">{selectedStudent.student_profile.bio}</p>
                     </section>
                 )}
 
                 {/* Skills */}
                 {selectedStudent.skills && selectedStudent.skills.length > 0 && (
                     <section>
-                        <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-2 flex items-center"><FiCheck className="mr-2 text-emerald-600"/> Skills</h4>
+                        <h4 className="text-lg font-bold text-gray-800 mb-2 flex items-center"><FiCheck className="mr-2 text-green-500"/> Skills</h4>
                         <div className="flex flex-wrap gap-2">
                             {selectedStudent.skills.map(skill => (
-                                <span key={skill.id} className="bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] px-3 py-1 rounded-full text-sm font-medium border border-stone-200">
+                                <span key={skill.id} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
                                     {skill.name}
                                 </span>
                             ))}
@@ -444,14 +408,14 @@ const AdminDashboard = () => {
                 {/* Experience */}
                 {selectedStudent.student_profile?.work_experiences?.length > 0 && (
                     <section>
-                        <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 flex items-center"><FiBriefcase className="mr-2 text-sky-600"/> Experience</h4>
+                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiBriefcase className="mr-2 text-blue-500"/> Experience</h4>
                         <div className="space-y-4">
                             {selectedStudent.student_profile.work_experiences.map((exp, i) => (
-                                <div key={i} className="border-l-2 border-stone-200 pl-4 pb-2">
-                                    <h5 className="font-bold text-[var(--color-academia-charcoal)]">{exp.title}</h5>
-                                    <p className="text-[var(--color-academia-gold)] text-sm font-medium">{exp.company}</p>
-                                    <p className="text-stone-500 text-xs mb-1">{exp.start_date} - {exp.end_date || 'Present'}</p>
-                                    {exp.description && <p className="text-stone-600 text-sm mt-1">{exp.description}</p>}
+                                <div key={i} className="border-l-2 border-gray-200 pl-4 pb-2">
+                                    <h5 className="font-bold text-gray-900">{exp.title}</h5>
+                                    <p className="text-indigo-600 text-sm font-medium">{exp.company}</p>
+                                    <p className="text-gray-500 text-xs mb-1">{exp.start_date} - {exp.end_date || 'Present'}</p>
+                                    {exp.description && <p className="text-gray-600 text-sm mt-1">{exp.description}</p>}
                                 </div>
                             ))}
                         </div>
@@ -461,23 +425,23 @@ const AdminDashboard = () => {
                 {/* Projects */}
                 {selectedStudent.student_profile?.projects?.length > 0 && (
                     <section>
-                        <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 flex items-center"><FiCpu className="mr-2 text-indigo-500"/> Projects</h4>
+                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiCpu className="mr-2 text-purple-500"/> Projects</h4>
                         <div className="grid grid-cols-1 gap-4">
                             {selectedStudent.student_profile.projects.map((proj, i) => (
-                                <div key={i} className="bg-stone-50 p-3 rounded-lg border border-stone-200 hover:border-[var(--color-academia-gold)] transition-colors">
+                                <div key={i} className="bg-gray-50 p-3 rounded-lg border border-gray-200">
                                     <div className="flex justify-between items-start">
-                                        <h5 className="font-bold text-[var(--color-academia-charcoal)]">{proj.title}</h5>
+                                        <h5 className="font-bold text-gray-900">{proj.title}</h5>
                                         {proj.url && (
-                                            <a href={proj.url} target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:text-sky-800 text-sm flex items-center">
+                                            <a href={proj.url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-sm flex items-center">
                                                 <FiExternalLink className="mr-1"/> Link
                                             </a>
                                         )}
                                     </div>
-                                    <p className="text-stone-600 text-sm mt-1">{proj.description}</p>
+                                    <p className="text-gray-600 text-sm mt-1">{proj.description}</p>
                                     {proj.tech_stack && (
                                         <div className="mt-2 flex flex-wrap gap-1">
                                             {proj.tech_stack.split(',').map((tech, j) => (
-                                                <span key={j} className="text-xs bg-white border border-stone-300 px-1.5 py-0.5 rounded text-stone-600">{tech.trim()}</span>
+                                                <span key={j} className="text-xs bg-white border border-gray-300 px-1.5 py-0.5 rounded text-gray-600">{tech.trim()}</span>
                                             ))}
                                         </div>
                                     )}
@@ -490,13 +454,13 @@ const AdminDashboard = () => {
                 {/* Education */}
                 {selectedStudent.student_profile?.educations?.length > 0 && (
                     <section>
-                        <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 flex items-center"><FiFileText className="mr-2 text-amber-600"/> Education</h4>
+                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiFileText className="mr-2 text-yellow-600"/> Education</h4>
                         <div className="space-y-3">
                             {selectedStudent.student_profile.educations.map((edu, i) => (
-                                <div key={i} className="flex justify-between items-start border-b border-stone-100 pb-2 last:border-0">
+                                <div key={i} className="flex justify-between items-start border-b border-gray-100 pb-2 last:border-0">
                                     <div>
-                                        <h5 className="font-bold text-[var(--color-academia-charcoal)]">{edu.institution}</h5>
-                                        <p className="text-stone-600 text-sm">{edu.degree}</p>
+                                        <h5 className="font-bold text-gray-900">{edu.institution}</h5>
+                                        <p className="text-gray-600 text-sm">{edu.degree}</p>
                                     </div>
                                     <div className="text-right">
                                         <p className="text-gray-500 text-xs">{edu.start_year} - {edu.end_year}</p>

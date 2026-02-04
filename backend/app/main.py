@@ -21,8 +21,6 @@ from app.api.resume import router as resume_router
 from app.api.ai import router as ai_router
 from app.api.matches import router as matches_router
 from app.api.intelligence import router as intelligence_router
-from app.api.industrial import router as industrial_router
-from app.api.beehive import router as beehive_router
 from app.core.config import settings
 import logging
 
@@ -75,8 +73,6 @@ app.include_router(resume_router, prefix="/resume", tags=["Resume"])
 app.include_router(ai_router, prefix="/ai", tags=["AI Features"])
 app.include_router(matches_router, prefix="/matches", tags=["Matching Engine"])
 app.include_router(intelligence_router, prefix="/intelligence", tags=["Research Intelligence"])
-app.include_router(industrial_router, prefix="/industrial", tags=["Industrial"])
-app.include_router(beehive_router, prefix="/beehive", tags=["Beehive"])
 
 @app.get("/")
 def root():
