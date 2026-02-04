@@ -8,7 +8,6 @@ import OpportunityForm from "../components/OpportunityForm";
 import OpportunityList from "../components/OpportunityList";
 import MentorApplications from "../components/MentorApplications";
 import StudentApplications from "../components/StudentApplications";
-import ResearchLab from "../components/ResearchLab";
 import AnalyticsDashboard from "../components/AnalyticsDashboard";
 import SmartMatchList from "../components/SmartMatchList";
 import RealWorldDashboard from "../components/RealWorldDashboard";
@@ -362,8 +361,6 @@ const Dashboard = () => {
                 <MentorApplications />
               </ErrorBoundary>
             )}
-
-            {activeTab === 'lab' && <ResearchLab />}
 
             {activeTab === 'analytics' && <AnalyticsDashboard title="My Engagement Analytics" />}
           </>
