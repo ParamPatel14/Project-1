@@ -355,4 +355,45 @@ export const deleteSavedResearchGap = async (gapId) => {
   return response.data;
 };
 
+// --- Real World & Beehive APIs ---
+export const createInterest = async (data) => {
+  const response = await api.post("/realworld/interests", data);
+  return response.data;
+};
+
+export const getInterests = async () => {
+  const response = await api.get("/realworld/interests");
+  return response.data;
+};
+
+export const createVisit = async (data) => {
+  const response = await api.post("/realworld/visits", data);
+  return response.data;
+};
+
+export const getVisits = async () => {
+  const response = await api.get("/realworld/visits");
+  return response.data;
+};
+
+export const enrollVisit = async (visitId) => {
+  const response = await api.post(`/realworld/visits/${visitId}/enroll`);
+  return response.data;
+};
+
+export const createBeehiveEvent = async (data) => {
+  const response = await api.post("/realworld/beehive", data);
+  return response.data;
+};
+
+export const getBeehiveEvents = async () => {
+  const response = await api.get("/realworld/beehive");
+  return response.data;
+};
+
+export const enrollBeehive = async (eventId) => {
+  const response = await api.post(`/realworld/beehive/${eventId}/enroll`);
+  return response.data;
+};
+
 export default api;

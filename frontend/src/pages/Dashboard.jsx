@@ -11,8 +11,9 @@ import StudentApplications from "../components/StudentApplications";
 import ResearchLab from "../components/ResearchLab";
 import AnalyticsDashboard from "../components/AnalyticsDashboard";
 import SmartMatchList from "../components/SmartMatchList";
+import RealWorldDashboard from "../components/RealWorldDashboard";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase, FiCpu } from "react-icons/fi";
+import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase, FiCpu, FiGlobe } from "react-icons/fi";
 
 const Dashboard = () => {
   const { user, logout, loading: authLoading, refreshUser } = useAuth();
@@ -91,6 +92,9 @@ const Dashboard = () => {
                   </button>
                   <button onClick={() => setActiveTab('browse')} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all ${activeTab === 'browse' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'}`}>Browse Opportunities</button>
                   <button onClick={() => setActiveTab('applications')} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all ${activeTab === 'applications' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'}`}>My Applications</button>
+                  <button onClick={() => setActiveTab('real-world')} className={`px-4 py-2 rounded-sm text-sm font-medium flex items-center gap-2 transition-all ${activeTab === 'real-world' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'}`}>
+                    <FiGlobe className={activeTab === 'real-world' ? 'text-[var(--color-academia-gold)]' : 'text-stone-400'} /> Real World
+                  </button>
                   <button onClick={() => setActiveTab('lab')} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all ${activeTab === 'lab' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'}`}>Research Lab</button>
                 </div>
               )}
@@ -271,6 +275,9 @@ const Dashboard = () => {
             {activeTab === 'applications' && <StudentApplications />}
             
             {activeTab === 'lab' && <ResearchLab />}
+
+            {activeTab === 'real-world' && <RealWorldDashboard />}
+
 
 
           </>

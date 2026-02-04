@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createOpportunity, getSkills, createSkill } from '../api';
+import { createOpportunity, getSkills, createSkill, createVisit } from '../api';
 import { 
     FiBriefcase, FiAlignLeft, FiCalendar, FiPlus, FiX, 
     FiCheck, FiSearch, FiTarget, FiDollarSign, FiAward, 
-    FiLayers, FiZap, FiLayout, FiClock 
+    FiLayers, FiZap, FiLayout, FiClock, FiMapPin, FiGlobe 
 } from 'react-icons/fi';
 
 const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
@@ -18,7 +18,10 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
     is_open: true,
     deadline: '',
     total_slots: 1,
-    curriculum: ''
+    curriculum: '',
+    company_name: '',
+    location: '',
+    visit_date: ''
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -63,26 +66,42 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
 
     try {
       // Prepare payload
-      const payload = {
-        ...formData,
-        skills: selectedSkills.map(s => ({
-          skill_id: s.skill_id,
-          weight: s.weight
-        }))
-      };
-      
-      // Ensure deadline is properly formatted or null
-      if (!payload.deadline) {
-          payload.deadline = null;
-      }
+      let payload = { ...formData };
 
-      if (customSubmitFunction) {
-        await customSubmitFunction(payload);
+      if (formData.type === 'industrial_visit') {
+        // Prepare payload for Industrial Visit
+        const visitPayload = {
+          title: formData.title,
+          company_name: formData.company_name,
+          location: formData.location,
+          description: formData.description,
+          visit_date: formData.visit_date,
+          max_students: formData.total_slots
+        };
+        await createVisit(visitPayload);
       } else {
-        await createOpportunity(payload);
+        // Prepare payload for Opportunity
+        payload = {
+            ...formData,
+            skills: selectedSkills.map(s => ({
+            skill_id: s.skill_id,
+            weight: s.weight
+            }))
+        };
+        
+        // Ensure deadline is properly formatted or null
+        if (!payload.deadline) {
+            payload.deadline = null;
+        }
+
+        if (customSubmitFunction) {
+            await customSubmitFunction(payload);
+        } else {
+            await createOpportunity(payload);
+        }
       }
 
-      setSuccess('Opportunity created successfully!');
+      setSuccess('Created successfully!');
       
       // Reset form
       setFormData({
@@ -96,7 +115,10 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
         is_open: true,
         deadline: '',
         total_slots: 1,
-        curriculum: ''
+        curriculum: '',
+        company_name: '',
+        location: '',
+        visit_date: ''
       });
       setSelectedSkills([]);
       
@@ -234,13 +256,15 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                                 <option value="internship">Internship</option>
                                 <option value="research_assistant">Research Assistant</option>
                                 <option value="phd_guidance">PhD Guidance</option>
-                                <option value="grant">Grant / Collaboration</option>
+                                <option value="industrial_visit">Industrial Visit</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
-                         <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Total Slots</label>
+                         <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">
+                            {formData.type === 'industrial_visit' ? 'Max Students' : 'Total Slots'}
+                         </label>
                          <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <FiTarget className="text-stone-400" />
@@ -257,22 +281,82 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     <div>
-                        <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Application Deadline</label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <FiCalendar className="text-stone-400" />
+                {/* Industrial Visit Specific Fields */}
+                {formData.type === 'industrial_visit' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+                         <div className="col-span-1">
+                            <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Company Name</label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <FiGlobe className="text-stone-400" />
+                                </div>
+                                <input
+                                    type="text"
+                                    name="company_name"
+                                    value={formData.company_name}
+                                    onChange={handleChange}
+                                    placeholder="e.g. Google, Tesla"
+                                    className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
+                                    required={formData.type === 'industrial_visit'}
+                                />
                             </div>
-                            <input
-                                type="date"
-                                name="deadline"
-                                value={formData.deadline}
-                                onChange={handleChange}
-                                className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
-                            />
+                        </div>
+
+                        <div className="col-span-1">
+                            <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Location</label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <FiMapPin className="text-stone-400" />
+                                </div>
+                                <input
+                                    type="text"
+                                    name="location"
+                                    value={formData.location}
+                                    onChange={handleChange}
+                                    placeholder="e.g. Mountain View, CA"
+                                    className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
+                                    required={formData.type === 'industrial_visit'}
+                                />
+                            </div>
+                        </div>
+
+                         <div className="col-span-1">
+                            <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Visit Date</label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <FiCalendar className="text-stone-400" />
+                                </div>
+                                <input
+                                    type="datetime-local"
+                                    name="visit_date"
+                                    value={formData.visit_date}
+                                    onChange={handleChange}
+                                    className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
+                                    required={formData.type === 'industrial_visit'}
+                                />
+                            </div>
                         </div>
                     </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                     {formData.type !== 'industrial_visit' && (
+                        <div>
+                            <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Application Deadline</label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <FiCalendar className="text-stone-400" />
+                                </div>
+                                <input
+                                    type="date"
+                                    name="deadline"
+                                    value={formData.deadline}
+                                    onChange={handleChange}
+                                    className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-academia-gold)] transition bg-[var(--color-academia-cream)] hover:bg-white text-[var(--color-academia-charcoal)]"
+                                />
+                            </div>
+                        </div>
+                     )}
                     
                     <div className="flex items-center pt-8">
                         <label className="flex items-center cursor-pointer">

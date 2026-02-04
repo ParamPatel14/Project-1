@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { getPendingMentors, verifyMentor, getAllStudents, getAllMentors, getOpportunities, createAdminOpportunity, getAllApplications } from "../api";
-import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu, FiBarChart2 } from "react-icons/fi";
+import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu, FiBarChart2, FiHexagon } from "react-icons/fi";
 import OpportunityForm from "./OpportunityForm";
 import AnalyticsDashboard from "./AnalyticsDashboard";
+import BeehiveEventList from "./BeehiveEventList";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -116,18 +117,33 @@ const AdminDashboard = () => {
         >
           Analytics
         </button>
+        <button 
+          onClick={() => setActiveTab('beehive')} 
+          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'beehive' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
+        >
+          Beehive Events
+        </button>
       </div>
 
       {/* Content */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-[400px]">
         {loading ? (
-           <div className="p-8 text-center text-gray-500">Loading data...</div>
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+          </div>
         ) : (
           <>
             {/* ANALYTICS TAB */}
             {activeTab === 'analytics' && (
               <div className="p-6">
                 <AnalyticsDashboard title="Platform Analytics" />
+              </div>
+            )}
+
+            {/* BEEHIVE TAB */}
+            {activeTab === 'beehive' && (
+              <div className="p-6">
+                <BeehiveEventList />
               </div>
             )}
 
