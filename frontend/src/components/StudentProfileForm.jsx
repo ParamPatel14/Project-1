@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateStudentProfile, uploadResume, parseResume } from "../api";
-import { FiBook, FiGithub, FiGlobe, FiVideo, FiUpload, FiCheck, FiFileText, FiX, FiPlus, FiTrash2, FiLinkedin, FiTwitter, FiEdit2, FiType, FiCalendar, FiLink } from "react-icons/fi";
+import { FiBook, FiGithub, FiGlobe, FiVideo, FiUpload, FiCheck, FiFileText, FiX, FiPlus, FiTrash2, FiLinkedin, FiTwitter, FiEdit2, FiType, FiCalendar, FiLink, FiChevronDown, FiChevronUp, FiUser, FiArrowRight, FiBriefcase, FiCpu } from "react-icons/fi";
 
 const INTEREST_OPTIONS = [
   "Web Development", "Data Science", "Machine Learning", "Mobile App Dev", 
@@ -22,79 +22,93 @@ const getResumeUrl = (url) => {
 };
 
 const StudentProfileView = ({ data, onEdit }) => {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
   return (
     <>
       {!data.is_phd_seeker && (
         <div 
           onClick={onEdit}
-          className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl p-1 mb-8 shadow-lg cursor-pointer transform hover:-translate-y-1 transition-all duration-300 max-w-5xl mx-auto"
+          className="relative group rounded-sm mb-10 cursor-pointer max-w-5xl mx-auto border border-[var(--color-academia-gold)] bg-[var(--color-academia-cream)] p-8 hover:shadow-sm transition-all duration-300"
         >
-          <div className="bg-white rounded-lg p-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-               <div className="bg-purple-100 p-3 rounded-full">
-                  <FiBook className="text-2xl text-purple-600" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-start gap-6">
+               <div className="mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                  <FiBook className="text-4xl text-[var(--color-academia-charcoal)]" />
                </div>
                <div>
-                  <h3 className="text-lg font-bold text-gray-900">Looking for a PhD Supervisor?</h3>
-                  <p className="text-gray-600">Connect with top professors. Add your research interests and publications.</p>
+                  <h3 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">Pursuing a PhD?</h3>
+                  <p className="text-[var(--color-academia-charcoal)] text-lg font-light leading-relaxed max-w-2xl">
+                    Connect with leading professors and research labs. Update your profile with research interests and publications to get discovered.
+                  </p>
                </div>
             </div>
-            <button className="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-semibold hover:bg-purple-200 transition">
-               Get Started &rarr;
-            </button>
+            <div className="flex-shrink-0 pl-8">
+                <span className="inline-flex items-center gap-2 text-[var(--color-academia-charcoal)] font-serif font-bold text-lg border-b-2 border-[var(--color-academia-charcoal)] pb-1 group-hover:text-[var(--color-academia-gold)] group-hover:border-[var(--color-academia-gold)] transition-all">
+                    Start Research Track <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </span>
+            </div>
           </div>
         </div>
       )}
-      <div className="bg-white p-8 rounded-xl shadow-md max-w-5xl mx-auto space-y-8">
-      <div className="flex justify-between items-center border-b pb-4">
+      <div className="bg-white p-10 rounded-sm shadow-sm border border-stone-200 max-w-5xl mx-auto space-y-10">
+      <div className="flex justify-between items-center border-b border-stone-200 pb-6">
         <div>
-            <h2 className="text-3xl font-bold text-gray-800">{data.name}</h2>
-            <p className="text-gray-600 text-lg">{data.headline}</p>
+            <h2 className="text-4xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.name}</h2>
+            <p className="text-stone-600 text-xl font-light mt-2">{data.headline}</p>
         </div>
-        <button onClick={onEdit} className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition">
+        <button onClick={onEdit} className="bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-2 rounded-sm hover:opacity-90 flex items-center gap-2 transition font-medium shadow-sm">
             <FiEdit2 /> Edit Profile
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Left Column: Info */}
-        <div className="space-y-6">
-            <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiFileText /> Personal Details</h3>
-                <ul className="space-y-3 text-sm">
-                    <li><span className="font-medium">Status:</span> {data.current_status}</li>
-                    <li><span className="font-medium">Location:</span> {data.city}, {data.country}</li>
-                    <li><span className="font-medium">Phone:</span> {data.phone_number}</li>
-                    <li><span className="font-medium">Gender:</span> {data.gender}</li>
-                    <li><span className="font-medium">Languages:</span> {data.languages}</li>
-                </ul>
+        <div className="space-y-8">
+            <div className="bg-[var(--color-academia-cream)] rounded-sm border border-stone-200 overflow-hidden transition-all duration-300">
+                <button 
+                    onClick={() => setIsDetailsOpen(!isDetailsOpen)}
+                    className="w-full p-5 flex justify-between items-center text-[var(--color-academia-charcoal)] hover:bg-stone-100 transition-colors"
+                >
+                    <h3 className="font-serif font-bold flex items-center gap-2 text-lg"><FiUser className="text-[var(--color-academia-gold)]" /> Personal Details</h3>
+                    {isDetailsOpen ? <FiChevronUp /> : <FiChevronDown />}
+                </button>
+                <div className={`px-5 overflow-hidden transition-all duration-500 ease-in-out ${isDetailsOpen ? 'max-h-96 pb-5 opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <ul className="space-y-4 text-sm pt-4 border-t border-stone-300">
+                        <li className="flex justify-between"><span className="font-bold text-stone-500 font-serif">Status:</span> <span className="text-[var(--color-academia-charcoal)]">{data.current_status}</span></li>
+                        <li className="flex justify-between"><span className="font-bold text-stone-500 font-serif">Location:</span> <span className="text-[var(--color-academia-charcoal)]">{data.city}, {data.country}</span></li>
+                        <li className="flex justify-between"><span className="font-bold text-stone-500 font-serif">Phone:</span> <span className="text-[var(--color-academia-charcoal)]">{data.phone_number}</span></li>
+                        <li className="flex justify-between"><span className="font-bold text-stone-500 font-serif">Gender:</span> <span className="text-[var(--color-academia-charcoal)]">{data.gender}</span></li>
+                        <li className="flex justify-between"><span className="font-bold text-stone-500 font-serif">Languages:</span> <span className="text-[var(--color-academia-charcoal)]">{data.languages}</span></li>
+                    </ul>
+                </div>
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiGlobe /> Socials</h3>
-                <div className="flex flex-col gap-3">
-                    {data.github_url && <a href={data.github_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-indigo-600 hover:underline"><FiGithub /> GitHub</a>}
-                    {data.linkedin_url && <a href={data.linkedin_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-blue-600 hover:underline"><FiLinkedin /> LinkedIn</a>}
-                    {data.twitter_url && <a href={data.twitter_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-blue-400 hover:underline"><FiTwitter /> Twitter</a>}
-                    {data.website_url && <a href={data.website_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-gray-600 hover:underline"><FiGlobe /> Website</a>}
+            <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-stone-200">
+                <h3 className="font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-2 text-lg"><FiGlobe className="text-[var(--color-academia-gold)]" /> Socials</h3>
+                <div className="flex flex-col gap-4">
+                    {data.github_url && <a href={data.github_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors"><FiGithub /> GitHub</a>}
+                    {data.linkedin_url && <a href={data.linkedin_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors"><FiLinkedin /> LinkedIn</a>}
+                    {data.twitter_url && <a href={data.twitter_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors"><FiTwitter /> Twitter</a>}
+                    {data.website_url && <a href={data.website_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors"><FiGlobe /> Website</a>}
                 </div>
             </div>
 
-             <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiCheck /> Skills</h3>
-                <div className="mb-4">
-                    <p className="text-xs text-gray-500 uppercase font-semibold mb-2">Primary</p>
+             <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-stone-200">
+                <h3 className="font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-2 text-lg"><FiCheck className="text-[var(--color-academia-gold)]" /> Skills</h3>
+                <div className="mb-6">
+                    <p className="text-xs text-stone-500 uppercase font-bold tracking-wider mb-3">Primary</p>
                     <div className="flex flex-wrap gap-2">
                         {data.primary_skills?.split(',').map((s, i) => (
-                            <span key={i} className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs font-medium">{s.trim()}</span>
+                            <span key={i} className="bg-white text-[var(--color-academia-charcoal)] border border-stone-300 px-3 py-1 rounded-sm text-xs font-medium shadow-sm">{s.trim()}</span>
                         ))}
                     </div>
                 </div>
                 <div>
-                    <p className="text-xs text-gray-500 uppercase font-semibold mb-2">Tools</p>
+                    <p className="text-xs text-stone-500 uppercase font-bold tracking-wider mb-3">Tools</p>
                     <div className="flex flex-wrap gap-2">
                         {data.tools_libraries?.split(',').map((s, i) => (
-                            <span key={i} className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs font-medium">{s.trim()}</span>
+                            <span key={i} className="bg-stone-100 text-stone-600 px-3 py-1 rounded-sm text-xs font-medium border border-transparent">{s.trim()}</span>
                         ))}
                     </div>
                 </div>
@@ -102,107 +116,108 @@ const StudentProfileView = ({ data, onEdit }) => {
         </div>
 
         {/* Right Column: Experience, Education, Projects */}
-        <div className="md:col-span-2 space-y-8">
+        <div className="md:col-span-2 space-y-10">
             <section>
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2"><FiBook /> Work Experience</h3>
+                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiBriefcase className="text-[var(--color-academia-gold)]" /> Work Experience</h3>
                 {data.work_experiences?.length > 0 ? (
-                    <div className="space-y-4">
+                    <div className="space-y-8">
                         {data.work_experiences.map((exp, i) => (
-                            <div key={i} className="border-l-4 border-indigo-500 pl-4 py-1">
-                                <h4 className="font-bold text-lg">{exp.title}</h4>
-                                <p className="text-indigo-600 font-medium">{exp.company} <span className="text-gray-400 text-sm">| {exp.start_date} - {exp.end_date}</span></p>
-                                <p className="text-gray-600 mt-2 text-sm whitespace-pre-line">{exp.description}</p>
+                            <div key={i} className="border-l-4 border-[var(--color-academia-gold)] pl-6 py-1 ml-2">
+                                <h4 className="font-serif font-bold text-xl text-[var(--color-academia-charcoal)]">{exp.title}</h4>
+                                <p className="text-[var(--color-academia-gold)] font-medium text-lg mt-1">{exp.company} <span className="text-stone-400 text-base font-normal ml-2">| {exp.start_date} - {exp.end_date}</span></p>
+                                <p className="text-stone-600 mt-3 text-base leading-relaxed whitespace-pre-line font-light">{exp.description}</p>
                             </div>
                         ))}
                     </div>
-                ) : <p className="text-gray-400 italic">No work experience added.</p>}
+                ) : <p className="text-stone-400 italic font-light">No work experience added.</p>}
             </section>
 
             <section>
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2"><FiBook /> Projects</h3>
+                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiCpu className="text-[var(--color-academia-gold)]" /> Projects</h3>
                 {data.projects?.length > 0 ? (
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 gap-6">
                         {data.projects.map((proj, i) => (
-                            <div key={i} className="border p-4 rounded-lg hover:shadow-md transition">
-                                <div className="flex justify-between items-start">
-                                    <h4 className="font-bold text-lg">{proj.title}</h4>
-                                    {proj.url && <a href={proj.url} target="_blank" rel="noreferrer" className="text-indigo-600 text-sm hover:underline">View Project</a>}
+                            <div key={i} className="border border-stone-200 p-6 rounded-sm hover:border-[var(--color-academia-gold)] hover:shadow-md transition-all duration-300 bg-white group">
+                                <div className="flex justify-between items-start mb-2">
+                                    <h4 className="font-serif font-bold text-lg text-[var(--color-academia-charcoal)] group-hover:text-[var(--color-academia-gold)] transition-colors">{proj.title}</h4>
+                                    {proj.url && <a href={proj.url} target="_blank" rel="noreferrer" className="text-stone-400 hover:text-[var(--color-academia-gold)] text-sm flex items-center gap-1 transition-colors"><FiLink /> View</a>}
                                 </div>
-                                <p className="text-xs text-gray-500 mt-1 mb-2 font-mono">{proj.tech_stack}</p>
-                                <p className="text-gray-600 text-sm">{proj.description}</p>
+                                <p className="text-xs text-stone-500 mb-3 font-mono bg-stone-50 inline-block px-2 py-1 rounded-sm border border-stone-100">{proj.tech_stack}</p>
+                                <p className="text-stone-600 text-sm leading-relaxed">{proj.description}</p>
                             </div>
                         ))}
                     </div>
-                ) : <p className="text-gray-400 italic">No projects added.</p>}
+                ) : <p className="text-stone-400 italic font-light">No projects added.</p>}
             </section>
 
             <section>
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2"><FiBook /> Education</h3>
+                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiBook className="text-[var(--color-academia-gold)]" /> Education</h3>
                 {data.educations?.length > 0 ? (
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                         {data.educations.map((edu, i) => (
-                            <div key={i} className="flex justify-between items-center border-b pb-2 last:border-0">
+                            <div key={i} className="flex justify-between items-start border-b border-stone-100 pb-6 last:border-0 last:pb-0">
                                 <div>
-                                    <h4 className="font-bold">{edu.institution}</h4>
-                                    <p className="text-gray-600 text-sm">{edu.degree}</p>
+                                    <h4 className="font-serif font-bold text-lg text-[var(--color-academia-charcoal)]">{edu.institution}</h4>
+                                    <p className="text-stone-600 text-base mt-1">{edu.degree}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-gray-500 text-sm">{edu.start_year} - {edu.end_year}</p>
-                                    <p className="text-indigo-600 text-xs font-medium">Grade: {edu.grade}</p>
+                                    <p className="text-stone-500 text-sm font-medium">{edu.start_year} - {edu.end_year}</p>
+                                    <p className="text-[var(--color-academia-gold)] text-xs font-bold mt-1 uppercase tracking-wide">Grade: {edu.grade}</p>
                                 </div>
                             </div>
                         ))}
                     </div>
-                ) : <p className="text-gray-400 italic">No education details added.</p>}
+                ) : <p className="text-stone-400 italic font-light">No education details added.</p>}
             </section>
 
             {data.is_phd_seeker && (
-             <section className="mt-8 pt-6 border-t border-gray-200">
-                <h3 className="text-xl font-bold text-purple-800 mb-4 flex items-center gap-2"><FiBook /> Research Profile (PhD)</h3>
+             <section className="mt-12 pt-8 border-t border-stone-200">
+                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-3"><FiBook className="text-[var(--color-academia-gold)]" /> Research Profile (PhD)</h3>
                 
-                <div className="bg-purple-50 p-4 rounded-lg mb-6 border border-purple-100">
-                    <h4 className="font-bold text-purple-900 mb-2">Research Interests</h4>
-                    <p className="text-gray-800 whitespace-pre-line">{data.research_interests || "No research interests specified."}</p>
+                <div className="bg-[var(--color-academia-cream)] p-8 rounded-sm mb-8 border border-stone-200 relative">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-[var(--color-academia-gold)] rounded-l-sm"></div>
+                    <h4 className="font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 text-lg">Research Interests</h4>
+                    <p className="text-stone-700 whitespace-pre-line leading-relaxed">{data.research_interests || "No research interests specified."}</p>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                    <div className="bg-white p-4 rounded-lg shadow-sm border text-center">
-                        <span className="block text-gray-500 text-xs uppercase tracking-wide">GPA</span>
-                        <span className="font-bold text-2xl text-gray-800">{data.gpa || "-"}</span>
+                <div className="grid grid-cols-3 gap-6 mb-8">
+                    <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
+                        <span className="block text-stone-400 text-xs uppercase tracking-widest font-bold mb-2">GPA</span>
+                        <span className="font-serif font-bold text-3xl text-[var(--color-academia-charcoal)]">{data.gpa || "-"}</span>
                     </div>
-                    <div className="bg-white p-4 rounded-lg shadow-sm border text-center">
-                        <span className="block text-gray-500 text-xs uppercase tracking-wide">GRE</span>
-                        <span className="font-bold text-2xl text-gray-800">{data.gre_score || "-"}</span>
+                    <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
+                        <span className="block text-stone-400 text-xs uppercase tracking-widest font-bold mb-2">GRE</span>
+                        <span className="font-serif font-bold text-3xl text-[var(--color-academia-charcoal)]">{data.gre_score || "-"}</span>
                     </div>
-                    <div className="bg-white p-4 rounded-lg shadow-sm border text-center">
-                        <span className="block text-gray-500 text-xs uppercase tracking-wide">TOEFL</span>
-                        <span className="font-bold text-2xl text-gray-800">{data.toefl_score || "-"}</span>
+                    <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
+                        <span className="block text-stone-400 text-xs uppercase tracking-widest font-bold mb-2">TOEFL</span>
+                        <span className="font-serif font-bold text-3xl text-[var(--color-academia-charcoal)]">{data.toefl_score || "-"}</span>
                     </div>
                 </div>
 
-                <h4 className="font-bold text-lg mb-3 text-gray-800">Publications</h4>
+                <h4 className="font-serif font-bold text-xl mb-6 text-[var(--color-academia-charcoal)] border-b border-stone-200 pb-2">Publications</h4>
                 {data.publications?.length > 0 ? (
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                         {data.publications.map((pub, i) => (
-                            <div key={i} className="bg-white p-4 rounded-lg border hover:shadow-md transition">
-                                <h4 className="font-bold text-lg text-purple-700">{pub.title}</h4>
-                                <div className="flex justify-between items-center mt-1">
-                                    <p className="text-gray-600 font-medium text-sm">{pub.journal_conference}</p>
-                                    <span className="text-gray-400 text-xs">{pub.publication_date}</span>
+                            <div key={i} className="bg-white p-6 rounded-sm border border-stone-200 hover:shadow-md hover:border-[var(--color-academia-gold)] transition-all duration-300">
+                                <h4 className="font-serif font-bold text-xl text-[var(--color-academia-charcoal)] mb-2">{pub.title}</h4>
+                                <div className="flex justify-between items-center mb-3">
+                                    <p className="text-[var(--color-academia-gold)] font-medium text-sm">{pub.journal_conference}</p>
+                                    <span className="text-stone-400 text-xs font-mono">{pub.publication_date}</span>
                                 </div>
-                                <p className="text-gray-600 mt-2 text-sm">{pub.description}</p>
-                                {pub.url && <a href={pub.url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-sm mt-2 inline-block">View Paper &rarr;</a>}
+                                <p className="text-stone-600 text-sm leading-relaxed mb-4">{pub.description}</p>
+                                {pub.url && <a href={pub.url} target="_blank" rel="noreferrer" className="text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] text-sm font-medium inline-flex items-center gap-1 border-b border-[var(--color-academia-charcoal)] hover:border-[var(--color-academia-gold)] transition-colors pb-0.5">Read Paper <FiArrowRight /></a>}
                             </div>
                         ))}
                     </div>
-                ) : <p className="text-gray-400 italic">No publications listed.</p>}
+                ) : <p className="text-stone-400 italic font-light">No publications listed.</p>}
              </section>
             )}
              
              {data.resume_url && (
-                <div className="mt-8 pt-6 border-t">
-                    <h3 className="text-lg font-semibold mb-2">Resume</h3>
-                    <a href={getResumeUrl(data.resume_url)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-indigo-600 border border-indigo-200 px-4 py-2 rounded hover:bg-indigo-50 transition">
+                <div className="mt-12 pt-8 border-t border-stone-200">
+                    <h3 className="text-xl font-serif font-bold mb-4 text-[var(--color-academia-charcoal)]">Resume</h3>
+                    <a href={getResumeUrl(data.resume_url)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[var(--color-academia-charcoal)] border border-[var(--color-academia-charcoal)] px-6 py-3 rounded-sm hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] transition-all duration-300 font-medium">
                         <FiFileText /> View Uploaded CV
                     </a>
                 </div>
@@ -461,65 +476,65 @@ const StudentProfileForm = ({ user, onUpdate }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 bg-white p-8 rounded-xl shadow-md max-w-5xl mx-auto">
-      <div className="flex justify-between items-center border-b pb-4">
-        <h2 className="text-2xl font-bold text-gray-800">Complete Your Profile</h2>
-        {formData.resume_url && <span className="text-green-600 flex items-center gap-2"><FiCheck /> CV Uploaded</span>}
+    <form onSubmit={handleSubmit} className="space-y-8 bg-[var(--color-academia-cream)] p-8 rounded-sm border border-stone-200 max-w-5xl mx-auto">
+      <div className="flex justify-between items-center border-b border-[var(--color-academia-gold)] pb-4">
+        <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">Complete Your Profile</h2>
+        {formData.resume_url && <span className="text-green-700 font-serif flex items-center gap-2"><FiCheck /> CV Uploaded</span>}
       </div>
 
       {/* Resume Upload Section - Front & Center */}
-      <div className="bg-indigo-50 p-6 rounded-lg border-2 border-dashed border-indigo-200 text-center">
-        <FiUpload className="mx-auto text-4xl text-indigo-500 mb-2" />
-        <h3 className="font-semibold text-lg text-indigo-900">Auto-fill with Resume</h3>
-        <p className="text-sm text-indigo-700 mb-4">Upload your CV to automatically extract details</p>
+      <div className="bg-white p-8 rounded-sm border border-[var(--color-academia-gold)] text-center shadow-sm">
+        <FiUpload className="mx-auto text-4xl text-[var(--color-academia-charcoal)] mb-3" />
+        <h3 className="font-serif font-bold text-xl text-[var(--color-academia-charcoal)] mb-1">Auto-fill with Resume</h3>
+        <p className="text-sm text-stone-600 mb-6 font-light">Upload your CV to automatically extract details</p>
         <div className="flex justify-center items-center gap-4">
-            <label className="cursor-pointer bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition">
+            <label className="cursor-pointer bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-8 py-3 rounded-sm hover:opacity-90 transition font-serif font-medium">
             {isParsing ? "Parsing..." : "Upload Resume / CV"}
             <input type="file" accept=".pdf" className="hidden" onChange={handleResumeAutofill} disabled={isParsing} />
             </label>
             {formData.resume_url && (
-                <a href={getResumeUrl(formData.resume_url)} target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline text-sm">View Uploaded CV</a>
+                <a href={getResumeUrl(formData.resume_url)} target="_blank" rel="noopener noreferrer" className="text-[var(--color-academia-charcoal)] border-b border-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] hover:border-[var(--color-academia-gold)] transition-colors text-sm font-medium pb-0.5">View Uploaded CV</a>
             )}
         </div>
-        {message.text && <p className={`mt-2 text-sm ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>{message.text}</p>}
+        {message.text && <p className={`mt-4 text-sm font-medium ${message.type === 'error' ? 'text-red-700' : 'text-green-700'}`}>{message.text}</p>}
       </div>
 
       {/* 1. Core Profile & Identity */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2"><FiFileText /> Core Profile</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2"><FiFileText className="text-[var(--color-academia-gold)]" /> Core Profile</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-                <label className="block text-sm font-medium text-gray-700">Full Name</label>
-                <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg" />
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Full Name</label>
+                <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">I am a</label>
-                <select name="current_status" value={formData.current_status} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg">
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">I am a</label>
+                <select name="current_status" value={formData.current_status} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors">
                     {USER_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">Headline</label>
-                <input type="text" name="headline" value={formData.headline} onChange={handleChange} placeholder="e.g. Full Stack Developer | React Expert" className="w-full mt-1 p-2 border rounded-lg" />
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Headline</label>
+                <input type="text" name="headline" value={formData.headline} onChange={handleChange} placeholder="e.g. Full Stack Developer | React Expert" className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400" />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-                <input type="text" name="phone_number" value={formData.phone_number} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg" />
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Phone Number</label>
+                <input type="text" name="phone_number" value={formData.phone_number} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">City</label>
-                <input type="text" name="city" value={formData.city} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg" />
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">City</label>
+                <input type="text" name="city" value={formData.city} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">Country</label>
-                <input type="text" name="country" value={formData.country} onChange={handleChange} className="w-full mt-1 p-2 border rounded-lg" />
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Country</label>
+                <input type="text" name="country" value={formData.country} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">Gender</label>
-                <div className="flex gap-2 mt-1">
+                <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Gender</label>
+                <div className="flex gap-3 mt-1">
                     {GENDER_OPTIONS.map(g => (
                         <button key={g} type="button" onClick={() => setFormData(p => ({...p, gender: g}))}
-                            className={`px-4 py-2 rounded-full text-sm border ${formData.gender === g ? 'bg-indigo-100 border-indigo-500 text-indigo-700' : 'bg-white border-gray-300'}`}>
+                            className={`px-5 py-2 rounded-sm text-sm font-medium transition-colors border ${formData.gender === g ? 'bg-[var(--color-academia-charcoal)] border-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)]' : 'bg-white border-stone-300 text-stone-600 hover:border-[var(--color-academia-gold)]'}`}>
                             {g}
                         </button>
                     ))}

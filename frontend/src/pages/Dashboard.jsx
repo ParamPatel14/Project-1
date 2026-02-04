@@ -157,25 +157,25 @@ const Dashboard = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div 
-                className="bg-white p-8 rounded-sm shadow-lg hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-[var(--color-academia-gold)] group transform hover:-translate-y-1" 
+                className="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-all cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] group" 
                 onClick={() => setSelectedRole("student")}
               >
-                <div className="bg-[var(--color-academia-gold)]/10 p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6 group-hover:bg-[var(--color-academia-gold)] transition-colors">
-                  <FiBook className="text-[var(--color-academia-gold)] text-4xl group-hover:text-white transition-colors" />
+                <div className="bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6 group-hover:bg-[var(--color-academia-gold)] transition-colors">
+                  <FiBook className="text-[var(--color-academia-charcoal)] text-4xl group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="text-2xl font-bold text-[var(--color-academia-charcoal)] mb-3">I am a Student</h3>
-                <p className="text-stone-500">I'm looking for research opportunities, mentors, and lab positions to advance my academic career.</p>
+                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">I am a Student</h3>
+                <p className="text-stone-500 font-light">I'm looking for research opportunities, mentors, and lab positions to advance my academic career.</p>
               </div>
 
               <div 
-                className="bg-white p-8 rounded-sm shadow-lg hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-[var(--color-academia-gold)] group transform hover:-translate-y-1" 
+                className="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-all cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] group" 
                 onClick={() => setSelectedRole("mentor")}
               >
-                <div className="bg-[var(--color-academia-gold)]/10 p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6 group-hover:bg-[var(--color-academia-gold)] transition-colors">
-                  <FiUser className="text-[var(--color-academia-gold)] text-4xl group-hover:text-white transition-colors" />
+                <div className="bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6 group-hover:bg-[var(--color-academia-gold)] transition-colors">
+                  <FiUser className="text-[var(--color-academia-charcoal)] text-4xl group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="text-2xl font-bold text-[var(--color-academia-charcoal)] mb-3">I am a Mentor</h3>
-                <p className="text-stone-500">I'm a professor or researcher looking for talented students to join my lab and research projects.</p>
+                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">I am a Mentor</h3>
+                <p className="text-stone-500 font-light">I'm a professor or researcher looking for talented students to join my lab and research projects.</p>
               </div>
             </div>
           </div>
@@ -206,33 +206,45 @@ const Dashboard = () => {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column: Profile */}
                 <div className="lg:col-span-2 space-y-8">
-                   {/* Completeness Card */}
-                  <div className="bg-white p-6 rounded-sm shadow-md border-t-4 border-[var(--color-academia-gold)]">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)]">
-                        {displayRole === 'student' ? 'Readiness Score' : 'Profile Completeness'}
-                      </h3>
-                      <span className={`font-bold ${
-                        completeness.score >= 80 ? 'text-green-600' : 
-                        completeness.score >= 50 ? 'text-yellow-600' : 'text-red-600'
-                      }`}>
-                        {completeness.score}%
-                      </span>
+                  {/* Completeness Hero Section */}
+                  <div className="bg-white p-6 rounded-sm border border-[var(--color-academia-gold)] relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                      <FiActivity className="text-6xl text-[var(--color-academia-charcoal)]" />
                     </div>
-                    <div className="w-full bg-stone-200 rounded-full h-2.5">
-                      <div 
-                        className={`h-2.5 rounded-full transition-all duration-500 ${
-                            completeness.score >= 80 ? 'bg-green-600' : 
-                            completeness.score >= 50 ? 'bg-yellow-600' : 'bg-red-600'
-                        }`}
-                        style={{ width: `${completeness.score}%` }}
-                      ></div>
+                    
+                    <div className="flex items-center gap-6 relative z-10">
+                      {/* Circular Chart */}
+                      <div className="relative flex-shrink-0">
+                         <div className="relative w-24 h-24">
+                            <svg className="w-full h-full transform -rotate-90">
+                              <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-stone-100" />
+                              <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" 
+                                strokeDasharray={263.89} 
+                                strokeDashoffset={263.89 - (completeness.score / 100) * 263.89} 
+                                strokeLinecap="round" 
+                                className={`${completeness.score >= 80 ? 'text-green-600' : completeness.score >= 50 ? 'text-yellow-600' : 'text-red-600'} transition-all duration-1000 ease-out`} 
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                               <span className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
+                                  {completeness.score}%
+                               </span>
+                            </div>
+                         </div>
+                      </div>
+
+                      {/* Text Content */}
+                      <div className="flex-1">
+                        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-1">
+                          {displayRole === 'student' ? 'Readiness Score' : 'Profile Completeness'}
+                        </h3>
+                        <p className="text-stone-600 text-sm leading-relaxed font-light">
+                          {completeness.score < 80 
+                            ? "Complete your details to increase your chances of matching." 
+                            : "Excellent! Your profile is robust and ready for premium opportunities."}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-sm text-stone-500 mt-2">
-                      {completeness.score < 80 
-                        ? "Increase your readiness score to match with top opportunities." 
-                        : "Your readiness score is excellent! You are well-positioned for applications."}
-                    </p>
                   </div>
 
                   <StudentProfileForm user={currentUser} onUpdate={handleProfileUpdate} />
@@ -240,11 +252,11 @@ const Dashboard = () => {
 
                 {/* Right Column: Status/Matches (Placeholder) */}
                 <div className="space-y-8">
-                  <div className="bg-white p-6 rounded-sm shadow-md border-t-4 border-[var(--color-academia-charcoal)]">
+                  <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200 border-t-4 border-t-[var(--color-academia-charcoal)]">
                     <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center">
                       <FiActivity className="mr-2" /> Quick Stats
                     </h3>
-                    <div className="text-center py-4 text-stone-500">
+                    <div className="text-center py-4 text-stone-500 font-light">
                       <p>Complete your profile to unlock more stats.</p>
                     </div>
                   </div>
@@ -253,23 +265,23 @@ const Dashboard = () => {
                   {!currentUser?.student_profile?.is_phd_seeker && (
                     <div 
                       onClick={() => window.dispatchEvent(new Event('open-profile-edit'))}
-                      className="bg-white p-6 rounded-sm shadow-md cursor-pointer border-2 border-transparent hover:border-[var(--color-academia-gold)] transition group"
+                      className="bg-white p-6 rounded-sm shadow-sm cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] transition group"
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="bg-[var(--color-academia-gold)]/10 p-2 rounded-sm group-hover:bg-[var(--color-academia-gold)] transition-colors">
-                          <FiBook className="text-[var(--color-academia-gold)] group-hover:text-white transition-colors" />
+                        <div className="bg-[var(--color-academia-cream)] p-2 rounded-sm border border-[var(--color-academia-gold)] group-hover:bg-[var(--color-academia-gold)] transition-colors">
+                          <FiBook className="text-[var(--color-academia-charcoal)] group-hover:text-white transition-colors" />
                         </div>
-                        <h3 className="font-bold text-[var(--color-academia-charcoal)]">PhD Matcher</h3>
+                        <h3 className="font-serif font-bold text-[var(--color-academia-charcoal)]">PhD Matcher</h3>
                       </div>
-                      <div className="flex items-start gap-3">
+                      <div className="flex items-start gap-3 mt-4">
                         <input 
                           type="checkbox" 
                           checked={false} 
                           readOnly 
-                          className="mt-1 w-5 h-5 text-[var(--color-academia-charcoal)] rounded border-stone-300 cursor-pointer pointer-events-none" 
+                          className="mt-1 w-4 h-4 text-[var(--color-academia-charcoal)] rounded border-stone-300 cursor-pointer pointer-events-none focus:ring-[var(--color-academia-gold)]" 
                         />
-                        <p className="text-sm text-stone-600">
-                          I am looking for a PhD Supervisor. <span className="text-[var(--color-academia-gold)] font-medium underline">Complete Profile &rarr;</span>
+                        <p className="text-sm text-stone-600 font-light leading-relaxed">
+                          I am looking for a PhD Supervisor. <span className="text-[var(--color-academia-gold)] font-medium border-b border-[var(--color-academia-gold)] pb-0.5">Complete Profile</span>
                         </p>
                       </div>
                     </div>
