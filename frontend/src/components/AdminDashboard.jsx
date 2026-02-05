@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import OpportunityForm from "./OpportunityForm";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 import BeehiveEventList from "./BeehiveEventList";
+import StudentProfileModal from "./StudentProfileModal";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -548,87 +549,11 @@ const AdminDashboard = () => {
       </AnimatePresence>
 
       {/* Profile Modal */}
-      <AnimatePresence>
-        {showProfileModal && selectedStudent && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[var(--color-academia-charcoal)]/80 backdrop-blur-sm flex items-center justify-center z-50"
-          >
-            <motion.div 
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 50, opacity: 0 }}
-                className="bg-white rounded-sm max-w-2xl w-full mx-4 shadow-2xl overflow-hidden border border-[var(--color-academia-gold)] max-h-[90vh] overflow-y-auto"
-            >
-              <div className="bg-[var(--color-academia-charcoal)] p-8 text-[var(--color-academia-cream)] flex justify-between items-start relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-[var(--color-academia-gold)] rounded-full opacity-10 transform translate-x-1/3 -translate-y-1/3 blur-xl"></div>
-                <div className="relative z-10">
-                  <h3 className="text-3xl font-serif font-bold">{selectedStudent.name}</h3>
-                  <p className="text-[var(--color-academia-gold)] opacity-90 mt-1 font-mono text-sm">{selectedStudent.email}</p>
-                  <div className="mt-4 flex gap-2">
-                      {selectedStudent.student_profile?.university && <span className="bg-white/10 border border-white/20 px-3 py-1 rounded-sm text-xs font-medium tracking-wide">{selectedStudent.student_profile.university}</span>}
-                      {selectedStudent.student_profile?.major && <span className="bg-white/10 border border-white/20 px-3 py-1 rounded-sm text-xs font-medium tracking-wide">{selectedStudent.student_profile.major}</span>}
-                  </div>
-                </div>
-                 <button onClick={() => setShowProfileModal(false)} className="text-white/70 hover:text-white transition-colors relative z-10 p-2 hover:bg-white/10 rounded-full">
-                  <FiX size={24} />
-                </button>
-              </div>
-              <div className="p-8 space-y-8">
-                  <div>
-                      <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 flex items-center">
-                          <span className="w-1.5 h-1.5 bg-[var(--color-academia-gold)] rounded-full mr-2"></span>
-                          About Candidate
-                      </h4>
-                      <p className="text-stone-600 leading-relaxed font-light text-lg">{selectedStudent.student_profile?.bio || "No bio available."}</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-6 bg-stone-50 p-6 rounded-sm border border-stone-100">
-                      <div>
-                          <h4 className="text-xs font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider mb-2 opacity-70">GPA / Performance</h4>
-                          <p className="text-3xl font-serif font-bold text-[var(--color-academia-gold)]">{selectedStudent.student_profile?.gpa || "N/A"}</p>
-                      </div>
-                      <div>
-                          <h4 className="text-xs font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider mb-2 opacity-70">Graduation</h4>
-                          <p className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">{selectedStudent.student_profile?.graduation_year || "N/A"}</p>
-                      </div>
-                  </div>
-
-                  {selectedStudent.student_profile?.skills && (
-                      <div>
-                           <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center">
-                              <span className="w-1.5 h-1.5 bg-[var(--color-academia-gold)] rounded-full mr-2"></span>
-                              Skills & Competencies
-                          </h4>
-                          <div className="flex flex-wrap gap-2">
-                              {selectedStudent.student_profile.skills.split(',').map((skill, i) => (
-                                  <span key={i} className="bg-white text-[var(--color-academia-charcoal)] border border-stone-200 px-3 py-1.5 rounded-sm text-sm font-medium shadow-sm hover:border-[var(--color-academia-gold)] transition-colors">
-                                      {skill.trim()}
-                                  </span>
-                              ))}
-                          </div>
-                      </div>
-                  )}
-                  
-                  <div className="pt-6 border-t border-stone-200 flex justify-end">
-                       {selectedStudent.student_profile?.resume_url && (
-                          <a 
-                            href={getResumeUrl(selectedStudent.student_profile.resume_url)} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-3 rounded-sm hover:bg-black transition-all shadow-md font-bold tracking-wide border border-transparent hover:border-[var(--color-academia-gold)]"
-                          >
-                            <FiDownload className="mr-2 text-[var(--color-academia-gold)]" /> Download Resume
-                          </a>
-                       )}
-                  </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <StudentProfileModal 
+        isOpen={showProfileModal} 
+        onClose={() => setShowProfileModal(false)} 
+        student={selectedStudent} 
+      />
     </div>
   );
 };
