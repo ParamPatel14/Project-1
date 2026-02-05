@@ -59,13 +59,13 @@ const OpportunityList = ({ initialFilters = {} }) => {
 
   const getTypeColor = (type) => {
     switch (type) {
-      case 'internship': return 'bg-blue-50 text-blue-900 border-blue-200';
-      case 'research_assistant': return 'bg-purple-50 text-purple-900 border-purple-200';
-      case 'phd_guidance': return 'bg-amber-50 text-amber-900 border-amber-200';
-      case 'grant': return 'bg-emerald-50 text-emerald-900 border-emerald-200';
-      case 'industrial_visit': return 'bg-orange-50 text-orange-900 border-orange-200';
-      case 'beehive_event': return 'bg-yellow-50 text-yellow-900 border-yellow-200';
-      default: return 'bg-stone-50 text-stone-900 border-stone-200';
+      case 'internship': return 'bg-stone-100 text-[var(--color-academia-charcoal)] border-stone-300';
+      case 'research_assistant': return 'bg-stone-200 text-[var(--color-academia-charcoal)] border-stone-400';
+      case 'phd_guidance': return 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]';
+      case 'grant': return 'bg-stone-50 text-[var(--color-academia-charcoal)] border-[var(--color-academia-gold)]';
+      case 'industrial_visit': return 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-stone-300';
+      case 'beehive_event': return 'bg-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)] border-[var(--color-academia-gold)]';
+      default: return 'bg-stone-50 text-[var(--color-academia-charcoal)] border-stone-200';
     }
   };
 

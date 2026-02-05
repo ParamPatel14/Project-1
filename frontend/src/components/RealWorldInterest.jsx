@@ -125,8 +125,8 @@ const RealWorldInterest = () => {
                   </div>
                   <span className={`px-3 py-1 text-xs font-bold rounded-sm border ${
                     interest.status === 'connected' 
-                        ? 'bg-green-50 text-green-800 border-green-200 flex items-center gap-1' 
-                        : 'bg-yellow-50 text-yellow-800 border-yellow-200 flex items-center gap-1'
+                        ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)] flex items-center gap-1' 
+                        : 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-[var(--color-academia-gold)] flex items-center gap-1'
                   }`}>
                     {interest.status === 'connected' ? <FiCheckCircle /> : <FiClock />}
                     {interest.status.charAt(0).toUpperCase() + interest.status.slice(1)}
