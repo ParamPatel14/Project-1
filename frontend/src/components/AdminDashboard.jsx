@@ -70,303 +70,317 @@ const AdminDashboard = () => {
     return `http://localhost:8000/${url}`;
   };
 
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: FiShield },
+    { id: 'students', label: 'Students', icon: FiUsers },
+    { id: 'mentors', label: 'Mentors', icon: FiBriefcase },
+    { id: 'internships', label: 'Internships', icon: FiCpu },
+    { id: 'applications', label: 'Applications', icon: FiFileText },
+    { id: 'analytics', label: 'Analytics', icon: FiBarChart2 },
+    { id: 'beehive', label: 'Beehive Events', icon: FiHexagon },
+  ];
+
   return (
-    <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-600">
-        <h2 className="text-2xl font-bold text-gray-800 flex items-center">
-          <FiShield className="mr-2" /> Admin Portal
-        </h2>
-        <p className="text-gray-600 mt-2">Platform Management & Monitoring</p>
+    <div className="space-y-8 animate-fade-in">
+      {/* Header Card */}
+      <div className="bg-white p-8 rounded-sm shadow-sm border border-[var(--color-academia-gold)] relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-academia-cream)] rounded-bl-full opacity-50 transition-transform group-hover:scale-110"></div>
+        <div className="relative z-10">
+          <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center mb-2">
+            <FiShield className="mr-3 text-[var(--color-academia-gold)]" /> Admin Portal
+          </h2>
+          <p className="text-stone-600 font-light text-lg">Platform Management & Monitoring</p>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-4 border-b border-gray-200 pb-2 overflow-x-auto">
-        <button 
-          onClick={() => setActiveTab('overview')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'overview' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
-        >
-          Overview (Pending)
-        </button>
-        <button 
-          onClick={() => setActiveTab('students')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'students' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
-        >
-          Students
-        </button>
-        <button 
-          onClick={() => setActiveTab('mentors')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'mentors' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
-        >
-          Mentors
-        </button>
-        <button 
-          onClick={() => setActiveTab('internships')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'internships' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
-        >
-          Internships
-        </button>
-        <button 
-          onClick={() => setActiveTab('applications')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'applications' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
-        >
-          Applications
-        </button>
-        <button 
-          onClick={() => setActiveTab('analytics')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'analytics' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
-        >
-          Analytics
-        </button>
-        <button 
-          onClick={() => setActiveTab('beehive')} 
-          className={`px-4 py-2 font-medium rounded-t-lg ${activeTab === 'beehive' ? 'bg-indigo-100 text-indigo-700 border-b-2 border-indigo-600' : 'text-gray-600 hover:text-gray-900'}`}
-        >
-          Beehive Events
-        </button>
-      </div>
+      <div className="bg-white rounded-sm shadow-sm border border-stone-200">
+        <div className="border-b border-stone-200 overflow-x-auto">
+          <nav className="flex space-x-1 p-2 min-w-max" aria-label="Tabs">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`
+                  group flex items-center px-6 py-3 font-serif font-medium text-sm rounded-sm transition-all duration-200
+                  ${activeTab === tab.id
+                    ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md'
+                    : 'text-stone-500 hover:bg-[var(--color-academia-cream)] hover:text-[var(--color-academia-charcoal)]'
+                  }
+                `}
+              >
+                <tab.icon className={`mr-2 h-4 w-4 ${activeTab === tab.id ? 'text-[var(--color-academia-gold)]' : 'text-stone-400 group-hover:text-[var(--color-academia-charcoal)]'}`} />
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+        </div>
 
-      {/* Content */}
-      <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-[400px]">
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-          </div>
-        ) : (
-          <>
-            {/* ANALYTICS TAB */}
-            {activeTab === 'analytics' && (
-              <div className="p-6">
-                <AnalyticsDashboard title="Platform Analytics" />
-              </div>
-            )}
-
-            {/* BEEHIVE TAB */}
-            {activeTab === 'beehive' && (
-              <div className="p-6">
-                <BeehiveEventList />
-              </div>
-            )}
-
-            {/* OVERVIEW TAB */}
-            {activeTab === 'overview' && (
-              <div className="p-6">
-                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Pending Mentor Verifications</h3>
-                 {pendingMentors.length === 0 ? (
-                  <p className="text-gray-500">No pending verifications.</p>
-                ) : (
-                  <ul className="divide-y divide-gray-200">
-                    {pendingMentors.map((mentor) => (
-                      <li key={mentor.id} className="py-4">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-bold">{mentor.lab_name}</p>
-                            <p className="text-sm text-gray-600">{mentor.university} - {mentor.position}</p>
-                          </div>
-                          <button
-                            onClick={() => handleVerify(mentor.user_id)}
-                            className="flex items-center bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200"
-                          >
-                            <FiCheck className="mr-1" /> Verify
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
-
-            {/* STUDENTS TAB */}
-            {activeTab === 'students' && (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">University</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Major</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Readiness</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {students.map((student) => (
-                      <tr key={student.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{student.name || "N/A"}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.email}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.student_profile?.university || "-"}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.student_profile?.major || "-"}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {student.student_profile?.readiness_score ? (
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                              {student.student_profile.readiness_score}%
-                            </span>
-                          ) : "-"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {/* MENTORS TAB */}
-            {activeTab === 'mentors' && (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab / Institution</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {mentors.map((mentor) => (
-                      <tr key={mentor.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mentor.name || "N/A"}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mentor.email}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {mentor.mentor_profile ? `${mentor.mentor_profile.lab_name || ""} (${mentor.mentor_profile.university || ""})` : "-"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {mentor.mentor_profile?.is_verified ? (
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Verified</span>
-                          ) : (
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {/* INTERNSHIPS TAB */}
-            {activeTab === 'internships' && (
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-lg font-semibold text-gray-800">All Opportunities</h3>
-                  <button 
-                    onClick={() => setShowOppModal(true)}
-                    className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
-                  >
-                    <FiPlus className="mr-2" /> Add Internship
-                  </button>
+        {/* Content Area */}
+        <div className="min-h-[400px]">
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-academia-gold)]"></div>
+            </div>
+          ) : (
+            <>
+              {/* ANALYTICS TAB */}
+              {activeTab === 'analytics' && (
+                <div className="p-6">
+                  <AnalyticsDashboard title="Platform Analytics" />
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {opportunities.map((opp) => (
-                    <div key={opp.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
-                      <h4 className="font-bold text-indigo-600">{opp.title}</h4>
-                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">{opp.description}</p>
-                      <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
-                        <span className="bg-gray-100 px-2 py-1 rounded capitalize">{opp.type.replace('_', ' ')}</span>
-                        <span>{new Date(opp.created_at).toLocaleDateString()}</span>
-                      </div>
+              )}
+
+              {/* BEEHIVE TAB */}
+              {activeTab === 'beehive' && (
+                <div className="p-6">
+                  <BeehiveEventList />
+                </div>
+              )}
+
+              {/* OVERVIEW TAB */}
+              {activeTab === 'overview' && (
+                <div className="p-8">
+                   <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center">
+                     <span className="w-2 h-8 bg-[var(--color-academia-gold)] mr-3 rounded-sm"></span>
+                     Pending Mentor Verifications
+                   </h3>
+                   {pendingMentors.length === 0 ? (
+                    <div className="bg-[var(--color-academia-cream)] rounded-sm p-8 text-center border border-dashed border-stone-300">
+                      <p className="text-stone-500 italic">All caught up! No pending verifications.</p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* APPLICATIONS TAB */}
-            {activeTab === 'applications' && (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applicant</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Opportunity</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match Score</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {applications.map((app) => (
-                      <tr key={app.id}>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
+                  ) : (
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {pendingMentors.map((mentor) => (
+                        <li key={mentor.id} className="bg-white border border-stone-200 rounded-sm p-6 hover:border-[var(--color-academia-gold)] transition-all shadow-sm hover:shadow-md group">
+                          <div className="flex justify-between items-start">
                             <div>
-                              <div className="text-sm font-medium text-gray-900">{app.student?.name || "Unknown Student"}</div>
-                              <div className="text-sm text-gray-500">{app.student?.email}</div>
+                              <p className="font-serif font-bold text-lg text-[var(--color-academia-charcoal)]">{mentor.lab_name}</p>
+                              <p className="text-sm text-stone-600 mt-1 flex items-center">
+                                <span className="font-semibold mr-1">{mentor.university}</span> • <span className="italic ml-1">{mentor.position}</span>
+                              </p>
+                              <p className="text-xs text-stone-400 mt-2 font-mono">{mentor.email}</p>
                             </div>
+                            <button
+                              onClick={() => handleVerify(mentor.user_id)}
+                              className="flex items-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-4 py-2 rounded-sm hover:bg-black transition-colors shadow-sm text-sm font-medium border border-transparent hover:border-[var(--color-academia-gold)]"
+                            >
+                              <FiCheck className="mr-2 text-[var(--color-academia-gold)]" /> Verify
+                            </button>
                           </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{app.opportunity?.title || "Unknown Opportunity"}</div>
-                          <div className="text-xs text-gray-500 capitalize">{app.opportunity?.type?.replace('_', ' ')}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            app.match_score >= 80 ? 'bg-green-100 text-green-800' :
-                            app.match_score >= 50 ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
-                            {app.match_score}% Match
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            app.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                            app.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                            'bg-blue-100 text-blue-800'
-                          }`}>
-                            {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          <div className="flex space-x-3">
-                             {app.student?.student_profile?.resume_url && (
-                                <a 
-                                  href={getResumeUrl(app.student.student_profile.resume_url)} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="text-indigo-600 hover:text-indigo-900 flex items-center"
-                                  title="View Resume"
-                                >
-                                  <FiDownload className="mr-1" /> Resume
-                                </a>
-                             )}
-                             <button 
-                               onClick={() => handleViewProfile(app.student)}
-                               className="text-gray-600 hover:text-gray-900 flex items-center" 
-                               title="View Full Profile"
-                             >
-                               <FiExternalLink className="mr-1" /> Profile
-                             </button>
-                          </div>
-                        </td>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+
+              {/* STUDENTS TAB */}
+              {activeTab === 'students' && (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-stone-200">
+                    <thead className="bg-[var(--color-academia-cream)]">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Name</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Email</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">University</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Major</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Readiness</th>
                       </tr>
-                    ))}
-                    {applications.length === 0 && (
-                        <tr>
-                            <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
-                                No applications found.
-                            </td>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-stone-100">
+                      {students.map((student) => (
+                        <tr key={student.id} className="hover:bg-stone-50 transition-colors">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--color-academia-charcoal)]">{student.name || "N/A"}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">{student.email}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.university || "-"}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.major || "-"}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">
+                            {student.student_profile?.readiness_score ? (
+                              <span className="px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-sm bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)]">
+                                {student.student_profile.readiness_score}%
+                              </span>
+                            ) : "-"}
+                          </td>
                         </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </>
-        )}
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* MENTORS TAB */}
+              {activeTab === 'mentors' && (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-stone-200">
+                    <thead className="bg-[var(--color-academia-cream)]">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Name</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Email</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Lab / Institution</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-stone-100">
+                      {mentors.map((mentor) => (
+                        <tr key={mentor.id} className="hover:bg-stone-50 transition-colors">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--color-academia-charcoal)]">{mentor.name || "N/A"}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">{mentor.email}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">
+                            {mentor.mentor_profile ? `${mentor.mentor_profile.lab_name || ""} (${mentor.mentor_profile.university || ""})` : "-"}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">
+                            {mentor.mentor_profile?.is_verified ? (
+                              <span className="px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-sm bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] flex items-center w-fit gap-1">
+                                <FiCheck size={10} /> Verified
+                              </span>
+                            ) : (
+                              <span className="px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-sm bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)] flex items-center w-fit gap-1">
+                                <FiX size={10} /> Pending
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* INTERNSHIPS TAB */}
+              {activeTab === 'internships' && (
+                <div className="p-8">
+                  <div className="flex justify-between items-center mb-8">
+                    <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center">
+                      <span className="w-2 h-8 bg-[var(--color-academia-gold)] mr-3 rounded-sm"></span>
+                      All Opportunities
+                    </h3>
+                    <button 
+                      onClick={() => setShowOppModal(true)}
+                      className="flex items-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-5 py-2.5 rounded-sm hover:bg-black transition-all shadow-md hover:shadow-lg font-medium text-sm border border-transparent hover:border-[var(--color-academia-gold)]"
+                    >
+                      <FiPlus className="mr-2 text-[var(--color-academia-gold)]" /> Add Internship
+                    </button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {opportunities.map((opp) => (
+                      <div key={opp.id} className="bg-white border border-stone-200 rounded-sm p-6 hover:border-[var(--color-academia-gold)] hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+                        <div className="flex justify-between items-start mb-4">
+                           <span className="inline-block px-2 py-1 rounded-sm text-xs font-bold uppercase tracking-wider bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)]">
+                            {opp.type.replace('_', ' ')}
+                          </span>
+                          <span className="text-xs text-stone-400 font-mono">{new Date(opp.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <h4 className="font-serif font-bold text-lg text-[var(--color-academia-charcoal)] mb-3 group-hover:text-[var(--color-academia-gold)] transition-colors">{opp.title}</h4>
+                        <p className="text-sm text-stone-600 mb-4 line-clamp-3 flex-grow font-light leading-relaxed">{opp.description}</p>
+                        <div className="pt-4 border-t border-stone-100 flex justify-end">
+                           <span className="text-xs font-bold text-[var(--color-academia-gold)] flex items-center group-hover:underline cursor-pointer">
+                             View Details <FiExternalLink className="ml-1" />
+                           </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* APPLICATIONS TAB */}
+              {activeTab === 'applications' && (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-stone-200">
+                    <thead className="bg-[var(--color-academia-cream)]">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Applicant</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Opportunity</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Match Score</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Status</th>
+                        <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-stone-100">
+                      {applications.map((app) => (
+                        <tr key={app.id} className="hover:bg-stone-50 transition-colors">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div>
+                                <div className="text-sm font-bold text-[var(--color-academia-charcoal)]">{app.student?.name || "Unknown Student"}</div>
+                                <div className="text-sm text-stone-500">{app.student?.email}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-[var(--color-academia-charcoal)]">{app.opportunity?.title || "Unknown Opportunity"}</div>
+                            <div className="text-xs text-stone-500 capitalize">{app.opportunity?.type?.replace('_', ' ')}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-sm border ${
+                              app.match_score >= 80 ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]' :
+                              app.match_score >= 50 ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-[var(--color-academia-gold)]' :
+                              'bg-stone-100 text-stone-500 border-stone-300'
+                            }`}>
+                              {app.match_score}% Match
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-sm ${
+                              app.status === 'accepted' ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)]' :
+                              app.status === 'rejected' ? 'bg-red-50 text-red-800 border border-red-200' :
+                              'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)]'
+                            }`}>
+                              {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">
+                            <div className="flex space-x-4">
+                               {app.student?.student_profile?.resume_url && (
+                                  <a 
+                                    href={getResumeUrl(app.student.student_profile.resume_url)} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center transition-colors font-medium"
+                                    title="View Resume"
+                                  >
+                                    <FiDownload className="mr-1" /> Resume
+                                  </a>
+                               )}
+                               <button 
+                                 onClick={() => handleViewProfile(app.student)}
+                                 className="text-stone-600 hover:text-[var(--color-academia-charcoal)] flex items-center transition-colors font-medium" 
+                                 title="View Full Profile"
+                               >
+                                 <FiExternalLink className="mr-1" /> Profile
+                               </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                      {applications.length === 0 && (
+                          <tr>
+                              <td colSpan="5" className="px-6 py-12 text-center text-stone-500 font-light italic">
+                                  No applications found.
+                              </td>
+                          </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {/* Add Internship Modal */}
       {showOppModal && (
-        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4 border border-gray-100">
-            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-              <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <FiBriefcase className="text-blue-600"/> 
+        <div className="fixed inset-0 bg-[var(--color-academia-charcoal)]/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-sm shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4 border border-[var(--color-academia-gold)]">
+            <div className="p-6 border-b border-stone-200 flex justify-between items-center bg-[var(--color-academia-cream)]">
+              <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2">
+                <FiBriefcase className="text-[var(--color-academia-gold)]"/> 
                 Add New Internship
               </h3>
-              <button onClick={() => setShowOppModal(false)} className="text-gray-400 hover:text-red-500 transition-colors p-1 hover:bg-red-50 rounded-full">
+              <button onClick={() => setShowOppModal(false)} className="text-stone-400 hover:text-[var(--color-academia-charcoal)] transition-colors p-1 hover:bg-stone-200 rounded-full">
                 <FiX size={24} />
               </button>
             </div>
@@ -384,135 +398,69 @@ const AdminDashboard = () => {
       )}
       {/* Profile Modal */}
       {showProfileModal && selectedStudent && (
-        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-xl max-w-2xl w-full mx-4 shadow-2xl overflow-hidden border border-gray-100 max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-6 text-white flex justify-between items-start">
-              <div>
-                <h3 className="text-2xl font-bold">{selectedStudent.name}</h3>
-                <p className="text-indigo-100">{selectedStudent.email}</p>
-                <div className="mt-2 flex gap-2">
-                    {selectedStudent.student_profile?.university && <span className="bg-white/20 px-2 py-1 rounded text-xs">{selectedStudent.student_profile.university}</span>}
-                    {selectedStudent.student_profile?.major && <span className="bg-white/20 px-2 py-1 rounded text-xs">{selectedStudent.student_profile.major}</span>}
+        <div className="fixed inset-0 bg-[var(--color-academia-charcoal)]/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-sm max-w-2xl w-full mx-4 shadow-2xl overflow-hidden border border-[var(--color-academia-gold)] max-h-[90vh] overflow-y-auto">
+            <div className="bg-[var(--color-academia-charcoal)] p-8 text-[var(--color-academia-cream)] flex justify-between items-start relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-academia-gold)] rounded-bl-full opacity-20"></div>
+              <div className="relative z-10">
+                <h3 className="text-3xl font-serif font-bold">{selectedStudent.name}</h3>
+                <p className="text-[var(--color-academia-gold)] opacity-90 mt-1">{selectedStudent.email}</p>
+                <div className="mt-4 flex gap-2">
+                    {selectedStudent.student_profile?.university && <span className="bg-white/10 border border-white/20 px-3 py-1 rounded-sm text-xs font-medium tracking-wide">{selectedStudent.student_profile.university}</span>}
+                    {selectedStudent.student_profile?.major && <span className="bg-white/10 border border-white/20 px-3 py-1 rounded-sm text-xs font-medium tracking-wide">{selectedStudent.student_profile.major}</span>}
                 </div>
               </div>
-              <button onClick={() => setShowProfileModal(false)} className="text-white/80 hover:text-white text-2xl">&times;</button>
+               <button onClick={() => setShowProfileModal(false)} className="text-white/70 hover:text-white transition-colors relative z-10">
+                <FiX size={24} />
+              </button>
             </div>
-            
-            <div className="p-6 space-y-6">
-                {/* About */}
-                {selectedStudent.student_profile?.bio && (
-                    <section>
-                        <h4 className="text-lg font-bold text-gray-800 mb-2 flex items-center"><FiUsers className="mr-2 text-indigo-500"/> About</h4>
-                        <p className="text-gray-600 leading-relaxed">{selectedStudent.student_profile.bio}</p>
-                    </section>
-                )}
+            <div className="p-8 space-y-6">
+                <div>
+                    <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-2 flex items-center">
+                        <span className="w-1.5 h-1.5 bg-[var(--color-academia-gold)] rounded-full mr-2"></span>
+                        About
+                    </h4>
+                    <p className="text-stone-600 leading-relaxed font-light">{selectedStudent.student_profile?.bio || "No bio available."}</p>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-6">
+                    <div>
+                        <h4 className="text-sm font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider mb-2">GPA</h4>
+                        <p className="text-2xl font-serif text-[var(--color-academia-gold)]">{selectedStudent.student_profile?.gpa || "N/A"}</p>
+                    </div>
+                    <div>
+                        <h4 className="text-sm font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider mb-2">Year</h4>
+                        <p className="text-2xl font-serif text-[var(--color-academia-charcoal)]">{selectedStudent.student_profile?.graduation_year || "N/A"}</p>
+                    </div>
+                </div>
 
-                {/* Skills */}
-                {selectedStudent.skills && selectedStudent.skills.length > 0 && (
-                    <section>
-                        <h4 className="text-lg font-bold text-gray-800 mb-2 flex items-center"><FiCheck className="mr-2 text-green-500"/> Skills</h4>
+                {selectedStudent.student_profile?.skills && (
+                    <div>
+                         <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 flex items-center">
+                            <span className="w-1.5 h-1.5 bg-[var(--color-academia-gold)] rounded-full mr-2"></span>
+                            Skills
+                        </h4>
                         <div className="flex flex-wrap gap-2">
-                            {selectedStudent.skills.map(skill => (
-                                <span key={skill.id} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
-                                    {skill.name}
+                            {selectedStudent.student_profile.skills.split(',').map((skill, i) => (
+                                <span key={i} className="bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)] px-3 py-1 rounded-sm text-sm font-medium shadow-sm">
+                                    {skill.trim()}
                                 </span>
                             ))}
                         </div>
-                    </section>
-                )}
-
-                {/* Experience */}
-                {selectedStudent.student_profile?.work_experiences?.length > 0 && (
-                    <section>
-                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiBriefcase className="mr-2 text-blue-500"/> Experience</h4>
-                        <div className="space-y-4">
-                            {selectedStudent.student_profile.work_experiences.map((exp, i) => (
-                                <div key={i} className="border-l-2 border-gray-200 pl-4 pb-2">
-                                    <h5 className="font-bold text-gray-900">{exp.title}</h5>
-                                    <p className="text-indigo-600 text-sm font-medium">{exp.company}</p>
-                                    <p className="text-gray-500 text-xs mb-1">{exp.start_date} - {exp.end_date || 'Present'}</p>
-                                    {exp.description && <p className="text-gray-600 text-sm mt-1">{exp.description}</p>}
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-                )}
-
-                {/* Projects */}
-                {selectedStudent.student_profile?.projects?.length > 0 && (
-                    <section>
-                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiCpu className="mr-2 text-purple-500"/> Projects</h4>
-                        <div className="grid grid-cols-1 gap-4">
-                            {selectedStudent.student_profile.projects.map((proj, i) => (
-                                <div key={i} className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                                    <div className="flex justify-between items-start">
-                                        <h5 className="font-bold text-gray-900">{proj.title}</h5>
-                                        {proj.url && (
-                                            <a href={proj.url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-sm flex items-center">
-                                                <FiExternalLink className="mr-1"/> Link
-                                            </a>
-                                        )}
-                                    </div>
-                                    <p className="text-gray-600 text-sm mt-1">{proj.description}</p>
-                                    {proj.tech_stack && (
-                                        <div className="mt-2 flex flex-wrap gap-1">
-                                            {proj.tech_stack.split(',').map((tech, j) => (
-                                                <span key={j} className="text-xs bg-white border border-gray-300 px-1.5 py-0.5 rounded text-gray-600">{tech.trim()}</span>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-                )}
-
-                {/* Education */}
-                {selectedStudent.student_profile?.educations?.length > 0 && (
-                    <section>
-                        <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center"><FiFileText className="mr-2 text-yellow-600"/> Education</h4>
-                        <div className="space-y-3">
-                            {selectedStudent.student_profile.educations.map((edu, i) => (
-                                <div key={i} className="flex justify-between items-start border-b border-gray-100 pb-2 last:border-0">
-                                    <div>
-                                        <h5 className="font-bold text-gray-900">{edu.institution}</h5>
-                                        <p className="text-gray-600 text-sm">{edu.degree}</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-gray-500 text-xs">{edu.start_year} - {edu.end_year}</p>
-                                        {edu.grade && <p className="text-indigo-600 text-xs font-semibold">Grade: {edu.grade}</p>}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-                )}
-
-                {/* Readiness */}
-                <section className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <div className="flex justify-between items-center mb-2">
-                        <h4 className="font-bold text-gray-800">Readiness Score</h4>
-                        <span className="text-2xl font-bold text-indigo-600">{selectedStudent.student_profile?.readiness_score || 0}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div 
-                            className="bg-indigo-600 h-2.5 rounded-full" 
-                            style={{ width: `${selectedStudent.student_profile?.readiness_score || 0}%` }}
-                        ></div>
-                    </div>
-                </section>
-
-                <div className="flex justify-end pt-4 border-t border-gray-100">
-                    {selectedStudent.student_profile?.resume_url && (
+                )}
+                
+                <div className="pt-6 border-t border-stone-200 flex justify-end">
+                     {selectedStudent.student_profile?.resume_url && (
                         <a 
-                            href={getResumeUrl(selectedStudent.student_profile.resume_url)} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center"
+                          href={getResumeUrl(selectedStudent.student_profile.resume_url)} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-5 py-2.5 rounded-sm hover:bg-black transition-all shadow-md font-medium"
                         >
-                            <FiDownload className="mr-2" /> Download Resume
+                          <FiDownload className="mr-2 text-[var(--color-academia-gold)]" /> Download Resume
                         </a>
-                    )}
+                     )}
                 </div>
             </div>
           </div>

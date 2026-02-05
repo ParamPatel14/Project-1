@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAnalytics } from '../api';
+import { FiUsers, FiActivity, FiBook, FiDollarSign, FiAward } from 'react-icons/fi';
 
 const AnalyticsDashboard = ({ title = "Platform Analytics" }) => {
   const [data, setData] = useState(null);
@@ -19,70 +20,97 @@ const AnalyticsDashboard = ({ title = "Platform Analytics" }) => {
     loadData();
   }, []);
 
-  if (loading) return <div>Loading Analytics...</div>;
-  if (!data) return <div>No data available</div>;
+  if (loading) return (
+    <div className="flex justify-center items-center h-48">
+       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-academia-gold)]"></div>
+    </div>
+  );
+  
+  if (!data) return <div className="text-stone-500 italic p-4">No analytics data available</div>;
+
+  const StatCard = ({ icon: Icon, title, mainValue, subLabel, secondaryValue, secondaryLabel }) => (
+    <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-[var(--color-academia-gold)] relative overflow-hidden group hover:shadow-md transition-all duration-300 h-full">
+        <div className="absolute top-0 right-0 p-4 opacity-5 transform group-hover:scale-110 transition-transform duration-500">
+            <Icon size={80} className="text-[var(--color-academia-charcoal)]" />
+        </div>
+        <div className="relative z-10 flex flex-col h-full justify-between">
+            <div>
+                <div className="flex items-center gap-2 mb-3">
+                    <Icon className="text-[var(--color-academia-gold)]" size={20} />
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--color-academia-charcoal)]">{title}</h3>
+                </div>
+                <div>
+                    <p className="text-4xl font-serif font-bold text-[var(--color-academia-charcoal)]">{mainValue}</p>
+                    <p className="text-xs font-medium text-stone-500 mt-1 uppercase tracking-wide">{subLabel}</p>
+                </div>
+            </div>
+            {(secondaryValue !== undefined) && (
+                 <div className="mt-4 pt-4 border-t border-[var(--color-academia-gold)]/20">
+                    <p className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] opacity-80">{secondaryValue}</p>
+                    <p className="text-xs font-medium text-stone-500 mt-1 uppercase tracking-wide">{secondaryLabel}</p>
+                </div>
+            )}
+        </div>
+    </div>
+  );
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md mt-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">{title}</h2>
+    <div className="mt-2">
+      <h2 className="text-2xl font-serif font-bold mb-8 text-[var(--color-academia-charcoal)] flex items-center">
+        <span className="w-2 h-8 bg-[var(--color-academia-gold)] mr-3 rounded-sm"></span>
+        {title}
+      </h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* User Stats */}
-        <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-          <h3 className="text-lg font-semibold text-blue-800">Users</h3>
-          <div className="mt-2">
-            <p className="text-3xl font-bold text-blue-600">{data.users.students}</p>
-            <p className="text-sm text-blue-500">Students</p>
-          </div>
-          {data.users.mentors > 0 && (
-            <div className="mt-2">
-                <p className="text-3xl font-bold text-blue-600">{data.users.mentors}</p>
-                <p className="text-sm text-blue-500">Mentors</p>
-            </div>
-          )}
-        </div>
+        <StatCard 
+            icon={FiUsers}
+            title="Community"
+            mainValue={data.users.students}
+            subLabel="Students"
+            secondaryValue={data.users.mentors}
+            secondaryLabel="Mentors"
+        />
 
         {/* Engagement Stats */}
-        <div className="bg-green-50 p-4 rounded-lg border border-green-100">
-          <h3 className="text-lg font-semibold text-green-800">Engagement</h3>
-          <div className="flex justify-between mt-2">
-            <div>
-              <p className="text-2xl font-bold text-green-600">{data.engagement.opportunities}</p>
-              <p className="text-xs text-green-500">Opportunities</p>
+        <div className="bg-white p-6 rounded-sm border border-stone-200 hover:border-[var(--color-academia-gold)] transition-all duration-300 shadow-sm h-full">
+            <div className="flex items-center gap-2 mb-4">
+                <FiActivity className="text-[var(--color-academia-gold)]" size={20} />
+                <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--color-academia-charcoal)]">Engagement</h3>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-green-600">{data.engagement.applications}</p>
-              <p className="text-xs text-green-500">Applications</p>
+            <div className="space-y-4">
+                <div className="flex justify-between items-end border-b border-stone-100 pb-2">
+                    <span className="text-stone-600 text-sm">Opportunities</span>
+                    <span className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.engagement.opportunities}</span>
+                </div>
+                <div className="flex justify-between items-end border-b border-stone-100 pb-2">
+                    <span className="text-stone-600 text-sm">Applications</span>
+                    <span className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.engagement.applications}</span>
+                </div>
+                <div className="flex justify-between items-end">
+                    <span className="text-stone-600 text-sm flex items-center gap-1"><FiAward className="text-[var(--color-academia-gold)]" /> Certificates</span>
+                    <span className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.engagement.certificates}</span>
+                </div>
             </div>
-          </div>
-          <div className="mt-2 pt-2 border-t border-green-200">
-             <p className="text-xl font-bold text-green-700">{data.engagement.certificates}</p>
-             <p className="text-xs text-green-600">Certificates Issued</p>
-          </div>
         </div>
 
         {/* Research Stats */}
-        <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
-          <h3 className="text-lg font-semibold text-purple-800">Research Output</h3>
-          <div className="mt-2">
-            <p className="text-3xl font-bold text-purple-600">{data.research.published}</p>
-            <p className="text-sm text-purple-500">Published Projects</p>
-          </div>
-          <div className="mt-1">
-             <span className="text-sm font-medium text-purple-400">{data.research.active} Active</span>
-          </div>
-        </div>
+        <StatCard 
+            icon={FiBook}
+            title="Research Output"
+            mainValue={data.research.published}
+            subLabel="Published Projects"
+            secondaryValue={data.research.active}
+            secondaryLabel="Active Projects"
+        />
 
         {/* Funding Stats */}
-        <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
-          <h3 className="text-lg font-semibold text-yellow-800">Total Funding</h3>
-          <div className="mt-2">
-            <p className="text-3xl font-bold text-yellow-600">
-              ${data.funding.total_committed.toLocaleString()}
-            </p>
-            <p className="text-sm text-yellow-500">Committed Grants</p>
-          </div>
-        </div>
+        <StatCard 
+            icon={FiDollarSign}
+            title="Total Funding"
+            mainValue={`$${data.funding.total_committed.toLocaleString()}`}
+            subLabel="Committed Grants"
+        />
       </div>
     </div>
   );
