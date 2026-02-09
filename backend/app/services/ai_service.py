@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 if settings.GEMINI_API_KEY:
     genai.configure(api_key=settings.GEMINI_API_KEY)
 
-# Use Gemini 1.5 Flash (or Pro) - 2.5 is likely a typo/future placeholder
+# Use Gemini 1.5 Flash
 MODEL_NAME = "gemini-2.5-flash" 
 
 def get_model():
@@ -172,7 +172,7 @@ async def get_embedding(text: str) -> list:
 
         # Use the embedding model
         result = genai.embed_content(
-            model="text-embedding-3-small",
+            model="models/gemini-embedding-001",
             content=text,
             task_type="retrieval_document",
             title="Matching Embedding"
