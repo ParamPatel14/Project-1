@@ -172,7 +172,7 @@ async def get_embedding(text: str) -> list:
 
         # Use the embedding model
         result = genai.embed_content(
-            model="models/text-embedding-004",
+            model="text-embedding-3-small",
             content=text,
             task_type="retrieval_document",
             title="Matching Embedding"

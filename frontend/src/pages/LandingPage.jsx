@@ -5,26 +5,6 @@ import { motion } from 'framer-motion';
 import NetworkVisualization from '../components/NetworkVisualization';
 
 const LandingPage = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] font-sans overflow-x-hidden">
       {/* Navbar */}
@@ -52,17 +32,22 @@ const LandingPage = () => {
       <header className="relative pt-20 min-h-screen flex flex-col lg:flex-row">
         {/* Left Content */}
         <div className="lg:w-1/2 flex items-center justify-center px-8 py-20 lg:py-0 relative z-10">
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="max-w-xl space-y-8"
-          >
-            <motion.div variants={itemVariants} className="inline-block px-4 py-1.5 border border-[var(--color-academia-gold)] text-[var(--color-academia-gold-hover)] text-xs font-bold tracking-widest uppercase rounded-sm bg-[var(--color-academia-gold)]/5">
+          <div className="max-w-xl space-y-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-block px-4 py-1.5 border border-[var(--color-academia-gold)] text-[var(--color-academia-gold-hover)] text-xs font-bold tracking-widest uppercase rounded-sm bg-[var(--color-academia-gold)]/5"
+            >
               Academic Intelligence
             </motion.div>
             
-            <motion.h1 variants={itemVariants} className="text-5xl lg:text-7xl font-serif font-bold leading-[1.1] tracking-tight text-[var(--color-academia-charcoal)]">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-5xl lg:text-7xl font-serif font-bold leading-[1.1] tracking-tight text-[var(--color-academia-charcoal)]"
+            >
               Identify <span className="text-[var(--color-academia-gold)] italic relative inline-block">
                 Gaps.
                 <svg className="absolute w-full h-3 -bottom-1 left-0 text-[var(--color-academia-gold)] opacity-30" viewBox="0 0 100 10" preserveAspectRatio="none">
@@ -73,11 +58,21 @@ const LandingPage = () => {
               Connect with <span className="italic">Future.</span>
             </motion.h1>
             
-            <motion.p variants={itemVariants} className="text-lg text-stone-600 leading-relaxed max-w-md border-l-4 border-[var(--color-academia-gold)] pl-6">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg text-stone-600 leading-relaxed max-w-md border-l-4 border-[var(--color-academia-gold)] pl-6"
+            >
               A precise platform for researchers to identify methodology gaps, align with PhD supervisors, and secure competitive opportunities through verified credentials.
             </motion.p>
             
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 pt-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 pt-4"
+            >
               <Link to="/register" className="px-8 py-4 bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] font-medium rounded-sm hover:bg-stone-900 transition-all flex items-center justify-center gap-3 group shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 Start Researching <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -86,7 +81,12 @@ const LandingPage = () => {
               </Link>
             </motion.div>
             
-            <motion.div variants={itemVariants} className="pt-8 flex items-center gap-8 border-t border-stone-200 mt-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="pt-8 flex items-center gap-8 border-t border-stone-200 mt-8"
+            >
               {[
                   { label: "Research Labs", value: "150+" },
                   { label: "Match Rate", value: "85%" },
@@ -98,7 +98,7 @@ const LandingPage = () => {
                   </div>
               ))}
             </motion.div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Right Visualization */}
