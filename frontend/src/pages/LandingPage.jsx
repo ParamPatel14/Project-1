@@ -4,6 +4,7 @@ import { FiArrowRight, FiSearch, FiUsers, FiAward } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import NetworkVisualization from '../components/NetworkVisualization';
 import founderPhoto from '../../founder_photo.jpeg';
+import coFounderPhoto from '../../co-founder.jpeg';
 
 const LandingPage = () => {
   return (
@@ -179,29 +180,55 @@ const LandingPage = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-white border border-stone-200 rounded-sm shadow-sm px-8 py-8 flex flex-col sm:flex-row items-start gap-6"
+          className="bg-white border border-stone-200 rounded-sm shadow-sm px-8 py-8 grid grid-cols-1 sm:grid-cols-2 gap-8 items-start"
         >
-          <div className="w-24 h-24 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0">
-            <img
-              src={founderPhoto}
-              alt="Founder of Shaun Spherix Solutions LLP"
-              className="w-full h-full object-cover"
-            />
+          <div className="flex items-start gap-6">
+            <div className="w-24 h-24 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0">
+              <img
+                src={founderPhoto}
+                alt="Founder: Dr. Sonia Maria D'Souza"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
+                Founded by
+              </p>
+              <p className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
+                Dr. Sonia Maria D&apos;Souza
+              </p>
+              <p className="text-sm text-stone-600">
+                Founder &amp; Director, Shaun Spherix Solutions LLP
+              </p>
+              <p className="text-sm text-stone-500 max-w-2xl">
+                Our platforms are built in collaboration with universities and industry mentors to make
+                serious research mentorship more accessible, transparent, and aligned with real-world impact.
+              </p>
+            </div>
           </div>
-          <div className="space-y-2">
-            <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
-              Founded by
-            </p>
-            <p className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
-              Dr. Sonia Maria D&apos;Souza
-            </p>
-            <p className="text-sm text-stone-600">
-              Founder &amp; Director, Shaun Spherix Solutions LLP
-            </p>
-            <p className="text-sm text-stone-500 max-w-2xl">
-              Our platforms are built in collaboration with universities and industry mentors to make
-              serious research mentorship more accessible, transparent, and aligned with real-world impact.
-            </p>
+
+          <div className="flex items-start gap-6">
+            <div className="w-24 h-24 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0">
+              <img
+                src={coFounderPhoto}
+                alt="Co-Founder: Mr. Pradeep Kumar V"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
+                Co-Founder
+              </p>
+              <p className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
+                Mr. Pradeep Kumar V
+              </p>
+              <p className="text-sm text-stone-600">
+                Co-Founder, Shaun Spherix Solutions LLP
+              </p>
+              <p className="text-sm text-stone-500 max-w-2xl">
+                Driving operations and mentorship collaborations with industry partners and academic institutions.
+              </p>
+            </div>
           </div>
         </motion.div>
       </section>
