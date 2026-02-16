@@ -47,7 +47,7 @@ const RealWorldDashboard = () => {
         <div className="animate-fade-in">
           {activeTab === 'interests' && <RealWorldInterest />}
           {activeTab === 'visits' && <IndustrialVisitList />}
-          {activeTab === 'beehive' && <BeehiveEventList />}
+          {activeTab === 'beehive' && <BeehiveEventList showAdminControls={false} />}
         </div>
       </div>
     </div>

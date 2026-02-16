@@ -4,7 +4,7 @@ import { getBeehiveEvents, createBeehiveEvent } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { FiHexagon, FiClock, FiUsers, FiDollarSign, FiPlus, FiCalendar } from 'react-icons/fi';
 
-const BeehiveEventList = () => {
+const BeehiveEventList = ({ showAdminControls = true }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
@@ -65,7 +65,7 @@ const BeehiveEventList = () => {
     }
   };
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = showAdminControls && user?.role === 'admin';
 
   return (
     <div className="space-y-6">

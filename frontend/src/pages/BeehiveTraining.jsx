@@ -320,26 +320,26 @@ const BeehiveTraining = () => {
         </section>
 
         <section className="space-y-8">
-          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-            <div className="relative min-h-[180px] md:min-h-[200px] bg-[#A5C7A0] text-black flex flex-col items-center justify-center text-center px-6">
+          <div className="grid md:grid-cols-2 gap-y-4 gap-x-0 md:gap-y-0 md:gap-x-0">
+            <div className="relative min-h-[180px] md:min-h-[200px] bg-[#A5C7A0] text-black flex flex-col items-center justify-center text-center px-6 md:pl-10 md:pr-8">
               <EmpathySvg />
               <p className="mt-4 text-sm md:text-base font-medium max-w-xs">
                 Builds empathy for pollinators and ecosystems
               </p>
             </div>
-            <div className="relative min-h-[180px] md:min-h-[200px] bg-[#FFB5C5] text-black flex flex-col items-center justify-center text-center px-6">
+            <div className="relative min-h-[180px] md:min-h-[200px] bg-[#FFB5C5] text-black flex flex-col items-center justify-center text-center px-6 md:pl-8 md:pr-10">
               <FoodSvg />
               <p className="mt-4 text-sm md:text-base font-medium max-w-xs">
                 Improves understanding of food, agriculture, and field realities
               </p>
             </div>
-            <div className="relative min-h-[180px] md:min-h-[200px] bg-[#FFC47A] text-black flex flex-col items-center justify-center text-center px-6">
+            <div className="relative min-h-[180px] md:min-h-[200px] bg-[#FFC47A] text-black flex flex-col items-center justify-center text-center px-6 md:pl-10 md:pr-8">
               <ChoicesSvg />
               <p className="mt-4 text-sm md:text-base font-medium max-w-xs">
                 Encourages informed, conscious choices in everyday life
               </p>
             </div>
-            <div className="relative min-h-[180px] md:min-h-[200px] bg-[#99C8F5] text-black flex flex-col items-center justify-center text-center px-6">
+            <div className="relative min-h-[180px] md:min-h-[200px] bg-[#99C8F5] text-black flex flex-col items-center justify-center text-center px-6 md:pl-8 md:pr-10">
               <FarmingSvg />
               <p className="mt-4 text-sm md:text-base font-medium max-w-xs">
                 Supports sustainable farming, biodiversity, and long-term resilience
@@ -360,7 +360,7 @@ const BeehiveTraining = () => {
             </div>
             
           </div>
-          <BeehiveEventList />
+          <BeehiveEventList showAdminControls={false} />
         </section>
 
         <section className="grid gap-10 md:grid-cols-[1.15fr,0.85fr] items-start">
@@ -387,11 +387,11 @@ const BeehiveTraining = () => {
                 <FiUsers className="w-5 h-5 text-[var(--color-academia-gold)] mt-0.5" />
                 <div className="space-y-1">
                   <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-academia-gold)]">
-                    Beehive Mentorship in ResearchMatch
+                    Beehive Mentorship with Shaun Spherix Solutions LLP
                   </p>
                   <p className="text-sm text-stone-800">
                     Completing this experience can be reflected as a Beehive Mentorship Weekend on your
-                    ResearchMatch profile, signalling hands-on exposure to sustainability and systems thinking.
+                    Shaun Spherix Solutions LLP profile, signalling hands-on exposure to sustainability and systems thinking.
                   </p>
                 </div>
               </div>

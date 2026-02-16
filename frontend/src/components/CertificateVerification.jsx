@@ -37,7 +37,7 @@ const CertificateVerification = () => {
           <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2 flex justify-center items-center gap-2">
             <FiCheckCircle className="text-[var(--color-academia-gold)]" /> Certificate Verification
           </h2>
-          <p className="text-stone-500">Verify the authenticity of a ResearchMatch certificate</p>
+          <p className="text-stone-500">Verify the authenticity of a Shaun Spherix Solutions LLP certificate</p>
       </div>
       
       <div className="flex gap-2 mb-8">

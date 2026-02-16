@@ -1,6 +1,6 @@
-# ResearchMatch - Deep Academia Platform
+# Shaun Spherix Solutions LLP - Deep Academia Platform
 
-**ResearchMatch** is a comprehensive platform designed to bridge the gap between students and academic research opportunities. Built with a "Deep Academia" aesthetic (Ivy League Modern), it facilitates intelligent connections between students, mentors, and research labs using advanced AI matching, research intelligence, and streamlined application workflows.
+**Shaun Spherix Solutions LLP** is a comprehensive platform designed to bridge the gap between students and academic research opportunities. Built with a "Deep Academia" aesthetic (Ivy League Modern), it facilitates intelligent connections between students, mentors, and research labs using advanced AI matching, research intelligence, and streamlined application workflows.
 
 ## Key Features
 

@@ -184,7 +184,7 @@ const BeehiveEventDetail = () => {
             </div>
             <div className="flex flex-col leading-tight">
               <span className="text-xs tracking-[0.2em] uppercase text-stone-500">Beehive Event</span>
-              <span className="text-sm font-semibold tracking-tight">HoneyDay x ResearchMatch</span>
+              <span className="text-sm font-semibold tracking-tight">HoneyDay x Shaun Spherix Solutions LLP</span>
             </div>
           </div>
         </div>
@@ -198,7 +198,7 @@ const BeehiveEventDetail = () => {
         >
           <div className="absolute inset-0">
             <img
-              src={beekeepingHero}
+              src={contactHero}
               alt="Live beekeeping session at HoneyDay beehive"
               className="w-full h-full object-cover"
             />
@@ -327,11 +327,11 @@ const BeehiveEventDetail = () => {
                 <FiUsers className="w-5 h-5 text-[var(--color-academia-gold)] mt-0.5" />
                 <div className="space-y-1">
                   <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-academia-gold)]">
-                    Beehive Mentorship in ResearchMatch
+                    Beehive Mentorship with Shaun Spherix Solutions LLP
                   </p>
                   <p className="text-sm text-stone-800 leading-relaxed">
                     Completing this experience can be reflected as a Beehive Mentorship weekend on
-                    your ResearchMatch profile, signalling hands-on exposure to sustainability and
+                    your Shaun Spherix Solutions LLP profile, signalling hands-on exposure to sustainability and
                     systems thinking.
                   </p>
                 </div>
@@ -343,8 +343,8 @@ const BeehiveEventDetail = () => {
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-stretch">
           <div className="rounded-[1.75rem] overflow-hidden bg-black/5">
             <img
-              src={beekeepingHero}
-              alt="Beekeeper working with a hive at HoneyDay site"
+              src={contactHero}
+              alt="Contact HoneyDay and the Beehive team"
               className="w-full h-full object-cover"
             />
           </div>

@@ -80,7 +80,9 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)]">ResearchMatch</h1>
+              <h1 className="text-lg md:text-xl leading-tight font-serif font-bold text-[var(--color-academia-charcoal)]">
+                Shaun Spherix
+              </h1>
               {/* Role Badge */}
               {displayRole && displayRole !== 'user' && (
                  <span className="ml-3 px-2 py-1 rounded-sm text-xs font-semibold bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] capitalize tracking-wide">
@@ -91,7 +93,7 @@ const Dashboard = () => {
             <div className="flex items-center space-x-4">
               {/* Tabs Navigation */}
               {displayRole === "student" && (
-                <div className="hidden lg:flex space-x-1 mr-4 overflow-x-auto">
+                <div className="hidden lg:flex space-x-1 mr-2 overflow-x-auto">
                   {[
                     { id: 'profile', label: 'Profile', icon: null },
                     { id: 'smart-match', label: 'Smart Match', icon: FiCpu },
@@ -102,7 +104,7 @@ const Dashboard = () => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`whitespace-nowrap px-4 py-2 rounded-sm text-sm font-medium transition-all flex items-center gap-2 ${
+                      className={`whitespace-nowrap px-3 py-2 rounded-sm text-xs md:text-sm font-medium transition-all flex items-center gap-2 ${
                         activeTab === tab.id 
                           ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' 
                           : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'
@@ -115,7 +117,7 @@ const Dashboard = () => {
                 </div>
               )}
               {displayRole === "mentor" && (
-                <div className="hidden lg:flex space-x-1 mr-4 overflow-x-auto">
+                <div className="hidden lg:flex space-x-1 mr-2 overflow-x-auto">
                   {[
                     { id: 'profile', label: 'Profile' },
                     { id: 'post-opp', label: 'Post Opportunity' },
@@ -126,7 +128,7 @@ const Dashboard = () => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`whitespace-nowrap px-4 py-2 rounded-sm text-sm font-medium transition-all ${
+                      className={`whitespace-nowrap px-3 py-2 rounded-sm text-xs md:text-sm font-medium transition-all ${
                         activeTab === tab.id 
                           ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] shadow-md' 
                           : 'text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-100'
@@ -159,7 +161,7 @@ const Dashboard = () => {
         {/* Role Selection for New Users (OAuth) */}
         {currentUser?.role === "user" && !selectedRole && (
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4">Welcome to ResearchMatch!</h2>
+                <h2 className="text-3pxl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4">Welcome to Shaun Spherix Solutions LLP!</h2>
             <p className="text-xl text-stone-600 mb-12">To get started, please tell us how you plan to use the platform.</p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

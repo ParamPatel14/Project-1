@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiArrowRight, FiSearch, FiUsers, FiAward } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import NetworkVisualization from '../components/NetworkVisualization';
+import founderPhoto from '../../founder_photo.jpeg';
 
 const LandingPage = () => {
   return (
@@ -14,7 +15,7 @@ const LandingPage = () => {
             <div className="w-10 h-10 bg-[var(--color-academia-charcoal)] rounded-sm flex items-center justify-center text-[var(--color-academia-cream)] font-serif font-bold text-xl shadow-lg">
               R
             </div>
-            <span className="text-xl font-bold tracking-tight font-serif">ResearchMatch</span>
+            <span className="text-xl font-bold tracking-tight font-serif">Shaun Spherix Solutions LLP</span>
           </div>
           <div className="flex gap-6 items-center">
             <Link to="/login" className="text-sm font-medium hover:text-[var(--color-academia-gold)] transition-colors relative group">
@@ -117,12 +118,16 @@ const LandingPage = () => {
           </div>
         </div>
 
-        {/* Right Visualization */}
-        <div className="lg:w-1/2 relative h-[50vh] lg:h-auto bg-[var(--color-academia-cream)] overflow-hidden">
-             <NetworkVisualization />
-             {/* Gradient Overlay for seamless blend */}
-             <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-academia-cream)] to-transparent w-16 pointer-events-none hidden lg:block"></div>
-             <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-academia-cream)] to-transparent h-16 pointer-events-none lg:hidden"></div>
+        {/* Right Visualization + Founder */}
+        <div className="lg:w-1/2 relative h-[50vh] lg:h-auto bg-[var(--color-academia-cream)] overflow-hidden flex flex-col">
+          <div className="flex-1 relative">
+            <NetworkVisualization />
+            {/* Gradient Overlay for seamless blend */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-academia-cream)] to-transparent w-16 pointer-events-none hidden lg:block"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-academia-cream)] to-transparent h-16 pointer-events-none lg:hidden"></div>
+          </div>
+            
+            
         </div>
       </header>
       
@@ -167,6 +172,40 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Founder strip below feature cards, above footer */}
+      <section className="px-8 pb-16 max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="bg-white border border-stone-200 rounded-sm shadow-sm px-8 py-8 flex flex-col sm:flex-row items-start gap-6"
+        >
+          <div className="w-24 h-24 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0">
+            <img
+              src={founderPhoto}
+              alt="Founder of Shaun Spherix Solutions LLP"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
+              Founded by
+            </p>
+            <p className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
+              Dr. Sonia Maria D&apos;Souza
+            </p>
+            <p className="text-sm text-stone-600">
+              Founder &amp; Director, Shaun Spherix Solutions LLP
+            </p>
+            <p className="text-sm text-stone-500 max-w-2xl">
+              Our platforms are built in collaboration with universities and industry mentors to make
+              serious research mentorship more accessible, transparent, and aligned with real-world impact.
+            </p>
+          </div>
+        </motion.div>
+      </section>
+
       <footer className="mt-16 bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)]">
         <div className="max-w-7xl mx-auto px-8 py-12 grid gap-10 md:grid-cols-3">
           <div className="space-y-3">
@@ -174,10 +213,10 @@ const LandingPage = () => {
               <div className="w-9 h-9 rounded-sm bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] flex items-center justify-center font-serif font-bold text-lg">
                 R
               </div>
-              <span className="text-lg font-serif font-semibold tracking-tight">ResearchMatch</span>
+              <span className="text-lg font-serif font-semibold tracking-tight">Shaun Spherix Solutions LLP</span>
             </div>
             <p className="text-sm text-stone-300 leading-relaxed">
-              ResearchMatch is developed and operated by Shaun Spherix Solutions LLP to help students and researchers build meaningful academic collaborations.
+              Shaun Spherix Solutions LLP builds platforms to help students and researchers build meaningful academic collaborations.
             </p>
           </div>
 
