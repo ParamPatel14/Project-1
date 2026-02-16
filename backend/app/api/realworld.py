@@ -167,3 +167,37 @@ def enroll_beehive(
     db.commit()
     db.refresh(enrollment)
     return enrollment
+
+@router.post("/beehive/contact", response_model=schemas.BeehiveContactResponse, status_code=status.HTTP_201_CREATED)
+def create_beehive_contact(
+    contact: schemas.BeehiveContactCreate,
+    db: Session = Depends(get_db),
+):
+    event = None
+    if contact.event_id:
+        event = db.query(models.BeehiveEvent).filter(models.BeehiveEvent.id == contact.event_id).first()
+        if not event:
+            raise HTTPException(status_code=404, detail="Event not found")
+
+    db_contact = models.BeehiveContact(
+        event_id=contact.event_id,
+        first_name=contact.first_name,
+        last_name=contact.last_name,
+        phone=contact.phone,
+        email=contact.email,
+        interests=contact.interests or "",
+        message=contact.message or "",
+    )
+    db.add(db_contact)
+    db.commit()
+    db.refresh(db_contact)
+    return db_contact
+
+@router.get("/beehive/contact", response_model=List[schemas.BeehiveContactResponse])
+def list_beehive_contacts(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(deps.get_current_user)
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can view Beehive contact requests")
+    return db.query(models.BeehiveContact).order_by(models.BeehiveContact.created_at.desc()).all()

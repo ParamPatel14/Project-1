@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getBeehiveEvents, createBeehiveEvent, enrollBeehive } from '../api';
+import { useNavigate } from 'react-router-dom';
+import { getBeehiveEvents, createBeehiveEvent } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { FiHexagon, FiClock, FiUsers, FiDollarSign, FiPlus, FiCalendar } from 'react-icons/fi';
 
 const BeehiveEventList = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -35,20 +37,13 @@ const BeehiveEventList = () => {
     }
   };
 
-  const handleEnroll = async (eventId) => {
-    const event = events.find(e => e.id === eventId);
-    const fee = event ? event.entry_fee : 1500;
-
-    // In a real app, this would redirect to a payment gateway
-    if (window.confirm(`This event has an entry fee of ₹${fee}. Confirm enrollment?`)) {
-      try {
-        await enrollBeehive(eventId);
-        alert("Enrolled successfully! Payment status is pending.");
-        fetchEvents();
-      } catch (err) {
-        alert("Failed to enroll: " + (err.response?.data?.detail || err.message));
+  const handleViewDetails = (event) => {
+    navigate(`/beehive/events/${event.id}`, {
+      state: {
+        event,
+        from: 'beehive-list'
       }
-    }
+    });
   };
 
   const handleCreateSubmit = async (e) => {
@@ -200,7 +195,7 @@ const BeehiveEventList = () => {
               </div>
               <div className="bg-[var(--color-academia-cream)] px-6 py-4 border-t border-stone-200">
                 <button
-                  onClick={() => handleEnroll(event.id)}
+                  onClick={() => handleViewDetails(event)}
                   className="w-full inline-flex justify-center items-center px-4 py-2 border border-[var(--color-academia-charcoal)] text-sm font-medium rounded-sm text-[var(--color-academia-charcoal)] bg-transparent hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] transition-all duration-300"
                 >
                   Join Beehive (₹{event.entry_fee})

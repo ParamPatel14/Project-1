@@ -10,6 +10,7 @@ import ImprovementPlanBoard from "./components/ImprovementPlanBoard";
 import CertificateVerification from "./components/CertificateVerification";
 import AnalyticsDashboard from "./components/AnalyticsDashboard";
 import BeehiveTraining from "./pages/BeehiveTraining";
+import BeehiveEventDetail from "./pages/BeehiveEventDetail";
 
 import OpportunityDetail from "./components/OpportunityDetail";
 
@@ -51,6 +52,7 @@ function App() {
           />
           <Route path="/" element={<LandingPage />} />
           <Route path="/beehive" element={<BeehiveTraining />} />
+          <Route path="/beehive/events/:id" element={<BeehiveEventDetail />} />
           <Route
             path="/dashboard"
             element={

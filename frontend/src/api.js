@@ -396,4 +396,14 @@ export const enrollBeehive = async (eventId) => {
   return response.data;
 };
 
+export const createBeehiveContact = async (data) => {
+  const response = await api.post("/realworld/beehive/contact", data);
+  return response.data;
+};
+
+export const getBeehiveContacts = async () => {
+  const response = await api.get("/realworld/beehive/contact");
+  return response.data;
+};
+
 export default api;

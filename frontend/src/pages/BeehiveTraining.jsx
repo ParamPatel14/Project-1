@@ -358,43 +358,12 @@ const BeehiveTraining = () => {
                 Beehive mentorship events
               </h3>
             </div>
-            <p className="text-xs md:text-sm text-stone-600 max-w-md">
-              Weekend real-world scenario mentorship sessions hosted with HoneyDay, listed live by the
-              admin team.
-            </p>
+            
           </div>
           <BeehiveEventList />
         </section>
 
         <section className="grid gap-10 md:grid-cols-[1.15fr,0.85fr] items-start">
-          <div className="space-y-4">
-            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
-                Format
-              </p>
-              <p className="text-sm text-stone-800">
-                Small-group, interactive sessions that mix classroom-style reflection with live hive
-                demonstrations.
-              </p>
-            </div>
-            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
-                Who joins
-              </p>
-              <p className="text-sm text-stone-800">
-                Aspiring beekeepers, students, researchers, and nature lovers exploring sustainability.
-              </p>
-            </div>
-            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
-                Outcomes
-              </p>
-              <p className="text-sm text-stone-800">
-                Empathy for pollinators, systems thinking, and applied sustainability you can bring
-                back into your projects and research.
-              </p>
-            </div>
-          </div>
 
           <div className="space-y-4">
             <div className="rounded-sm bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] p-6 shadow-lg">

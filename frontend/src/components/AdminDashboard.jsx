@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { getPendingMentors, verifyMentor, getAllStudents, getAllMentors, getOpportunities, createAdminOpportunity, getAllApplications } from "../api";
-import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu, FiBarChart2, FiHexagon, FiSearch } from "react-icons/fi";
+import { getPendingMentors, verifyMentor, getAllStudents, getAllMentors, getOpportunities, createAdminOpportunity, getAllApplications, getBeehiveContacts } from "../api";
+import { FiCheck, FiX, FiShield, FiUsers, FiBriefcase, FiPlus, FiFileText, FiDownload, FiExternalLink, FiCpu, FiBarChart2, FiHexagon, FiSearch, FiMail } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import OpportunityForm from "./OpportunityForm";
 import AnalyticsDashboard from "./AnalyticsDashboard";
@@ -16,6 +16,7 @@ const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [beehiveContacts, setBeehiveContacts] = useState([]);
   
   // Modal State
   const [showOppModal, setShowOppModal] = useState(false);
@@ -44,6 +45,9 @@ const AdminDashboard = () => {
       } else if (activeTab === 'applications') {
         const data = await getAllApplications();
         setApplications(data);
+      } else if (activeTab === 'beehive') {
+        const contacts = await getBeehiveContacts();
+        setBeehiveContacts(contacts);
       }
     } catch (error) {
       console.error(`Failed to fetch ${activeTab} data`, error);
@@ -174,8 +178,59 @@ const AdminDashboard = () => {
 
               {/* BEEHIVE TAB */}
               {activeTab === 'beehive' && (
-                <div className="p-6 bg-white rounded-sm border border-stone-200 shadow-sm">
-                  <BeehiveEventList />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-2 p-6 bg-white rounded-sm border border-stone-200 shadow-sm">
+                    <BeehiveEventList />
+                  </div>
+                  <div className="bg-white rounded-sm border border-stone-200 shadow-sm p-5 flex flex-col">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2">
+                        <FiMail className="text-[var(--color-academia-gold)]" />
+                        Latest Beehive Enquiries
+                      </h3>
+                      <span className="text-xs px-2 py-1 rounded-full bg-[var(--color-academia-cream)] text-stone-600 border border-stone-200">
+                        {beehiveContacts.length}
+                      </span>
+                    </div>
+                    {beehiveContacts.length === 0 ? (
+                      <p className="text-xs text-stone-500">
+                        No enquiries yet. The contact form on the Beehive event page will show up here.
+                      </p>
+                    ) : (
+                      <div className="space-y-3 overflow-y-auto max-h-80 pr-1">
+                        {beehiveContacts.map((c) => (
+                          <div
+                            key={c.id}
+                            className="border border-stone-200 rounded-sm p-3 text-xs space-y-1 bg-[var(--color-academia-cream)]/40"
+                          >
+                            <div className="flex justify-between items-center">
+                              <span className="font-semibold text-[var(--color-academia-charcoal)]">
+                                {c.first_name} {c.last_name || ""}
+                              </span>
+                              <span className="text-[10px] text-stone-500">
+                                {c.email}
+                              </span>
+                            </div>
+                            {c.phone && (
+                              <p className="text-[10px] text-stone-600">
+                                Phone: {c.phone}
+                              </p>
+                            )}
+                            {c.interests && (
+                              <p className="text-[10px] text-stone-600">
+                                Interests: {c.interests}
+                              </p>
+                            )}
+                            {c.message && (
+                              <p className="text-[11px] text-stone-700 line-clamp-3">
+                                {c.message}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 

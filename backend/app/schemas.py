@@ -108,6 +108,24 @@ class BeehiveEnrollmentResponse(BeehiveEnrollmentBase):
     class Config:
         from_attributes = True
 
+class BeehiveContactBase(BaseModel):
+    first_name: str
+    last_name: Optional[str] = None
+    phone: Optional[str] = None
+    email: EmailStr
+    interests: Optional[str] = None  # Comma-separated list
+    message: Optional[str] = None
+    event_id: Optional[int] = None
+
+class BeehiveContactCreate(BeehiveContactBase):
+    pass
+
+class BeehiveContactResponse(BeehiveContactBase):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
 class OpportunitySkillBase(BaseModel):
     skill_id: int
     weight: int = 1 # 1-5 scale

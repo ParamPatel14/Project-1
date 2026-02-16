@@ -101,6 +101,21 @@ class BeehiveEnrollment(Base):
     event = relationship("BeehiveEvent", back_populates="enrollments")
     student = relationship("User", foreign_keys=[student_id])
 
+class BeehiveContact(Base):
+    __tablename__ = "beehive_contacts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    event_id = Column(Integer, ForeignKey("beehive_events.id"), nullable=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    phone = Column(String)
+    email = Column(String)
+    interests = Column(Text)  # Comma-separated list of interests
+    message = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    event = relationship("BeehiveEvent")
+
 class StudentProfile(Base):
     __tablename__ = "student_profiles"
 
