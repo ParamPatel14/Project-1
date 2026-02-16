@@ -81,13 +81,19 @@ const LandingPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 pt-4"
+              className="flex flex-col sm:flex-row gap-4 pt-4 flex-wrap"
             >
               <Link to="/register" className="px-8 py-4 bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] font-medium rounded-sm hover:bg-stone-900 transition-all flex items-center justify-center gap-3 group shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 Start Researching <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link to="/login" className="px-8 py-4 bg-transparent border border-[var(--color-academia-charcoal)] text-[var(--color-academia-charcoal)] font-medium rounded-sm hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] transition-all flex items-center justify-center shadow-sm hover:shadow-lg">
                 Explore Mentors
+              </Link>
+              <Link
+                to="/beehive"
+                className="px-8 py-4 bg-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)] font-medium rounded-sm hover:bg-[var(--color-academia-gold-hover)] transition-all flex items-center justify-center shadow-sm hover:shadow-lg"
+              >
+                BeeHive Training
               </Link>
             </motion.div>
             

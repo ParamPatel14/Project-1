@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getCompleteness, getMe } from "../api";
 import StudentProfileForm from "../components/StudentProfileForm";
@@ -16,13 +17,19 @@ import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase
 
 const Dashboard = () => {
   const { user, logout, loading: authLoading, refreshUser } = useAuth();
+  const location = useLocation();
   const [completeness, setCompleteness] = useState({ score: 0, role: "" });
   const [loading, setLoading] = useState(true);
   const [selectedRole, setSelectedRole] = useState(null);
   
   // Mentor Tabs: 'profile', 'post-opp', 'applications'
   // Student Tabs: 'profile', 'browse', 'applications'
-  const [activeTab, setActiveTab] = useState('profile');
+  const searchParams = new URLSearchParams(location.search);
+  const initialTabFromQuery = searchParams.get("tab");
+  const beehiveDeepLink = searchParams.get("beehive");
+  const [activeTab, setActiveTab] = useState(
+    initialTabFromQuery || (beehiveDeepLink ? "real-world" : "profile")
+  );
   
   // We need a local user state that can be updated when profile changes
   // without waiting for the global AuthContext to refresh (though we should trigger that too)

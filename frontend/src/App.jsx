@@ -9,6 +9,7 @@ import RoleSelection from "./pages/RoleSelection";
 import ImprovementPlanBoard from "./components/ImprovementPlanBoard";
 import CertificateVerification from "./components/CertificateVerification";
 import AnalyticsDashboard from "./components/AnalyticsDashboard";
+import BeehiveTraining from "./pages/BeehiveTraining";
 
 import OpportunityDetail from "./components/OpportunityDetail";
 
@@ -49,6 +50,7 @@ function App() {
             } 
           />
           <Route path="/" element={<LandingPage />} />
+          <Route path="/beehive" element={<BeehiveTraining />} />
           <Route
             path="/dashboard"
             element={
