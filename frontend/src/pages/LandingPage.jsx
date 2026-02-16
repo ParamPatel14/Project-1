@@ -110,7 +110,6 @@ const LandingPage = () => {
         </div>
       </header>
       
-      {/* Features Section */}
       <section className="py-24 px-8 max-w-7xl mx-auto relative">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[var(--color-academia-gold)] to-transparent opacity-30"></div>
         <div className="grid md:grid-cols-3 gap-8">
@@ -151,6 +150,55 @@ const LandingPage = () => {
             ))}
         </div>
       </section>
+
+      <footer className="mt-16 bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)]">
+        <div className="max-w-7xl mx-auto px-8 py-12 grid gap-10 md:grid-cols-3">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-3">
+              <div className="w-9 h-9 rounded-sm bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] flex items-center justify-center font-serif font-bold text-lg">
+                R
+              </div>
+              <span className="text-lg font-serif font-semibold tracking-tight">ResearchMatch</span>
+            </div>
+            <p className="text-sm text-stone-300 leading-relaxed">
+              ResearchMatch is developed and operated by Shaun Spherix Solutions LLP to help students and researchers build meaningful academic collaborations.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold tracking-[0.18em] uppercase text-[var(--color-academia-gold)]">
+              Company
+            </h3>
+            <div className="space-y-1 text-sm text-stone-200">
+              <p className="font-medium">Shaun Spherix Solutions LLP</p>
+              <p>Founder & Director: Dr. Sonia Maria D&apos;Souza</p>
+              <p>Co-Founder: Mr. Pradeep Kumar V</p>
+              <p>Formed on: 10/02/2026</p>
+              <p>DIN: 11541916</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold tracking-[0.18em] uppercase text-[var(--color-academia-gold)]">
+              Crafted By
+            </h3>
+            <p className="text-sm text-stone-200 leading-relaxed">
+              Platform engineered by Param Patel.
+            </p>
+          </div>
+        </div>
+
+        <div className="border-t border-stone-700/60">
+          <div className="max-w-7xl mx-auto px-8 py-4 flex flex-col gap-2 text-xs text-stone-400 md:flex-row md:items-center md:justify-between">
+            <span>
+              © {new Date().getFullYear()} Shaun Spherix Solutions LLP. All rights reserved.
+            </span>
+            <span>
+              Company registered in India · DIN 11541916
+            </span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
