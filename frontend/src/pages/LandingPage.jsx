@@ -48,20 +48,30 @@ const LandingPage = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-5xl lg:text-7xl font-serif font-bold leading-[1.1] tracking-tight text-[var(--color-academia-charcoal)]"
             >
-              Identify <span className="text-[var(--color-academia-gold)] italic relative inline-block">
-                Gaps.
+              A mentor empowers you to see a possible{' '}
+              <span className="text-[var(--color-academia-gold)] italic relative inline-block">
+                future
                 <svg className="absolute w-full h-3 -bottom-1 left-0 text-[var(--color-academia-gold)] opacity-30" viewBox="0 0 100 10" preserveAspectRatio="none">
                    <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="3" fill="none" />
                 </svg>
-              </span><br/>
-              Align with <span className="italic">Mentors.</span><br/>
-              Connect with <span className="italic">Future.</span>
+              </span>
+              ,<br/>
+              and believe it can be obtained.
             </motion.h1>
             
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-sm text-stone-500 italic"
+            >
+              “A mentor empowers a person to see a possible future, and believe it can be obtained.” – Shawn Hitchcock
+            </motion.p>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
               className="text-lg text-stone-600 leading-relaxed max-w-md border-l-4 border-[var(--color-academia-gold)] pl-6"
             >
               A precise platform for researchers to identify methodology gaps, align with PhD supervisors, and secure competitive opportunities through verified credentials.
