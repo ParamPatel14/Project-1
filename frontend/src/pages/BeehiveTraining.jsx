@@ -1,7 +1,6 @@
 import React from 'react';
 import beekeepingHero from '../../beekeeping.jpg';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { FiHexagon, FiUsers, FiMapPin, FiClock } from 'react-icons/fi';
 
 const EmpathySvg = () => (
@@ -150,18 +149,13 @@ const BeehiveTraining = () => {
       title: "Live Hive Demonstration",
       description: "Hands-on learning with real hives, frames, tools, and techniques.",
       icon: LiveHiveSvg
-    },
-    {
-      title: "Hive Products & Honey Basics",
-      description: "Understanding honey, wax, pollen, propolis, and quality essentials.",
-      icon: HoneySvg
     }
   ];
 
   return (
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] font-sans">
       <nav className="w-full border-b border-stone-200 bg-[var(--color-academia-cream)]/90 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
+        <div className="max-w-9xl mx-auto px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-sm bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] flex items-center justify-center shadow-md">
               <FiHexagon className="w-5 h-5" />
@@ -181,7 +175,7 @@ const BeehiveTraining = () => {
       </nav>
 
       <section className="w-full bg-[var(--color-academia-cream)]">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 py-12">
+        <div className="max-w-9xl mx-auto px-6 md:px-8 py-12">
           <div className="relative rounded-3xl overflow-hidden shadow-lg">
             <img
               src={beekeepingHero}
@@ -208,9 +202,6 @@ const BeehiveTraining = () => {
                   >
                     Book a session
                   </Link>
-                  <span className="text-[10px] md:text-xs text-stone-300">
-                    Opens your Beehive mentorship events inside ResearchMatch
-                  </span>
                 </div>
               </div>
             </div>
@@ -218,60 +209,61 @@ const BeehiveTraining = () => {
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-8 py-16 space-y-16">
+      <main className="max-w-9xl mx-auto px-8 py-16 space-y-16">
         <section className="space-y-10">
-          <div className="grid gap-10 md:grid-cols-[0.85fr,1.15fr] items-start">
-            <div className="space-y-5">
-              <p className="text-[11px] md:text-xs font-semibold tracking-[0.3em] uppercase text-[var(--color-academia-gold)]">
-                More than a weekend
-              </p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold leading-[1.04] tracking-tight">
-                <span className="block">MORE THAN A</span>
-                <span className="block">SKILL.</span>
-                <span className="block">A PERSPECTIVE.</span>
-              </h2>
-            </div>
-
-            <div className="space-y-4 md:pt-3">
-              <p className="text-sm md:text-base text-stone-700 leading-relaxed max-w-xl">
-                Beehive Mentorship Weekends offer a hands-on introduction to bees, pollination, and
-                sustainable agriculture. While practical beekeeping skills are central, the track
-                also helps participants understand how bees support ecosystems, livelihoods, and
-                food security.
-              </p>
-            </div>
-          </div>
-
           <div className="grid gap-10 md:grid-cols-[0.9fr,1.1fr] items-start">
-            <div className="rounded-[2.75rem] bg-[#F5DA92] p-6 md:p-9 md:max-w-md shadow-sm">
-              <p className="text-[11px] md:text-xs font-semibold tracking-[0.26em] uppercase text-[var(--color-academia-charcoal)] mb-3">
-                What you&apos;ll learn
-              </p>
-              <p className="text-sm md:text-base text-stone-900 leading-relaxed">
-                This training builds knowledge, curiosity, and empathy for the world bees sustain –
-                and gives you a structured lens to analyse real-world systems as a researcher.
-              </p>
+            <div className="space-y-8">
+              <div className="space-y-5">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold leading-[1.04] tracking-tight">
+                  <span className="block">MORE THAN A</span>
+                  <span className="block">SKILL.</span>
+                  <span className="block">A PERSPECTIVE.</span>
+                </h2>
+              </div>
+
+              <div className="rounded-[2.75rem] bg-[#F5DA92] p-6 md:p-9 md:max-w-md shadow-sm">
+                <p className="text-[11px] md:text-xs font-semibold tracking-[0.26em] uppercase text-[var(--color-academia-charcoal)] mb-3">
+                  WHAT YOU&apos;LL LEARN
+                </p>
+                <p className="text-sm md:text-base text-stone-900 leading-relaxed">
+                  This training builds knowledge, curiosity, and empathy for the world bees sustain –
+                  and gives you a structured lens to analyse real-world systems as a researcher.
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-4 md:pt-3">
-              {modules.map((module) => {
-                return (
-                  <div
-                    key={module.title}
-                    className="flex flex-col md:flex-row items-stretch bg-white border border-stone-200 rounded-full shadow-md overflow-hidden"
-                  >
-                    <div className="flex items-center gap-3 px-5 py-3 md:px-7 md:py-4 md:w-96">
-                      <div className="w-9 h-9 rounded-full bg-black flex-shrink-0" />
-                      <p className="text-sm md:text-base font-semibold text-[var(--color-academia-charcoal)]">
-                        {module.title}
-                      </p>
-                    </div>
-                    <div className="border-t md:border-t-0 md:border-l border-stone-200 px-6 py-3 md:py-4 text-sm md:text-base text-stone-700">
-                      {module.description}
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="relative">
+              <div className="absolute -inset-x-6 -inset-y-8 md:-inset-x-10 md:-inset-y-10 rounded-[3rem] bg-gradient-to-r from-[#FFF6D0] via-[#F4F4EC] to-[#E7F4E9] opacity-90" />
+              <div className="relative px-5 md:px-10 py-6 md:py-9 space-y-6 md:space-y-8">
+                <p className="text-sm md:text-base text-stone-700 leading-relaxed max-w-xl">
+                  HoneyDay&apos;s beekeeping trainings offer a hands-on introduction to bees, pollination,
+                  and sustainable agriculture. While practical beekeeping skills are central, the
+                  training also helps participants understand how bees support ecosystems, livelihoods,
+                  and food security.
+                </p>
+
+                <div className="space-y-4 md:space-y-5">
+                  {modules.map((module) => {
+                    const Icon = module.icon;
+                    return (
+                      <div
+                        key={module.title}
+                        className="flex flex-col md:flex-row items-stretch bg-white/90 border border-stone-200 rounded-full shadow-md overflow-hidden"
+                      >
+                        <div className="flex items-center gap-3 px-5 py-3 md:px-7 md:py-4 md:w-[340px]">
+                          <Icon />
+                          <p className="text-sm md:text-base font-semibold text-[var(--color-academia-charcoal)]">
+                            {module.title}
+                          </p>
+                        </div>
+                        <div className="border-t md:border-t-0 md:border-l border-stone-200 px-6 py-3 md:py-4 text-sm md:text-base text-stone-700">
+                          {module.description}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         </section>
