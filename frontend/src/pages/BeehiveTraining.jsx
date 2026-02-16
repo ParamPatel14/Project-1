@@ -75,34 +75,93 @@ const FarmingSvg = () => (
   </svg>
 );
 
+const BeeBiologySvg = () => (
+  <svg viewBox="0 0 120 120" className="w-8 h-8 text-black" aria-hidden="true">
+    <circle cx="40" cy="40" r="14" fill="currentColor" />
+    <rect x="30" y="52" width="20" height="18" rx="9" fill="currentColor" />
+    <path d="M32 44 L24 32" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+    <path d="M48 44 L56 32" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+    <rect x="36" y="30" width="8" height="4" fill="#F7F5F0" />
+    <circle cx="76" cy="38" r="10" fill="currentColor" />
+    <rect x="70" y="46" width="12" height="18" rx="6" fill="currentColor" />
+  </svg>
+);
+
+const PollinationSvg = () => (
+  <svg viewBox="0 0 120 120" className="w-8 h-8 text-black" aria-hidden="true">
+    <circle cx="40" cy="40" r="8" fill="currentColor" />
+    <circle cx="30" cy="30" r="6" fill="currentColor" />
+    <circle cx="50" cy="30" r="6" fill="currentColor" />
+    <circle cx="30" cy="50" r="6" fill="currentColor" />
+    <circle cx="50" cy="50" r="6" fill="currentColor" />
+    <rect x="70" y="30" width="30" height="6" fill="currentColor" />
+    <rect x="70" y="42" width="22" height="6" fill="currentColor" />
+    <rect x="70" y="54" width="16" height="6" fill="currentColor" />
+  </svg>
+);
+
+const EthicalSvg = () => (
+  <svg viewBox="0 0 120 120" className="w-8 h-8 text-black" aria-hidden="true">
+    <rect x="36" y="26" width="8" height="40" fill="currentColor" />
+    <rect x="76" y="26" width="8" height="40" fill="currentColor" />
+    <rect x="36" y="40" width="48" height="6" fill="currentColor" />
+    <circle cx="40" cy="70" r="8" fill="currentColor" />
+    <circle cx="80" cy="70" r="8" fill="currentColor" />
+  </svg>
+);
+
+const LiveHiveSvg = () => (
+  <svg viewBox="0 0 120 120" className="w-8 h-8 text-black" aria-hidden="true">
+    <rect x="32" y="30" width="56" height="12" rx="4" fill="currentColor" />
+    <rect x="32" y="46" width="56" height="12" rx="4" fill="currentColor" />
+    <rect x="32" y="62" width="56" height="12" rx="4" fill="currentColor" />
+    <rect x="40" y="74" width="12" height="20" fill="currentColor" />
+    <rect x="68" y="74" width="12" height="20" fill="currentColor" />
+  </svg>
+);
+
+const HoneySvg = () => (
+  <svg viewBox="0 0 120 120" className="w-8 h-8 text-black" aria-hidden="true">
+    <rect x="38" y="30" width="32" height="10" fill="currentColor" />
+    <rect x="36" y="40" width="36" height="40" rx="6" fill="currentColor" />
+    <rect x="44" y="36" width="20" height="4" fill="#F7F5F0" />
+    <rect x="50" y="54" width="8" height="16" fill="#F7F5F0" />
+  </svg>
+);
+
 const BeehiveTraining = () => {
   const modules = [
     {
-      title: "Bee biology & behaviour",
-      description: "How bees live, communicate, and function together as a colony."
+      title: "Bee Biology & Behaviour",
+      description: "How bees live, communicate, and function together as a colony.",
+      icon: BeeBiologySvg
     },
     {
-      title: "Pollination & ecosystems",
-      description: "How hives support farms, forests, and interconnected food systems."
+      title: "Pollination & Ecosystems",
+      description: "The role of bees in farms, forests, and food systems.",
+      icon: PollinationSvg
     },
     {
-      title: "Ethical bee keeping practices",
-      description: "Bee-first methods, seasonal care, and low-stress management around hives."
+      title: "Ethical Beekeeping Practices",
+      description: "Bee-first methods, seasonal care, and low-stress management.",
+      icon: EthicalSvg
     },
     {
-      title: "Live AI demonstration",
-      description: "Using live hive data and visualizations to understand patterns and anomalies."
+      title: "Live Hive Demonstration",
+      description: "Hands-on learning with real hives, frames, tools, and techniques.",
+      icon: LiveHiveSvg
     },
     {
-      title: "Monitoring hive set-up boxes",
-      description: "Field-based observation of set-up boxes, entries, and early hive activity."
+      title: "Hive Products & Honey Basics",
+      description: "Understanding honey, wax, pollen, propolis, and quality essentials.",
+      icon: HoneySvg
     }
   ];
 
   return (
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] font-sans">
       <nav className="w-full border-b border-stone-200 bg-[var(--color-academia-cream)]/90 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-sm bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] flex items-center justify-center shadow-md">
               <FiHexagon className="w-5 h-5" />
@@ -121,17 +180,17 @@ const BeehiveTraining = () => {
         </div>
       </nav>
 
-      <section className="w-full bg-[var(--color-academia-charcoal)]">
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          <div className="relative rounded-2xl overflow-hidden shadow-lg">
+      <section className="w-full bg-[var(--color-academia-cream)]">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 py-12">
+          <div className="relative rounded-3xl overflow-hidden shadow-lg">
             <img
               src={beekeepingHero}
               alt="Beekeeping training with hive inspection"
-              className="w-full h-[220px] md:h-[320px] object-cover"
+              className="w-full h-[260px] md:h-[400px] object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/35 to-black/5" />
             <div className="absolute inset-0 flex items-center">
-              <div className="px-6 py-6 md:px-10 md:py-8 max-w-xl text-[var(--color-academia-cream)] space-y-3">
+              <div className="px-6 py-8 md:px-12 md:py-10 max-w-xl md:max-w-2xl text-[var(--color-academia-cream)] space-y-4">
                 <p className="text-[11px] md:text-xs font-semibold tracking-[0.24em] uppercase text-[var(--color-academia-gold)]">
                   Beehive Training
                 </p>
@@ -159,60 +218,61 @@ const BeehiveTraining = () => {
         </div>
       </section>
 
-      <main className="max-w-6xl mx-auto px-6 py-12 space-y-16">
-        <section className="grid gap-10 md:grid-cols-[1.05fr,1.1fr] items-start">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <p className="text-xs font-semibold tracking-[0.26em] uppercase text-[var(--color-academia-gold)]">
+      <main className="max-w-7xl mx-auto px-8 py-16 space-y-16">
+        <section className="space-y-10">
+          <div className="grid gap-10 md:grid-cols-[0.85fr,1.15fr] items-start">
+            <div className="space-y-5">
+              <p className="text-[11px] md:text-xs font-semibold tracking-[0.3em] uppercase text-[var(--color-academia-gold)]">
                 More than a weekend
               </p>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold leading-tight tracking-tight">
-                <span className="block">More than a</span>
-                <span className="block">skill.</span>
-                <span className="block">A perspective.</span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold leading-[1.04] tracking-tight">
+                <span className="block">MORE THAN A</span>
+                <span className="block">SKILL.</span>
+                <span className="block">A PERSPECTIVE.</span>
               </h2>
-              <p className="text-sm md:text-base text-stone-600 leading-relaxed max-w-xl">
-                Beehive Mentorship Weekends go beyond techniques. You learn to read a hive, notice
-                patterns in the landscape, and think like a systems researcher connecting ecology,
-                livelihoods, and food.
-              </p>
             </div>
 
-            <div className="rounded-3xl bg-[var(--color-academia-gold)]/18 border border-[var(--color-academia-gold)]/40 p-6 md:p-7 max-w-sm">
-              <p className="text-xs font-semibold tracking-[0.26em] uppercase text-[var(--color-academia-charcoal)] mb-2">
-                What you&apos;ll learn
-              </p>
-              <p className="text-sm text-stone-800 leading-relaxed">
-                This track builds observational skills, curiosity, and empathy for the systems that
-                bees sustain – the same mindset you use for rigorous research and real-world projects.
+            <div className="space-y-4 md:pt-3">
+              <p className="text-sm md:text-base text-stone-700 leading-relaxed max-w-xl">
+                Beehive Mentorship Weekends offer a hands-on introduction to bees, pollination, and
+                sustainable agriculture. While practical beekeeping skills are central, the track
+                also helps participants understand how bees support ecosystems, livelihoods, and
+                food security.
               </p>
             </div>
           </div>
 
-          <div className="space-y-3">
-            {modules.map((module, index) => (
-              <div
-                key={module.title}
-                className="flex flex-col md:flex-row items-stretch rounded-2xl bg-white border border-stone-200 shadow-sm overflow-hidden"
-              >
-                <div className="flex items-center gap-3 px-4 py-3 md:px-5 md:py-4 md:w-64">
-                  <div className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)]">
-                    <FiHexagon className="w-4 h-4" />
+          <div className="grid gap-10 md:grid-cols-[0.9fr,1.1fr] items-start">
+            <div className="rounded-[2.75rem] bg-[#F5DA92] p-6 md:p-9 md:max-w-md shadow-sm">
+              <p className="text-[11px] md:text-xs font-semibold tracking-[0.26em] uppercase text-[var(--color-academia-charcoal)] mb-3">
+                What you&apos;ll learn
+              </p>
+              <p className="text-sm md:text-base text-stone-900 leading-relaxed">
+                This training builds knowledge, curiosity, and empathy for the world bees sustain –
+                and gives you a structured lens to analyse real-world systems as a researcher.
+              </p>
+            </div>
+
+            <div className="space-y-4 md:pt-3">
+              {modules.map((module) => {
+                return (
+                  <div
+                    key={module.title}
+                    className="flex flex-col md:flex-row items-stretch bg-white border border-stone-200 rounded-full shadow-md overflow-hidden"
+                  >
+                    <div className="flex items-center gap-3 px-5 py-3 md:px-7 md:py-4 md:w-96">
+                      <div className="w-9 h-9 rounded-full bg-black flex-shrink-0" />
+                      <p className="text-sm md:text-base font-semibold text-[var(--color-academia-charcoal)]">
+                        {module.title}
+                      </p>
+                    </div>
+                    <div className="border-t md:border-t-0 md:border-l border-stone-200 px-6 py-3 md:py-4 text-sm md:text-base text-stone-700">
+                      {module.description}
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500">
-                      Module {index + 1}
-                    </p>
-                    <p className="text-sm font-semibold text-[var(--color-academia-charcoal)]">
-                      {module.title}
-                    </p>
-                  </div>
-                </div>
-                <div className="border-t md:border-t-0 md:border-l border-stone-200 px-5 py-3 md:py-4 text-sm text-stone-700">
-                  {module.description}
-                </div>
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
         </section>
 
