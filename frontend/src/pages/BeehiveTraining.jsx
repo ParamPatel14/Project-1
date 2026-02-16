@@ -2,6 +2,7 @@ import React from 'react';
 import beekeepingHero from '../../beekeeping.jpg';
 import { Link } from 'react-router-dom';
 import { FiHexagon, FiUsers, FiMapPin, FiClock } from 'react-icons/fi';
+import BeehiveEventList from '../components/BeehiveEventList';
 
 const EmpathySvg = () => (
   <svg
@@ -210,127 +211,65 @@ const BeehiveTraining = () => {
       </section>
 
       <main className="max-w-9xl mx-auto px-8 py-16 space-y-16">
-        <section className="space-y-10">
-          <div className="grid gap-10 md:grid-cols-[0.9fr,1.1fr] items-start">
-            <div className="space-y-8">
-              <div className="space-y-5">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold leading-[1.04] tracking-tight">
-                  <span className="block">MORE THAN A</span>
-                  <span className="block">SKILL.</span>
-                  <span className="block">A PERSPECTIVE.</span>
-                </h2>
-              </div>
-
-              <div className="rounded-[2.75rem] bg-[#F5DA92] p-6 md:p-9 md:max-w-md shadow-sm">
-                <p className="text-[11px] md:text-xs font-semibold tracking-[0.26em] uppercase text-[var(--color-academia-charcoal)] mb-3">
-                  WHAT YOU&apos;LL LEARN
-                </p>
-                <p className="text-sm md:text-base text-stone-900 leading-relaxed">
-                  This training builds knowledge, curiosity, and empathy for the world bees sustain –
-                  and gives you a structured lens to analyse real-world systems as a researcher.
-                </p>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="absolute -inset-x-6 -inset-y-8 md:-inset-x-10 md:-inset-y-10 rounded-[3rem] bg-gradient-to-r from-[#FFF6D0] via-[#F4F4EC] to-[#E7F4E9] opacity-90" />
-              <div className="relative px-5 md:px-10 py-6 md:py-9 space-y-6 md:space-y-8">
-                <p className="text-sm md:text-base text-stone-700 leading-relaxed max-w-xl">
-                  HoneyDay&apos;s beekeeping trainings offer a hands-on introduction to bees, pollination,
-                  and sustainable agriculture. While practical beekeeping skills are central, the
-                  training also helps participants understand how bees support ecosystems, livelihoods,
-                  and food security.
-                </p>
-
-                <div className="space-y-4 md:space-y-5">
-                  {modules.map((module) => {
-                    const Icon = module.icon;
-                    return (
-                      <div
-                        key={module.title}
-                        className="flex flex-col md:flex-row items-stretch bg-white/90 border border-stone-200 rounded-full shadow-md overflow-hidden"
-                      >
-                        <div className="flex items-center gap-3 px-5 py-3 md:px-7 md:py-4 md:w-[340px]">
-                          <Icon />
-                          <p className="text-sm md:text-base font-semibold text-[var(--color-academia-charcoal)]">
-                            {module.title}
-                          </p>
-                        </div>
-                        <div className="border-t md:border-t-0 md:border-l border-stone-200 px-6 py-3 md:py-4 text-sm md:text-base text-stone-700">
-                          {module.description}
-                        </div>
-                      </div>
-                    );
-                  })}
+        <section className="space-y-12">
+          <div className="relative rounded-[3rem] overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FFF6D0] via-[#F4F4EC] to-[#E7F4E9]" />
+            <div className="relative px-6 md:px-10 py-8 md:py-10">
+              <div className="grid gap-6 md:gap-10 grid-cols-1 md:grid-cols-2 items-start">
+                <div>
+                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-black leading-[1.02] tracking-tight">
+                    <span className="block">MORE THAN A</span>
+                    <span className="block">SKILL.</span>
+                    <span className="block">A PERSPECTIVE.</span>
+                  </h2>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="grid gap-10 md:grid-cols-[1.15fr,0.85fr] items-start">
-          <div className="space-y-4">
-            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
-                Format
-              </p>
-              <p className="text-sm text-stone-800">
-                Small-group, interactive sessions that mix classroom-style reflection with live hive
-                demonstrations.
-              </p>
-            </div>
-            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
-                Who joins
-              </p>
-              <p className="text-sm text-stone-800">
-                Aspiring beekeepers, students, researchers, and nature lovers exploring sustainability.
-              </p>
-            </div>
-            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
-                Outcomes
-              </p>
-              <p className="text-sm text-stone-800">
-                Empathy for pollinators, systems thinking, and applied sustainability you can bring
-                back into your projects and research.
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="rounded-sm bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] p-6 shadow-lg">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-academia-gold)] mb-3">
-                Location
-              </p>
-              <div className="flex items-start gap-3 text-sm">
-                <FiMapPin className="mt-1 w-4 h-4 text-[var(--color-academia-gold)]" />
-                <p className="leading-relaxed">
-                  63/2, Nelamangala Magadi road, Kadabagere, Byandahalli, Bengaluru, Karnataka 562130
-                </p>
-              </div>
-              <div className="mt-4 flex items-center gap-3 text-xs text-stone-300">
-                <FiClock className="w-4 h-4" />
-                <span>Mon – Sat · 9:30 am – 6:00 pm (as per partner schedule)</span>
-              </div>
-            </div>
-
-            <div className="rounded-sm bg-[var(--color-academia-gold)]/8 border border-[var(--color-academia-gold)]/40 p-5">
-              <div className="flex items-start gap-3">
-                <FiUsers className="w-5 h-5 text-[var(--color-academia-gold)] mt-0.5" />
-                <div className="space-y-1">
-                  <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-academia-gold)]">
-                    Beehive Mentorship in ResearchMatch
-                  </p>
-                  <p className="text-sm text-stone-800">
-                    Completing this experience can be reflected as a Beehive Mentorship Weekend on your
-                    ResearchMatch profile, signalling hands-on exposure to sustainability and systems thinking.
+                <div>
+                  <p className="text-base md:text-lg lg:text-xl  text-[var(--color-academia-charcoal)] leading-relaxed">
+                    HoneyDay&apos;s beekeeping trainings offer a hands-on introduction to bees,
+                    pollination, and sustainable agriculture. While practical beekeeping
+                    skills are central, the training also helps participants understand how
+                    bees support ecosystems, livelihoods, and food security.
                   </p>
                 </div>
               </div>
             </div>
           </div>
+          <div className="grid grid-cols-2 md:grid-cols-[0.9fr,1.1fr] gap-10 items-stretch">
+            <div className="rounded-[2.75rem] bg-[#FFE18C] h-full flex flex-col justify-center items-center p-8 md:p-12 shadow-md">
+              <p className="text-4xl md:text-5xl lg:text-6xl font-sans font-black leading-[1.02] tracking-tight uppercase text-[var(--color-academia-charcoal)] mb-3 text-center">
+                WHAT YOU&apos;LL LEARN
+              </p>
+              <p className="text-base md:text-lg lg:text-xl  text-[var(--color-academia-charcoal)] leading-relaxed text-center">
+                This training builds knowledge, curiosity, and empathy for the world bees sustain –
+                and gives you a structured lens to analyse real-world systems as a researcher.
+              </p>
+            </div>
+
+            <div className="space-y-4 md:pt-0">
+              {modules.map((module) => {
+                const Icon = module.icon;
+                return (
+                  <div
+                    key={module.title}
+                    className="flex flex-col md:flex-row items-stretch bg-white border border-black/20 rounded-full shadow-md overflow-hidden"
+                  >
+                    <div className="flex items-center gap-3 px-5 py-3 md:px-7 md:py-4 md:w-[380px]">
+                      <Icon />
+                      <p className="text-sm md:text-base font-semibold text-[var(--color-academia-charcoal)]">
+                        {module.title}
+                      </p>
+                    </div>
+                    <div className="border-t md:border-t-0 md:border-l border-black/10 px-6 py-3 md:py-4 text-sm md:text-base text-stone-700">
+                      {module.description}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </section>
+
+        
 
         <section className="space-y-8">
           <div className="text-center">
@@ -405,6 +344,88 @@ const BeehiveTraining = () => {
               <p className="mt-4 text-sm md:text-base font-medium max-w-xs">
                 Supports sustainable farming, biodiversity, and long-term resilience
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold tracking-[0.26em] uppercase text-[var(--color-academia-gold)]">
+                Our available sessions
+              </p>
+              <h3 className="mt-2 text-2xl md:text-3xl font-serif font-bold tracking-tight text-[var(--color-academia-charcoal)]">
+                Beehive mentorship events
+              </h3>
+            </div>
+            <p className="text-xs md:text-sm text-stone-600 max-w-md">
+              Weekend real-world scenario mentorship sessions hosted with HoneyDay, listed live by the
+              admin team.
+            </p>
+          </div>
+          <BeehiveEventList />
+        </section>
+
+        <section className="grid gap-10 md:grid-cols-[1.15fr,0.85fr] items-start">
+          <div className="space-y-4">
+            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
+              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
+                Format
+              </p>
+              <p className="text-sm text-stone-800">
+                Small-group, interactive sessions that mix classroom-style reflection with live hive
+                demonstrations.
+              </p>
+            </div>
+            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
+              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
+                Who joins
+              </p>
+              <p className="text-sm text-stone-800">
+                Aspiring beekeepers, students, researchers, and nature lovers exploring sustainability.
+              </p>
+            </div>
+            <div className="p-4 rounded-sm bg-white border border-stone-100 shadow-sm">
+              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-stone-500 mb-1">
+                Outcomes
+              </p>
+              <p className="text-sm text-stone-800">
+                Empathy for pollinators, systems thinking, and applied sustainability you can bring
+                back into your projects and research.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="rounded-sm bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] p-6 shadow-lg">
+              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-academia-gold)] mb-3">
+                Location
+              </p>
+              <div className="flex items-start gap-3 text-sm">
+                <FiMapPin className="mt-1 w-4 h-4 text-[var(--color-academia-gold)]" />
+                <p className="leading-relaxed">
+                  63/2, Nelamangala Magadi road, Kadabagere, Byandahalli, Bengaluru, Karnataka 562130
+                </p>
+              </div>
+              <div className="mt-4 flex items-center gap-3 text-xs text-stone-300">
+                <FiClock className="w-4 h-4" />
+                <span>Mon – Sat · 9:30 am – 6:00 pm (as per partner schedule)</span>
+              </div>
+            </div>
+
+            <div className="rounded-sm bg-[var(--color-academia-gold)]/8 border border-[var(--color-academia-gold)]/40 p-5">
+              <div className="flex items-start gap-3">
+                <FiUsers className="w-5 h-5 text-[var(--color-academia-gold)] mt-0.5" />
+                <div className="space-y-1">
+                  <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-academia-gold)]">
+                    Beehive Mentorship in ResearchMatch
+                  </p>
+                  <p className="text-sm text-stone-800">
+                    Completing this experience can be reflected as a Beehive Mentorship Weekend on your
+                    ResearchMatch profile, signalling hands-on exposure to sustainability and systems thinking.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
