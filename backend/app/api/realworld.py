@@ -132,7 +132,6 @@ def get_beehive_events(
     skip: int = 0,
     limit: int = 100,
     db: Session = Depends(get_db),
-    current_user: models.User = Depends(deps.get_current_user)
 ):
     return db.query(models.BeehiveEvent).filter(models.BeehiveEvent.is_active == True).offset(skip).limit(limit).all()
 
