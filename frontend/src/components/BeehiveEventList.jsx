@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getBeehiveEvents, createBeehiveEvent } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { FiHexagon, FiClock, FiUsers, FiDollarSign, FiPlus, FiCalendar } from 'react-icons/fi';
+import CubeLoader from './ui/CubeLoader';
 
 const BeehiveEventList = ({ showAdminControls = true }) => {
   const { user } = useAuth();
@@ -160,7 +161,9 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
       )}
 
       {loading ? (
-        <p className="p-8 text-center text-stone-500 italic font-serif animate-pulse">Loading events...</p>
+        <div className="py-10 flex justify-center">
+          <CubeLoader />
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((event) => (

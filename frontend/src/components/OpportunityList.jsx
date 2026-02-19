@@ -3,6 +3,7 @@ import { getOpportunities, getVisits, getBeehiveEvents } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { FiClock, FiBriefcase, FiArrowRight, FiUser, FiSearch, FiFilter, FiMapPin, FiCalendar, FiHexagon } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import CubeLoader from './ui/CubeLoader';
 
 const OpportunityList = ({ initialFilters = {} }) => {
   const navigate = useNavigate();
@@ -119,9 +120,8 @@ const OpportunityList = ({ initialFilters = {} }) => {
       </div>
 
       {loading ? (
-        <div className="flex flex-col justify-center items-center py-32">
-          <div className="w-12 h-12 border-4 border-stone-200 border-t-[var(--color-academia-gold)] rounded-full animate-spin mb-4"></div>
-          <p className="text-stone-400 font-serif tracking-wider text-sm uppercase">Loading Opportunities...</p>
+        <div className="py-20 flex justify-center">
+          <CubeLoader />
         </div>
       ) : (
         <motion.div 

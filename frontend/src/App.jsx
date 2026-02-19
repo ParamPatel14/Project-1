@@ -11,14 +11,20 @@ import CertificateVerification from "./components/CertificateVerification";
 import AnalyticsDashboard from "./components/AnalyticsDashboard";
 import BeehiveTraining from "./pages/BeehiveTraining";
 import BeehiveEventDetail from "./pages/BeehiveEventDetail";
-
+import CubeLoader from "./components/ui/CubeLoader";
 import OpportunityDetail from "./components/OpportunityDetail";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  if (loading) return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--color-academia-cream)]">
+        <CubeLoader />
+      </div>
+    );
+  }
   if (!user) return <Navigate to="/login" />;
 
   // If user has generic role 'user' and is not already on role selection page

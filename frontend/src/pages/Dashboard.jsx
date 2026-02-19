@@ -13,6 +13,7 @@ import AnalyticsDashboard from "../components/AnalyticsDashboard";
 import SmartMatchList from "../components/SmartMatchList";
 import RealWorldDashboard from "../components/RealWorldDashboard";
 import ErrorBoundary from "../components/ErrorBoundary";
+import CubeLoader from "../components/ui/CubeLoader";
 import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase, FiCpu, FiGlobe } from "react-icons/fi";
 
 const Dashboard = () => {
@@ -64,7 +65,7 @@ const Dashboard = () => {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--color-academia-cream)]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-academia-gold)]"></div>
+        <CubeLoader />
       </div>
     );
   }

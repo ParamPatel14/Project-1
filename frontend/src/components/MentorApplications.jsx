@@ -4,6 +4,7 @@ import { FaTimes, FaCheck, FaBan, FaSearch, FaFilter } from 'react-icons/fa';
 import { FiUser, FiMail, FiMapPin, FiLinkedin, FiGithub, FiGlobe, FiFileText, FiBriefcase, FiBookOpen, FiAward, FiSearch } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import StudentProfileModal from "./StudentProfileModal";
+import CubeLoader from "./ui/CubeLoader";
 
 const MentorApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -71,8 +72,8 @@ const MentorApplications = () => {
   });
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-stone-50">
-      <div className="text-[var(--color-academia-charcoal)] font-serif text-xl animate-pulse">Loading Intelligence...</div>
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-academia-cream)]">
+      <CubeLoader />
     </div>
   );
 

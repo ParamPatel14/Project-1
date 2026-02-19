@@ -4,6 +4,7 @@ import { getBeehiveEvents, enrollBeehive, createBeehiveContact } from '../api';
 import { FiHexagon, FiClock, FiUsers, FiMapPin, FiArrowLeft, FiDollarSign, FiCalendar } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import contactHero from '../../contactus1 (1).avif';
+import CubeLoader from '../components/ui/CubeLoader';
 
 const BeehiveEventDetail = () => {
   const { id } = useParams();
@@ -138,10 +139,7 @@ const BeehiveEventDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--color-academia-cream)]">
-        <div className="flex flex-col items-center gap-3 text-[var(--color-academia-charcoal)]">
-          <div className="w-10 h-10 rounded-full border-2 border-[var(--color-academia-gold)] border-t-transparent animate-spin" />
-          <p className="text-sm font-serif tracking-[0.2em] uppercase">Loading Beehive event</p>
-        </div>
+        <CubeLoader />
       </div>
     );
   }

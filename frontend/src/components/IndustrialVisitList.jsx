@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getVisits, createVisit, enrollVisit } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { FiCalendar, FiMapPin, FiUsers, FiBriefcase, FiPlus, FiGlobe } from 'react-icons/fi';
+import CubeLoader from './ui/CubeLoader';
 
 const IndustrialVisitList = () => {
   const { user } = useAuth();
@@ -157,7 +158,9 @@ const IndustrialVisitList = () => {
       )}
 
       {loading ? (
-        <div className="p-8 text-center text-stone-500 italic font-serif animate-pulse">Loading visits...</div>
+        <div className="py-10 flex justify-center">
+          <CubeLoader />
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {visits.map((visit) => (
