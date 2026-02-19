@@ -16,6 +16,7 @@ import {
 } from "react-icons/fi";
 import { FaRobot } from "react-icons/fa";
 import ProposalGuidance from "./ProposalGuidance";
+import CubeLoader from "./ui/CubeLoader";
 
 const SavedResearchGapList = () => {
   const [savedGaps, setSavedGaps] = useState([]);
@@ -69,9 +70,8 @@ const SavedResearchGapList = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <div className="w-12 h-12 border-4 border-indigo-200 rounded-full border-t-indigo-600 animate-spin mb-4"></div>
-        <p className="text-gray-500">Loading your saved discoveries...</p>
+      <div className="py-12 flex justify-center">
+        <CubeLoader />
       </div>
     );
   }

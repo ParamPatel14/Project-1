@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getMyImprovementPlans, updatePlanItem } from '../api';
 import { FiClock, FiCalendar, FiCheckCircle, FiTarget, FiArrowRight, FiBook, FiCode, FiFileText, FiAward } from 'react-icons/fi';
+import CubeLoader from './ui/CubeLoader';
 
 const ImprovementPlanBoard = () => {
   const [plans, setPlans] = useState([]);
@@ -50,7 +51,7 @@ const ImprovementPlanBoard = () => {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <CubeLoader />
     </div>
   );
 

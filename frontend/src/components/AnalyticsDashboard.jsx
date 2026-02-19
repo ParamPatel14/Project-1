@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAnalytics } from '../api';
 import { FiUsers, FiActivity, FiBook, FiDollarSign, FiAward } from 'react-icons/fi';
+import CubeLoader from './ui/CubeLoader';
 
 const AnalyticsDashboard = ({ title = "Platform Analytics" }) => {
   const [data, setData] = useState(null);
@@ -22,7 +23,7 @@ const AnalyticsDashboard = ({ title = "Platform Analytics" }) => {
 
   if (loading) return (
     <div className="flex justify-center items-center h-48">
-       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-academia-gold)]"></div>
+       <CubeLoader />
     </div>
   );
   

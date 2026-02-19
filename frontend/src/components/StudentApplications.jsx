@@ -4,7 +4,7 @@ import {
   FiFileText, FiCalendar, FiClock, FiCheckCircle, FiXCircle, 
   FiAlertCircle, FiChevronRight, FiBriefcase, FiHash, FiTarget 
 } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import CubeLoader from './ui/CubeLoader';
 
 const StudentApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -43,7 +43,7 @@ const StudentApplications = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px] bg-[var(--color-academia-cream)]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-academia-charcoal)]"></div>
+        <CubeLoader />
       </div>
     );
   }

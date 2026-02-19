@@ -6,6 +6,7 @@ import OpportunityForm from "./OpportunityForm";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 import BeehiveEventList from "./BeehiveEventList";
 import StudentProfileModal from "./StudentProfileModal";
+import CubeLoader from "./ui/CubeLoader";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -156,9 +157,8 @@ const AdminDashboard = () => {
       {/* Content Area */}
       <div className="min-h-[500px]">
         {loading ? (
-          <div className="flex flex-col justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-stone-200 border-t-[var(--color-academia-gold)] mb-4"></div>
-            <p className="text-stone-400 font-serif animate-pulse">Accessing Secure Data...</p>
+          <div className="flex justify-center items-center h-64">
+            <CubeLoader />
           </div>
         ) : (
           <AnimatePresence mode="wait">

@@ -4,6 +4,7 @@ import { getOpportunity, applyForOpportunity, analyzeMatch, generateAICoverLette
 import { FiClock, FiUsers, FiCheckCircle, FiCpu, FiArrowLeft, FiBriefcase, FiAward, FiBookOpen } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import ConnectingNodes from './ConnectingNodes';
+import CubeLoader from './ui/CubeLoader';
 
 const OpportunityDetail = () => {
   const { id } = useParams();
@@ -123,7 +124,7 @@ const OpportunityDetail = () => {
 
   if (loading) return (
     <div className="flex justify-center items-center h-screen bg-[var(--color-academia-cream)]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-academia-charcoal)]"></div>
+        <CubeLoader />
     </div>
   );
   

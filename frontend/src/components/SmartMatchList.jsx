@@ -4,6 +4,7 @@ import ResearchGapList from "./ResearchGapList";
 import SavedResearchGapList from "./SavedResearchGapList";
 import { FaLightbulb, FaTimes } from "react-icons/fa";
 import { FiCpu, FiUser, FiBriefcase, FiAward, FiCheckCircle, FiBook, FiArrowRight, FiActivity, FiTrendingUp, FiMinus, FiBookmark, FiSend } from "react-icons/fi";
+import CubeLoader from "./ui/CubeLoader";
 
 const SmartMatchList = () => {
   const [matches, setMatches] = useState([]);
@@ -34,7 +35,7 @@ const SmartMatchList = () => {
         if (profileData.student_profile) {
           setStudentId(profileData.student_profile.id);
         }
-      } catch (err) {
+      } catch {
         setError("Failed to load smart matches. Please try again.");
       } finally {
         setLoading(false);
@@ -106,15 +107,7 @@ const SmartMatchList = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <div className="relative mb-6">
-          <div className="w-20 h-20 border-4 border-[var(--color-academia-cream)] rounded-full"></div>
-          <div className="w-20 h-20 border-4 border-[var(--color-academia-charcoal)] rounded-full border-t-transparent animate-spin absolute top-0 left-0"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-             <FiCpu className="text-[var(--color-academia-charcoal)] text-2xl animate-pulse"/>
-          </div>
-        </div>
-        <h3 className="text-xl font-bold font-serif text-[var(--color-academia-charcoal)]">Finding Your Best Matches...</h3>
-        <p className="text-stone-500 mt-2">Analyzing research interests, skills, and lab requirements.</p>
+        <CubeLoader />
       </div>
     );
   }

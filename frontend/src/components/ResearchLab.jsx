@@ -12,10 +12,10 @@ import {
 } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { FiPlus, FiMessageSquare, FiVideo, FiFileText, FiLayers, FiCheckCircle } from 'react-icons/fi';
-
 import ChatBox from './ChatBox';
 import MeetingScheduler from './MeetingScheduler';
 import ReferencePortal from './ReferencePortal';
+import CubeLoader from './ui/CubeLoader';
 
 const ResearchLab = () => {
     const { user } = useAuth();
@@ -85,7 +85,11 @@ const ResearchLab = () => {
         }
     };
 
-    if (loading) return <div className="p-8 text-center text-[var(--color-academia-charcoal)] font-serif animate-pulse">Loading Research Lab...</div>;
+    if (loading) return (
+        <div className="p-12 flex justify-center">
+            <CubeLoader />
+        </div>
+    );
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
