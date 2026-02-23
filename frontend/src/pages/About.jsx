@@ -202,6 +202,7 @@ const About = () => {
               </p>
             </div>
           </div>
+          </div>
         </section>
       </main>
     </div>
