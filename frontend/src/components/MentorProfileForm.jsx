@@ -166,7 +166,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
 
   // --- View Mode Component ---
   const renderViewMode = () => (
-    <div className="animate-fade-in space-y-8">
+    <div className="animate-fade-in space-y-8 w-full">
       {/* Header Profile Card */}
       <div className="relative bg-[var(--color-academia-charcoal)] rounded-xl p-8 text-[var(--color-academia-cream)] shadow-lg overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10">
@@ -233,7 +233,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
       </div>
 
       {/* Main Content Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
         
         {/* Left Column (Main Info) */}
         <div className="lg:col-span-2 space-y-8">
@@ -423,7 +423,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
           </div>
           
           <div className="p-6 md:p-8">
-            <form onSubmit={handleSubmit} className="space-y-8 max-w-5xl mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-8 w-full">
               {/* Mentor Type Selection */}
               <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
                 <label className="block text-sm font-bold text-stone-700 mb-4 uppercase tracking-wide">Select Role Type</label>
