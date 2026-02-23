@@ -66,13 +66,13 @@ const FounderCard = ({
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.5 }}
       transition={{ type: "spring", stiffness: 120, damping: 18 }}
-      className="group bg-white border border-stone-200 rounded-2xl shadow-sm p-8 flex gap-6 items-start relative overflow-hidden"
+      className="group bg-white border border-stone-200 rounded-3xl shadow-lg/60 p-8 md:p-10 flex flex-col md:flex-row gap-6 md:gap-8 items-start relative overflow-hidden max-w-5xl mx-auto"
     >
       {!shouldReduceMotion && (
         <div className="pointer-events-none absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-[var(--color-academia-gold)]/10 blur-3xl" />
       )}
       <div className="relative">
-        <div className="w-24 h-24 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0 transform transition-transform duration-500 group-hover:scale-105">
+        <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0 transform transition-transform duration-500 group-hover:scale-105">
           <img src={photo} alt={name} className="w-full h-full object-cover" />
         </div>
         <button
@@ -152,7 +152,7 @@ const About = () => {
   return (
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] font-sans">
       <header className="border-b border-stone-200 bg-[var(--color-academia-cream)]/95 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="px-6 h-20 flex items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[var(--color-academia-charcoal)] rounded-sm flex items-center justify-center text-[var(--color-academia-cream)] font-serif font-bold text-xl shadow-lg">
               R
@@ -161,16 +161,16 @@ const About = () => {
               Shaun Spherix Solutions LLP
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm">
+          <div className="ml-auto flex items-center gap-6 text-sm">
             <Link
               to="/"
-              className="text-stone-600 hover:text-[var(--color-academia-gold)] transition-colors"
+              className="relative text-stone-600 hover:text-[var(--color-academia-gold)] transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--color-academia-gold)] after:transition-all hover:after:w-full"
             >
               Home
             </Link>
             <Link
               to="/login"
-              className="px-4 py-2 border border-[var(--color-academia-charcoal)] rounded-sm text-[var(--color-academia-charcoal)] hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] transition-all"
+              className="px-4 py-2 border border-[var(--color-academia-charcoal)] rounded-full text-[var(--color-academia-charcoal)] hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] shadow-sm hover:shadow-md transition-all"
             >
               Log In
             </Link>
@@ -178,7 +178,7 @@ const About = () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-16 space-y-16">
+      <main className="w-full px-4 md:px-10 lg:px-20 py-16 space-y-16">
         <section
           ref={heroRef}
           onMouseMove={handleHeroMouseMove}
@@ -278,7 +278,7 @@ const About = () => {
           </motion.div>
         </section>
 
-        <section className="space-y-10">
+        <section className="space-y-10 min-h-[calc(100vh-5rem)] flex flex-col justify-center">
           <div className="space-y-2">
             <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
               Founding Team
@@ -288,7 +288,7 @@ const About = () => {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-10 items-start">
+          <div className="flex flex-col gap-10">
             <FounderCard
               roleLabel="Founder"
               name="Dr. Sonia Maria D'Souza"
