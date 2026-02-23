@@ -8,14 +8,14 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] font-sans overflow-x-hidden">
       <nav className="fixed w-full top-0 z-50 bg-[var(--color-academia-cream)]/90 backdrop-blur-md border-b border-stone-200/50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+        <div className="px-6 h-20 flex items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[var(--color-academia-charcoal)] rounded-sm flex items-center justify-center text-[var(--color-academia-cream)] font-serif font-bold text-xl shadow-lg">
               R
             </div>
             <span className="text-xl font-bold tracking-tight font-serif">Shaun Spherix Solutions LLP</span>
           </div>
-          <div className="flex gap-6 items-center">
+          <div className="ml-auto flex gap-6 items-center">
             <Link
               to="/about"
               className="text-sm font-medium hover:text-[var(--color-academia-gold)] transition-colors relative group hidden sm:inline-block"
@@ -74,15 +74,7 @@ const LandingPage = () => {
               “A mentor empowers a person to see a possible future, and believe it can be obtained.” – Shawn Hitchcock
             </motion.p>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className="text-lg text-stone-600 leading-relaxed max-w-md border-l-4 border-[var(--color-academia-gold)] pl-6"
-            >
-              A precise platform for researchers to identify methodology gaps, align with PhD supervisors, and secure competitive opportunities through verified credentials.
-            </motion.p>
-            
+            {/* Removed tagline paragraph per user request */}            
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -103,23 +95,7 @@ const LandingPage = () => {
               </Link>
             </motion.div>
             
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="pt-8 flex items-center gap-8 border-t border-stone-200 mt-8"
-            >
-              {[
-                  { label: "Research Labs", value: "150+" },
-                  { label: "Match Rate", value: "85%" },
-                  { label: "Grants Secured", value: "$2.4M" }
-              ].map((stat, idx) => (
-                  <div key={idx} className="group cursor-default">
-                    <p className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] group-hover:text-[var(--color-academia-gold)] transition-colors duration-300">{stat.value}</p>
-                    <p className="text-xs text-stone-500 uppercase tracking-wider mt-1 font-bold">{stat.label}</p>
-                  </div>
-              ))}
-            </motion.div>
+            {/* Removed hero stats strip with placeholder data per user request */}
           </div>
         </div>
 

@@ -157,7 +157,7 @@ const About = () => {
   return (
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] font-sans">
       <header className="border-b border-stone-200 bg-[var(--color-academia-cream)]/95 backdrop-blur-md sticky top-0 z-40">
-        <div className="px-6 h-20 flex items-center">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[var(--color-academia-charcoal)] rounded-sm flex items-center justify-center text-[var(--color-academia-cream)] font-serif font-bold text-xl shadow-lg">
               R
@@ -166,16 +166,16 @@ const About = () => {
               Shaun Spherix Solutions LLP
             </span>
           </div>
-          <div className="ml-auto flex items-center gap-6 text-sm">
+          <div className="flex items-center gap-4 text-sm">
             <Link
               to="/"
-              className="relative text-stone-600 hover:text-[var(--color-academia-gold)] transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--color-academia-gold)] after:transition-all hover:after:w-full"
+              className="text-stone-600 hover:text-[var(--color-academia-gold)] transition-colors"
             >
               Home
             </Link>
             <Link
               to="/login"
-              className="px-4 py-2 border border-[var(--color-academia-charcoal)] rounded-full text-[var(--color-academia-charcoal)] hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] shadow-sm hover:shadow-md transition-all"
+              className="px-4 py-2 border border-[var(--color-academia-charcoal)] rounded-sm text-[var(--color-academia-charcoal)] hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] transition-all"
             >
               Log In
             </Link>
