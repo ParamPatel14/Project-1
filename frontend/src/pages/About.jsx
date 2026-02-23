@@ -1,36 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { FiLinkedin, FiGlobe } from "react-icons/fi";
 import founderPhoto from "../../founder_photo.jpeg";
 import coFounderPhoto from "../../co-founder.jpeg";
-
-const stats = [
-  { label: "Founding Year", value: 2026, suffix: "" },
-  { label: "Research Mentors & Partners", value: 20, suffix: "+" },
-  { label: "Student Journeys Guided", value: 100, suffix: "+" },
-];
-
-const milestones = [
-  {
-    year: "Concept",
-    title: "Idea incubated",
-    text:
-      "Originated from mentoring sessions where students and supervisors needed clearer ways to align expectations and research directions.",
-  },
-  {
-    year: "Pilot",
-    title: "Workflows tested",
-    text:
-      "Early Deep Academia flows were piloted with research scholars, faculty, and industry mentors to validate real-world fit.",
-  },
-  {
-    year: "2026",
-    title: "Studio registered",
-    text:
-      "Shaun Spherix Solutions LLP formally registered on 16/02/2026 to build focused research intelligence and mentorship platforms.",
-  },
-];
 
 const founderQuoteSonia =
   "Ethical research, sustainable innovation, and meaningful mentorship can transform academic trajectories.";
@@ -49,42 +22,6 @@ const founderBioPradeepParagraphs = [
   "With expertise in technology management, system implementation, and strategic execution, he helps translate innovative ideas into scalable, production-ready solutions. His hands-on approach, problem‑solving mindset, and focus on quality ensure that projects are executed efficiently and sustainably.",
   "Pradeep brings a grounded industry perspective and structured planning capabilities to Shaun Spherix. He supports product development, deployment strategies, client engagement, and technical optimization, while his collaborative leadership style strengthens team coordination and maintains a results‑driven culture.",
 ];
-
-const Stat = ({ label, value, suffix }) => {
-  const shouldReduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState(shouldReduceMotion ? value : 0);
-
-  useEffect(() => {
-    if (shouldReduceMotion) {
-      setDisplay(value);
-      return;
-    }
-    let frame;
-    const duration = 1200;
-    const start = performance.now();
-    const animate = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      setDisplay(Math.round(progress * value));
-      if (progress < 1) {
-        frame = requestAnimationFrame(animate);
-      }
-    };
-    frame = requestAnimationFrame(animate);
-    return () => {
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [value, shouldReduceMotion]);
-
-  return (
-    <div className="space-y-1">
-      <p className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">
-        {display}
-        {suffix}
-      </p>
-      <p className="text-xs uppercase tracking-[0.18em] text-stone-500">{label}</p>
-    </div>
-  );
-};
 
 const FounderCard = ({
   roleLabel,
@@ -203,12 +140,6 @@ const About = () => {
   const shouldReduceMotion = useReducedMotion();
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
-  const companyRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: companyRef,
-    offset: ["start end", "end start"],
-  });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
   const handleHeroMouseMove = (event) => {
     if (!heroRef.current || shouldReduceMotion) return;
@@ -289,16 +220,6 @@ const About = () => {
               checklists, Shaun Spherix focuses on calibrated journeys that respect time,
               attention, and the long horizon of research careers.
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-2">
-              {stats.map((stat) => (
-                <Stat
-                  key={stat.label}
-                  label={stat.label}
-                  value={stat.value}
-                  suffix={stat.suffix}
-                />
-              ))}
-            </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, scale: 0.96, x: 20 }}
@@ -355,56 +276,6 @@ const About = () => {
               </div>
             </div>
           </motion.div>
-        </section>
-
-        <section
-          ref={companyRef}
-          className="relative py-10 md:py-16"
-        >
-          {!shouldReduceMotion && (
-            <motion.div
-              className="pointer-events-none absolute inset-0 -z-10"
-              style={{ y: parallaxY }}
-            >
-              <div className="mx-auto max-w-5xl h-full bg-[radial-gradient(circle_at_top,_rgba(34,34,34,0.09),_transparent_60%)] opacity-70" />
-            </motion.div>
-          )}
-          <div className="space-y-4 max-w-3xl">
-            <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
-              Company Journey
-            </p>
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">
-              From academic hallways to focused research platforms.
-            </h2>
-            <p className="text-sm md:text-base text-stone-600 leading-relaxed">
-              Shaun Spherix Solutions LLP grew from mentoring conversations where students,
-              supervisors, and industry partners needed clearer, shared context. Today, the
-              studio builds platforms that align expectations, surface gaps, and make serious
-              research pathways more transparent.
-            </p>
-          </div>
-          <ol className="mt-8 space-y-4">
-            {milestones.map((item, index) => (
-              <motion.li
-                key={item.title + item.year}
-                initial={{ opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.45, delay: index * 0.08 }}
-                className="flex gap-4 items-start"
-              >
-                <div className="mt-1 h-10 w-10 flex items-center justify-center rounded-full bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] text-xs font-semibold">
-                  {item.year}
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-[var(--color-academia-charcoal)]">
-                    {item.title}
-                  </p>
-                  <p className="text-xs md:text-sm text-stone-600">{item.text}</p>
-                </div>
-              </motion.li>
-            ))}
-          </ol>
         </section>
 
         <section className="space-y-10">
