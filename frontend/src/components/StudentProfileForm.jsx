@@ -29,40 +29,40 @@ const StudentProfileView = ({ data, onEdit }) => {
       {!data.is_phd_seeker && (
         <div 
           onClick={onEdit}
-          className="relative group rounded-sm mb-10 cursor-pointer max-w-5xl mx-auto border border-[var(--color-academia-gold)] bg-[var(--color-academia-cream)] p-8 hover:shadow-sm transition-all duration-300"
+          className="relative group rounded-sm mb-10 cursor-pointer w-full border border-[var(--color-academia-gold)] bg-[var(--color-academia-cream)] p-6 hover:shadow-sm transition-all duration-300"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-start gap-6">
                <div className="mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
-                  <FiBook className="text-4xl text-[var(--color-academia-charcoal)]" />
+                  <FiBook className="text-3xl text-[var(--color-academia-charcoal)]" />
                </div>
                <div>
-                  <h3 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">Pursuing a PhD?</h3>
-                  <p className="text-[var(--color-academia-charcoal)] text-lg font-light leading-relaxed max-w-2xl">
+                  <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Pursuing a PhD?</h3>
+                  <p className="text-[var(--color-academia-charcoal)] text-base font-light leading-relaxed max-w-2xl">
                     Connect with leading professors and research labs. Update your profile with research interests and publications to get discovered.
                   </p>
                </div>
             </div>
             <div className="flex-shrink-0 pl-8">
-                <span className="inline-flex items-center gap-2 text-[var(--color-academia-charcoal)] font-serif font-bold text-lg border-b-2 border-[var(--color-academia-charcoal)] pb-1 group-hover:text-[var(--color-academia-gold)] group-hover:border-[var(--color-academia-gold)] transition-all">
+                <span className="inline-flex items-center gap-2 text-[var(--color-academia-charcoal)] font-serif font-bold text-base border-b border-[var(--color-academia-charcoal)] pb-0.5 group-hover:text-[var(--color-academia-gold)] group-hover:border-[var(--color-academia-gold)] transition-all">
                     Start Research Track <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </span>
             </div>
           </div>
         </div>
       )}
-      <div className="bg-white p-10 rounded-sm shadow-sm border border-stone-200 max-w-5xl mx-auto space-y-10">
-      <div className="flex justify-between items-center border-b border-stone-200 pb-6">
+      <div className="bg-white p-8 rounded-sm shadow-sm border border-stone-200 w-full space-y-8">
+      <div className="flex justify-between items-center border-b border-stone-200 pb-5">
         <div>
-            <h2 className="text-4xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.name}</h2>
-            <p className="text-stone-600 text-xl font-light mt-2">{data.headline}</p>
+            <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.name}</h2>
+            <p className="text-stone-600 text-lg font-light mt-2">{data.headline}</p>
         </div>
         <button onClick={onEdit} className="bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-2 rounded-sm hover:opacity-90 flex items-center gap-2 transition font-medium shadow-sm">
             <FiEdit2 /> Edit Profile
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left Column: Info */}
         <div className="space-y-8">
             <div className="bg-[var(--color-academia-cream)] rounded-sm border border-stone-200 overflow-hidden transition-all duration-300">
@@ -476,7 +476,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 bg-[var(--color-academia-cream)] p-8 rounded-sm border border-stone-200 max-w-5xl mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-8 bg-[var(--color-academia-cream)] p-8 rounded-sm border border-stone-200 w-full">
       <div className="flex justify-between items-center border-b border-[var(--color-academia-gold)] pb-4">
         <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">Complete Your Profile</h2>
         {formData.resume_url && <span className="text-green-700 font-serif flex items-center gap-2"><FiCheck /> CV Uploaded</span>}
