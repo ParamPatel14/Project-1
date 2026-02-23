@@ -66,14 +66,19 @@ const FounderCard = ({
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.5 }}
       transition={{ type: "spring", stiffness: 120, damping: 18 }}
-      className="group bg-white border border-stone-200 rounded-3xl shadow-lg/60 p-8 md:p-10 flex flex-col md:flex-row gap-6 md:gap-8 items-start relative overflow-hidden max-w-5xl mx-auto"
+      className="group bg-white border border-stone-200 rounded-3xl shadow-lg/60 p-6 md:p-10 flex flex-col md:flex-row gap-6 md:gap-10 items-start relative overflow-hidden w-full"
     >
       {!shouldReduceMotion && (
         <div className="pointer-events-none absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-[var(--color-academia-gold)]/10 blur-3xl" />
       )}
-      <div className="relative">
-        <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0 transform transition-transform duration-500 group-hover:scale-105">
-          <img src={photo} alt={name} className="w-full h-full object-cover" />
+      <div className="relative flex-shrink-0 flex items-center md:items-start justify-center md:justify-start md:w-40">
+        <div className="relative">
+          {!shouldReduceMotion && (
+            <div className="absolute -inset-2 rounded-full bg-[var(--color-academia-gold)]/18 blur-md" />
+          )}
+          <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border border-stone-200 shadow-md transform transition-transform duration-500 group-hover:scale-105">
+            <img src={photo} alt={name} className="w-full h-full object-cover" />
+          </div>
         </div>
         <button
           type="button"
