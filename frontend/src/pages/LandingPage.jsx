@@ -3,13 +3,10 @@ import { Link } from 'react-router-dom';
 import { FiArrowRight, FiSearch, FiUsers, FiAward } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import NetworkVisualization from '../components/NetworkVisualization';
-import founderPhoto from '../../founder_photo.jpeg';
-import coFounderPhoto from '../../co-founder.jpeg';
 
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] font-sans overflow-x-hidden">
-      {/* Navbar */}
       <nav className="fixed w-full top-0 z-50 bg-[var(--color-academia-cream)]/90 backdrop-blur-md border-b border-stone-200/50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -19,6 +16,13 @@ const LandingPage = () => {
             <span className="text-xl font-bold tracking-tight font-serif">Shaun Spherix Solutions LLP</span>
           </div>
           <div className="flex gap-6 items-center">
+            <Link
+              to="/about"
+              className="text-sm font-medium hover:text-[var(--color-academia-gold)] transition-colors relative group hidden sm:inline-block"
+            >
+              About
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--color-academia-gold)] transition-all group-hover:w-full"></span>
+            </Link>
             <Link to="/login" className="text-sm font-medium hover:text-[var(--color-academia-gold)] transition-colors relative group">
               Log In
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--color-academia-gold)] transition-all group-hover:w-full"></span>
@@ -119,11 +123,9 @@ const LandingPage = () => {
           </div>
         </div>
 
-        {/* Right Visualization + Founder */}
         <div className="lg:w-1/2 relative h-[50vh] lg:h-auto bg-[var(--color-academia-cream)] overflow-hidden flex flex-col">
           <div className="flex-1 relative">
             <NetworkVisualization />
-            {/* Gradient Overlay for seamless blend */}
             <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-academia-cream)] to-transparent w-16 pointer-events-none hidden lg:block"></div>
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-academia-cream)] to-transparent h-16 pointer-events-none lg:hidden"></div>
           </div>
@@ -173,63 +175,33 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Founder strip below feature cards, above footer */}
       <section className="px-8 pb-16 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-white border border-stone-200 rounded-sm shadow-sm px-8 py-8 grid grid-cols-1 sm:grid-cols-2 gap-8 items-start"
+          className="bg-white border border-stone-200 rounded-sm shadow-sm px-8 py-8 flex items-center justify-between gap-6 flex-col md:flex-row"
         >
-          <div className="flex items-start gap-6">
-            <div className="w-24 h-24 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0">
-              <img
-                src={founderPhoto}
-                alt="Founder: Dr. Sonia Maria D'Souza"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="space-y-2">
-              <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
-                Founded by
-              </p>
-              <p className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
-                Dr. Sonia Maria D&apos;Souza
-              </p>
-              <p className="text-sm text-stone-600">
-                Founder &amp; Director, Shaun Spherix Solutions LLP
-              </p>
-              <p className="text-sm text-stone-500 max-w-2xl">
-                Our platforms are built in collaboration with universities and industry mentors to make
-                serious research mentorship more accessible, transparent, and aligned with real-world impact.
-              </p>
-            </div>
+          <div className="space-y-2 max-w-xl">
+            <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
+              Behind the Platform
+            </p>
+            <p className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
+              Crafted by educators and mentors for serious academic journeys.
+            </p>
+            <p className="text-sm text-stone-500">
+              Shaun Spherix Solutions LLP is led by academics and operators who live inside
+              research ecosystems. Learn more about the studio, its founders, and the ethos
+              behind the platform.
+            </p>
           </div>
-
-          <div className="flex items-start gap-6">
-            <div className="w-24 h-24 rounded-full overflow-hidden border border-stone-200 shadow-md flex-shrink-0">
-              <img
-                src={coFounderPhoto}
-                alt="Co-Founder: Mr. Pradeep Kumar V"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="space-y-2">
-              <p className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--color-academia-gold)]">
-                Co-Founder
-              </p>
-              <p className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">
-                Mr. Pradeep Kumar V
-              </p>
-              <p className="text-sm text-stone-600">
-                Co-Founder, Shaun Spherix Solutions LLP
-              </p>
-              <p className="text-sm text-stone-500 max-w-2xl">
-                Driving operations and mentorship collaborations with industry partners and academic institutions.
-              </p>
-            </div>
-          </div>
+          <Link
+            to="/about"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-sm border border-[var(--color-academia-charcoal)] text-sm font-semibold text-[var(--color-academia-charcoal)] hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] transition-all"
+          >
+            Meet the Founders
+          </Link>
         </motion.div>
       </section>
 
