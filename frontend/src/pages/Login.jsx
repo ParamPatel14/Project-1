@@ -30,11 +30,11 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8000/auth/google";
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   const handleGithubLogin = () => {
-    window.location.href = "http://localhost:8000/auth/github";
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`;
   };
 
   return (

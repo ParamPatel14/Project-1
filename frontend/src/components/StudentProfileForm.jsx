@@ -18,7 +18,7 @@ const LANGUAGE_OPTIONS = ["English", "Hindi", "Telugu", "Tamil", "Marathi", "Kan
 const getResumeUrl = (url) => {
   if (!url) return "#";
   if (url.startsWith("http")) return url;
-  return `http://localhost:8000/${url}`;
+  return `${import.meta.env.VITE_API_URL}/${url}`;
 };
 
 const StudentProfileView = ({ data, onEdit }) => {

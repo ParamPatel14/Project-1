@@ -75,7 +75,7 @@ const AdminDashboard = () => {
   const getResumeUrl = (url) => {
     if (!url) return "#";
     if (url.startsWith("http")) return url;
-    return `http://localhost:8000/${url}`;
+    return `${import.meta.env.VITE_API_URL}/${url}`;
   };
 
   const tabs = [
