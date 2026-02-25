@@ -303,22 +303,6 @@ const BeehiveEventDetail = () => {
           </div>
 
           <div className="space-y-4">
-            <div className="rounded-sm bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] p-6 shadow-lg">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-academia-gold)] mb-3">
-                Location
-              </p>
-              <div className="flex items-start gap-3 text-sm">
-                <FiMapPin className="mt-1 w-4 h-4 text-[var(--color-academia-gold)]" />
-                <p className="leading-relaxed">
-                  63/2, Nelamangala Magadi road, Kadabagere, Byandahalli, Bengaluru, Karnataka
-                  562130
-                </p>
-              </div>
-              <div className="mt-4 flex items-center gap-3 text-xs text-stone-300">
-                <FiClock className="w-4 h-4" />
-                <span>Mon – Sat · 9:30 am – 6:00 pm (as per partner schedule)</span>
-              </div>
-            </div>
 
             <div className="rounded-sm bg-[var(--color-academia-gold)]/10 border border-[var(--color-academia-gold)]/40 p-5">
               <div className="flex items-start gap-3">
