@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from authlib.integrations.starlette_client import OAuth
 from fastapi.responses import RedirectResponse
+import os
 from app.db.database import get_db
 from app.db.models import User
 from app.core.security import hash_password, verify_password, create_access_token
@@ -74,14 +75,14 @@ def login(user_credentials: UserLogin, db: Session = Depends(get_db)):
 
 @router.get("/google")
 async def google_login(request: Request):
-    return await oauth.google.authorize_redirect(
-        request, "http://localhost:8000/auth/google/callback"
-    )
+    redirect_uri = os.getenv("BACKEND_URL", "http://localhost:8000").rstrip("/") + "/auth/google/callback"
+    return await oauth.google.authorize_redirect(request, redirect_uri)
 
 @router.get("/google/callback")
 async def google_callback(request: Request, db: Session = Depends(get_db)):
     try:
-        token = await oauth.google.authorize_access_token(request)
+        redirect_uri = os.getenv("BACKEND_URL", "http://localhost:8000").rstrip("/") + "/auth/google/callback"
+        token = await oauth.google.authorize_access_token(request, redirect_uri=redirect_uri)
     except Exception as e:
         # This catches OAuth errors like mismatching state
         print(f"Google OAuth Token Error: {e}")
@@ -124,7 +125,8 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
         role = user.role
         jwt_token = create_access_token({"sub": email, "role": role})
 
-        return RedirectResponse(f"http://localhost:5173/oauth?token={jwt_token}")
+        frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173").split(",")[0].strip().rstrip("/")
+        return RedirectResponse(f"{frontend_url}/oauth?token={jwt_token}")
     
     except Exception as e:
         print(f"Google Callback Processing Error: {e}")
@@ -134,14 +136,14 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
 
 @router.get("/github")
 async def github_login(request: Request):
-    return await oauth.github.authorize_redirect(
-        request, "http://localhost:8000/auth/github/callback"
-    )
+    redirect_uri = os.getenv("BACKEND_URL", "http://localhost:8000").rstrip("/") + "/auth/github/callback"
+    return await oauth.github.authorize_redirect(request, redirect_uri)
 
 @router.get("/github/callback")
 async def github_callback(request: Request, db: Session = Depends(get_db)):
     try:
-        token = await oauth.github.authorize_access_token(request)
+        redirect_uri = os.getenv("BACKEND_URL", "http://localhost:8000").rstrip("/") + "/auth/github/callback"
+        token = await oauth.github.authorize_access_token(request, redirect_uri=redirect_uri)
     except Exception as e:
         print(f"GitHub OAuth Token Error: {e}")
         raise HTTPException(status_code=400, detail=f"GitHub OAuth Error: {str(e)}")
@@ -189,7 +191,8 @@ async def github_callback(request: Request, db: Session = Depends(get_db)):
         role = user.role
         jwt_token = create_access_token({"sub": email, "role": role})
 
-        return RedirectResponse(f"http://localhost:5173/oauth?token={jwt_token}")
+        frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173").split(",")[0].strip().rstrip("/")
+        return RedirectResponse(f"{frontend_url}/oauth?token={jwt_token}")
 
     except Exception as e:
         print(f"GitHub Callback Processing Error: {e}")

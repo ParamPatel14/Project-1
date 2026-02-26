@@ -48,9 +48,19 @@ app.add_middleware(
     same_site="lax"    # Allows cookies to be sent in redirects
 )
 
+# Parse FRONTEND_URL with robust whitespace handling and slash stripping
+frontend_urls = [
+    url.strip().rstrip("/") 
+    for url in os.getenv("FRONTEND_URL", "http://localhost:5173,http://localhost:3000").split(",") 
+    if url.strip()
+]
+
+# Log allowed origins for debugging
+logger.info(f"CORS Allowed Origins: {frontend_urls}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("FRONTEND_URL", "http://localhost:5173,http://localhost:3000").split(","),
+    allow_origins=frontend_urls,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
