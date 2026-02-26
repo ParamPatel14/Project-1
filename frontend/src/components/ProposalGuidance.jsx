@@ -74,7 +74,7 @@ const ProposalGuidance = ({ mentorId, gap, onClose, mentorName }) => {
               <div className="flex bg-white rounded-sm p-1 shadow-sm border border-stone-200 mb-6">
                 <button
                   onClick={() => setActiveTab("direction")}
-                  className={`flex-1 py-3 px-4 rounded-sm text-sm font-medium transition-all flex items-center justify-center gap-2 font-serif ${
+                  className={`flex-1 py-3 px-2 md:px-4 rounded-sm text-xs md:text-sm font-medium transition-all flex items-center justify-center gap-2 font-serif ${
                     activeTab === "direction"
                       ? "bg-[var(--color-academia-charcoal)] text-[var(--color-academia-gold)] shadow-md"
                       : "text-stone-500 hover:bg-stone-100 hover:text-[var(--color-academia-charcoal)]"
@@ -84,7 +84,7 @@ const ProposalGuidance = ({ mentorId, gap, onClose, mentorName }) => {
                 </button>
                 <button
                   onClick={() => setActiveTab("talking")}
-                  className={`flex-1 py-3 px-4 rounded-sm text-sm font-medium transition-all flex items-center justify-center gap-2 font-serif ${
+                  className={`flex-1 py-3 px-2 md:px-4 rounded-sm text-xs md:text-sm font-medium transition-all flex items-center justify-center gap-2 font-serif ${
                     activeTab === "talking"
                       ? "bg-[var(--color-academia-charcoal)] text-[var(--color-academia-gold)] shadow-md"
                       : "text-stone-500 hover:bg-stone-100 hover:text-[var(--color-academia-charcoal)]"
@@ -94,7 +94,7 @@ const ProposalGuidance = ({ mentorId, gap, onClose, mentorName }) => {
                 </button>
                 <button
                   onClick={() => setActiveTab("readiness")}
-                  className={`flex-1 py-3 px-4 rounded-sm text-sm font-medium transition-all flex items-center justify-center gap-2 font-serif ${
+                  className={`flex-1 py-3 px-2 md:px-4 rounded-sm text-xs md:text-sm font-medium transition-all flex items-center justify-center gap-2 font-serif ${
                     activeTab === "readiness"
                       ? "bg-[var(--color-academia-charcoal)] text-[var(--color-academia-gold)] shadow-md"
                       : "text-stone-500 hover:bg-stone-100 hover:text-[var(--color-academia-charcoal)]"
@@ -187,9 +187,9 @@ const ProposalGuidance = ({ mentorId, gap, onClose, mentorName }) => {
                 {activeTab === "readiness" && (
                   <div className="space-y-6">
                     <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200">
-                      <div className="flex items-center justify-between mb-6">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                           <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)]">Feasibility Check</h3>
-                          <div className={`px-4 py-2 rounded-full font-bold text-lg flex items-center gap-2 border ${
+                          <div className={`px-4 py-2 rounded-full font-bold text-lg flex items-center gap-2 border w-full sm:w-auto justify-center sm:justify-start ${
                               guidance.readiness_check.score >= 70 ? 'bg-green-50 text-green-700 border-green-200' : 
                               guidance.readiness_check.score >= 40 ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-[var(--color-academia-gold)]' : 'bg-red-50 text-red-700 border-red-200'
                           }`}>

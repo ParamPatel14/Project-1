@@ -30,7 +30,7 @@ const AnalyticsDashboard = ({ title = "Platform Analytics" }) => {
   if (!data) return <div className="text-stone-500 italic p-4">No analytics data available</div>;
 
   const StatCard = ({ icon: Icon, title, mainValue, subLabel, secondaryValue, secondaryLabel }) => (
-    <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-[var(--color-academia-gold)] relative overflow-hidden group hover:shadow-md transition-all duration-300 h-full">
+    <div className="bg-[var(--color-academia-cream)] p-4 md:p-6 rounded-sm border border-[var(--color-academia-gold)] relative overflow-hidden group hover:shadow-md transition-all duration-300 h-full">
         <div className="absolute top-0 right-0 p-4 opacity-5 transform group-hover:scale-110 transition-transform duration-500">
             <Icon size={80} className="text-[var(--color-academia-charcoal)]" />
         </div>
@@ -57,12 +57,12 @@ const AnalyticsDashboard = ({ title = "Platform Analytics" }) => {
 
   return (
     <div className="mt-2">
-      <h2 className="text-2xl font-serif font-bold mb-8 text-[var(--color-academia-charcoal)] flex items-center">
+      <h2 className="text-xl md:text-2xl font-serif font-bold mb-8 text-[var(--color-academia-charcoal)] flex items-center">
         <span className="w-2 h-8 bg-[var(--color-academia-gold)] mr-3 rounded-sm"></span>
         {title}
       </h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {/* User Stats */}
         <StatCard 
             icon={FiUsers}

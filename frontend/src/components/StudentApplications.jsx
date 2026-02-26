@@ -150,16 +150,16 @@ const StudentApplications = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="p-6 md:p-8 border-b border-stone-100 flex justify-between items-start bg-[var(--color-academia-cream)]">
+            <div className="p-4 md:p-8 border-b border-stone-100 flex justify-between items-start bg-[var(--color-academia-cream)]">
               <div>
-                <h3 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">
+                <h3 className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">
                   {selectedApp.opportunity?.title || 'Application Details'}
                 </h3>
-                <div className="flex items-center gap-4 text-sm text-stone-500 font-mono">
+                <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-stone-500 font-mono">
                     <span className="flex items-center gap-1">
                         <FiHash /> ID: {selectedApp.id}
                     </span>
-                    <span>•</span>
+                    <span className="hidden md:inline">•</span>
                     <span>Applied: {new Date(selectedApp.created_at).toLocaleString()}</span>
                 </div>
               </div>
@@ -172,9 +172,9 @@ const StudentApplications = () => {
             </div>
 
             {/* Modal Content */}
-            <div className="p-6 md:p-8 space-y-6 md:space-y-10">
+            <div className="p-4 md:p-8 space-y-6 md:space-y-10">
               {/* Status Section */}
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 bg-white border border-stone-200 p-4 md:p-6 rounded-sm shadow-sm">
                 <div>
                     <p className="text-xs uppercase font-bold text-stone-500 mb-2 tracking-wider">Current Status</p>
                     <div className={`inline-flex items-center gap-3 px-4 py-2 rounded-sm text-base font-bold capitalize ${getStatusConfig(selectedApp.status).color}`}>
@@ -194,7 +194,7 @@ const StudentApplications = () => {
                     <FiFileText className="text-[var(--color-academia-gold)]" />
                     Cover Letter
                 </h4>
-                <div className="bg-stone-50 p-8 rounded-sm border-l-4 border-[var(--color-academia-charcoal)] text-stone-700 leading-relaxed whitespace-pre-wrap font-serif text-lg">
+                <div className="bg-stone-50 p-4 md:p-8 rounded-sm border-l-4 border-[var(--color-academia-charcoal)] text-stone-700 leading-relaxed whitespace-pre-wrap font-serif text-base md:text-lg">
                   {selectedApp.cover_letter}
                 </div>
               </div>
@@ -206,17 +206,17 @@ const StudentApplications = () => {
                         <FiTarget className="text-[var(--color-academia-gold)]" />
                         Opportunity Summary
                     </h4>
-                    <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-[var(--color-academia-gold)]/30">
+                    <div className="bg-[var(--color-academia-cream)] p-4 md:p-6 rounded-sm border border-[var(--color-academia-gold)]/30">
                         {selectedApp.opportunity.mentor && (
-                            <p className="text-stone-700 mb-3 flex items-center gap-2 text-lg">
+                            <p className="text-stone-700 mb-3 flex flex-wrap items-center gap-2 text-base md:text-lg">
                                 <span className="font-bold text-[var(--color-academia-charcoal)]">Mentor:</span> 
                                 <span className="bg-white px-3 py-1 rounded-sm text-sm border border-stone-200 font-serif">{selectedApp.opportunity.mentor.name}</span>
                             </p>
                         )}
-                        <p className="text-stone-700 mb-3 text-lg">
+                        <p className="text-stone-700 mb-3 text-base md:text-lg">
                             <span className="font-bold text-[var(--color-academia-charcoal)]">Type:</span> {selectedApp.opportunity.type}
                         </p>
-                         <p className="text-stone-700 leading-relaxed">
+                         <p className="text-stone-700 leading-relaxed text-base md:text-lg">
                             <span className="font-bold text-[var(--color-academia-charcoal)] block mb-1">Description:</span> {selectedApp.opportunity.description}
                         </p>
                     </div>
@@ -230,7 +230,7 @@ const StudentApplications = () => {
                         <FiBriefcase className="text-[var(--color-academia-gold)]" />
                         Research Curriculum
                     </h4>
-                    <div className="bg-green-50 p-8 rounded-sm border border-green-200 text-stone-800 leading-relaxed whitespace-pre-wrap text-lg">
+                    <div className="bg-green-50 p-4 md:p-8 rounded-sm border border-green-200 text-stone-800 leading-relaxed whitespace-pre-wrap text-base md:text-lg">
                         {selectedApp.opportunity.curriculum}
                     </div>
                  </div>
@@ -238,7 +238,7 @@ const StudentApplications = () => {
             </div>
             
             {/* Modal Footer */}
-            <div className="p-6 md:p-8 border-t border-stone-100 bg-stone-50 flex justify-end">
+            <div className="p-4 md:p-8 border-t border-stone-100 bg-stone-50 flex justify-end">
                 <button 
                     onClick={() => setSelectedApp(null)}
                     className="px-8 py-3 bg-white border border-stone-300 text-[var(--color-academia-charcoal)] font-bold rounded-sm hover:bg-stone-50 transition shadow-sm uppercase tracking-wide text-sm"

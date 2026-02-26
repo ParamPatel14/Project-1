@@ -216,8 +216,8 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
   return (
     <div className="bg-white rounded-sm shadow-xl border border-stone-200 overflow-hidden font-sans relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--color-academia-charcoal)] via-[var(--color-academia-gold)] to-[var(--color-academia-charcoal)]"></div>
-      <div className="bg-stone-50 p-8 border-b border-stone-200">
-          <h2 className="text-3xl font-serif font-bold flex items-center gap-3 tracking-wide text-[var(--color-academia-charcoal)]">
+      <div className="bg-stone-50 p-4 md:p-8 border-b border-stone-200">
+          <h2 className="text-2xl md:text-3xl font-serif font-bold flex items-center gap-3 tracking-wide text-[var(--color-academia-charcoal)]">
               <div className="p-2 bg-[var(--color-academia-charcoal)] rounded-sm text-[var(--color-academia-gold)] shadow-md">
                 <FiZap size={24} />
               </div>
@@ -226,7 +226,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
           <p className="text-stone-500 mt-2 text-lg pl-14">Create an exciting role for students to apply to.</p>
       </div>
       
-      <div className="p-8">
+      <div className="p-4 md:p-8">
         {error && (
             <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-sm mb-6 flex items-start gap-3">
                 <FiX className="mt-1 flex-shrink-0" />

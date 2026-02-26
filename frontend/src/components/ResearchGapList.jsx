@@ -148,7 +148,7 @@ const ResearchGapList = ({ mentorId, studentId, mentorName }) => {
 
   return (
     <div className="space-y-6 mt-2">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="bg-[var(--color-academia-charcoal)] p-2 rounded-sm shadow-sm text-[var(--color-academia-gold)] border border-[var(--color-academia-gold)]">
             <FaLightbulb className="text-xl" />
@@ -160,7 +160,7 @@ const ResearchGapList = ({ mentorId, studentId, mentorName }) => {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
           <div className="text-right hidden sm:block">
             <div className="text-sm font-bold text-[var(--color-academia-charcoal)]">{gaps.length} Potential Directions</div>
             <div className="text-xs text-stone-400">Personalized for your profile</div>

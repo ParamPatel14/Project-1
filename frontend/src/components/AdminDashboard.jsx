@@ -99,13 +99,13 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-8 animate-fade-in pb-12">
       {/* Header Card */}
-      <div className="bg-[var(--color-academia-charcoal)] p-8 rounded-sm shadow-xl border border-[var(--color-academia-gold)] relative overflow-hidden group">
+      <div className="bg-[var(--color-academia-charcoal)] p-6 md:p-8 rounded-sm shadow-xl border border-[var(--color-academia-gold)] relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-academia-gold)] rounded-full opacity-10 blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-[var(--color-academia-cream)] rounded-full opacity-5 blur-2xl transform -translate-x-1/3 translate-y-1/3"></div>
         
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-cream)] flex items-center mb-2">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-cream)] flex items-center mb-2">
               <FiShield className="mr-3 text-[var(--color-academia-gold)]" /> Admin Portal
             </h2>
             <p className="text-[var(--color-academia-gold)] font-light text-lg tracking-wide opacity-90">Platform Management & Intelligence Center</p>
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  relative group flex items-center px-6 py-3 font-serif font-bold text-sm rounded-sm transition-all duration-300
+                  relative group flex items-center px-4 py-2 md:px-6 md:py-3 font-serif font-bold text-sm rounded-sm transition-all duration-300
                   ${activeTab === tab.id
                     ? 'text-[var(--color-academia-charcoal)]'
                     : 'text-stone-500 hover:text-[var(--color-academia-charcoal)] hover:bg-stone-50'
@@ -320,17 +320,17 @@ const AdminDashboard = () => {
                     <table className="min-w-full divide-y divide-stone-200">
                       <thead className="bg-[var(--color-academia-cream)]">
                         <tr>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Name</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">University</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Major</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Readiness</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Name</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">University</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Major</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Readiness</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-stone-100">
                         {filterData(students).map((student) => (
                           <tr key={student.id} className="hover:bg-stone-50 transition-colors group">
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                     <div className="h-8 w-8 rounded-full bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] flex items-center justify-center font-serif font-bold mr-3">
                                         {student.name ? student.name.charAt(0).toUpperCase() : 'S'}
@@ -341,9 +341,9 @@ const AdminDashboard = () => {
                                     </div>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.university || "-"}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.major || "-"}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.university || "-"}</td>
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.major || "-"}</td>
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">
                               {student.student_profile?.readiness_score ? (
                                 <div className="flex items-center gap-2">
                                     <div className="w-16 bg-stone-200 rounded-full h-1.5 overflow-hidden">

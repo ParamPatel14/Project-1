@@ -150,7 +150,7 @@ const OpportunityList = ({ initialFilters = {} }) => {
 
                 <div className="p-6 flex-grow">
                   {/* Header: Type & Status */}
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex flex-wrap justify-between items-start gap-2 mb-4">
                     <span className={`px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider border ${getTypeColor(opp.type)}`}>
                       {opp.type.replace(/_/g, ' ')}
                     </span>
@@ -188,7 +188,7 @@ const OpportunityList = ({ initialFilters = {} }) => {
                 </div>
                 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-stone-100 bg-stone-50/50 flex justify-between items-center group-hover:bg-[var(--color-academia-cream)]/30 transition-colors">
+                <div className="px-6 py-4 border-t border-stone-100 bg-stone-50/50 flex flex-wrap justify-between items-center gap-2 group-hover:bg-[var(--color-academia-cream)]/30 transition-colors">
                   {opp.deadline ? (
                     <div className="flex items-center text-stone-500 text-xs font-medium">
                       {opp.type === 'industrial_visit' || opp.type === 'beehive_event' ? (
