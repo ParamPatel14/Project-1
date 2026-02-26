@@ -321,10 +321,10 @@ const AdminDashboard = () => {
                       <thead className="bg-[var(--color-academia-cream)]">
                         <tr>
                           <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Name</th>
-                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">University</th>
-                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Major</th>
-                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Readiness</th>
-                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
+                          <th className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">University</th>
+                          <th className="hidden lg:table-cell px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Major</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider text-center">Readiness</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-right text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-stone-100">
@@ -332,19 +332,217 @@ const AdminDashboard = () => {
                           <tr key={student.id} className="hover:bg-stone-50 transition-colors group">
                             <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
                                 <div className="flex items-center">
-                                    <div className="h-8 w-8 rounded-full bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] flex items-center justify-center font-serif font-bold mr-3">
+                                    <div className="h-8 w-8 rounded-full bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] flex items-center justify-center font-serif font-bold mr-3 flex-shrink-0">
                                         {student.name ? student.name.charAt(0).toUpperCase() : 'S'}
                                     </div>
-                                    <div>
-                                        <div className="text-sm font-bold text-[var(--color-academia-charcoal)]">{student.name || "N/A"}</div>
-                                        <div className="text-xs text-stone-500">{student.email}</div>
+                                    <div className="min-w-0">
+                                        <div className="text-sm font-bold text-[var(--color-academia-charcoal)] truncate">{student.name || "N/A"}</div>
+                                        <div className="text-xs text-stone-500 truncate">{student.email}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.university || "-"}</td>
-                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.major || "-"}</td>
-                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">
+                            <td className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.university || "-"}</td>
+                            <td className="hidden lg:table-cell px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">{student.student_profile?.major || "-"}</td>
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600 text-center">
                               {student.student_profile?.readiness_score ? (
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[var(--color-academia-cream)] text-[var(--color-academia-gold)] border border-[var(--color-academia-gold)]">
+                                  {student.student_profile.readiness_score}%
+                                </span>
+                              ) : (
+                                <span className="text-stone-300">N/A</span>
+                              )}
+                            </td>
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <button
+                                onClick={() => handleViewProfile(student)}
+                                className="text-[var(--color-academia-gold)] hover:text-stone-800 transition-colors flex items-center justify-end gap-1 ml-auto group/btn"
+                              >
+                                <span className="hidden sm:inline">View</span>
+                                <FiExternalLink className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* MENTORS TAB */}
+              {activeTab === 'mentors' && (
+                <div className="bg-white rounded-sm shadow-sm border border-stone-200 overflow-hidden">
+                  <div className="p-4 border-b border-stone-200 flex justify-between items-center bg-stone-50">
+                    <div className="relative max-w-md w-full">
+                        <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
+                        <input 
+                            type="text" 
+                            placeholder="Search mentors..." 
+                            className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-sm focus:outline-none focus:border-[var(--color-academia-gold)] font-serif"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-stone-200">
+                      <thead className="bg-[var(--color-academia-cream)]">
+                        <tr>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Mentor</th>
+                          <th className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Institution</th>
+                          <th className="hidden lg:table-cell px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Role</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-right text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-stone-100">
+                        {filterData(mentors).map((mentor) => (
+                          <tr key={mentor.id} className="hover:bg-stone-50 transition-colors group">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="h-8 w-8 rounded-full bg-[var(--color-academia-gold)] text-white flex items-center justify-center font-serif font-bold mr-3 flex-shrink-0">
+                                  {mentor.name ? mentor.name.charAt(0).toUpperCase() : 'M'}
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="text-sm font-bold text-[var(--color-academia-charcoal)] truncate">{mentor.name}</div>
+                                  <div className="text-xs text-stone-500 truncate">{mentor.email}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">{mentor.mentor_profile?.university || mentor.mentor_profile?.company || "-"}</td>
+                            <td className="hidden lg:table-cell px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600 font-medium italic">{mentor.mentor_profile?.position || "-"}</td>
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <button className="text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] transition-colors">
+                                <FiExternalLink />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* INTERNSHIPS TAB */}
+              {activeTab === 'internships' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)]">Active Opportunities</h3>
+                    <button 
+                      onClick={() => setShowOppModal(true)}
+                      className="w-full sm:w-auto flex items-center justify-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-3 rounded-sm hover:bg-black transition-all shadow-md hover:shadow-lg font-bold text-sm border border-transparent hover:border-[var(--color-academia-gold)] group"
+                    >
+                      <FiPlus className="mr-2 text-[var(--color-academia-gold)] group-hover:rotate-90 transition-transform" /> Add New Opportunity
+                    </button>
+                  </div>
+                  
+                  <div className="bg-white rounded-sm shadow-sm border border-stone-200 overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-stone-200">
+                        <thead className="bg-[var(--color-academia-cream)]">
+                          <tr>
+                            <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Title</th>
+                            <th className="hidden sm:table-cell px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Type</th>
+                            <th className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Slots</th>
+                            <th className="px-4 py-3 md:px-6 md:py-4 text-right text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-stone-100">
+                          {opportunities.map((opp) => (
+                            <tr key={opp.id} className="hover:bg-stone-50 transition-colors">
+                              <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
+                                <div className="text-sm font-bold text-[var(--color-academia-charcoal)]">{opp.title}</div>
+                                <div className="text-xs text-stone-500 sm:hidden capitalize">{opp.type.replace('_', ' ')}</div>
+                              </td>
+                              <td className="hidden sm:table-cell px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
+                                <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                                  opp.type === 'beehive' 
+                                    ? 'bg-amber-50 text-amber-700 border-amber-200' 
+                                    : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                                }`}>
+                                  {opp.type}
+                                </span>
+                              </td>
+                              <td className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">
+                                {opp.total_slots || 0} slots
+                              </td>
+                              <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button className="text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] transition-colors">
+                                  <FiExternalLink />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* APPLICATIONS TAB */}
+              {activeTab === 'applications' && (
+                <div className="bg-white rounded-sm shadow-sm border border-stone-200 overflow-hidden">
+                  <div className="p-4 border-b border-stone-200 bg-stone-50">
+                    <div className="relative max-w-md w-full">
+                        <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" />
+                        <input 
+                            type="text" 
+                            placeholder="Search applications..." 
+                            className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-sm focus:outline-none focus:border-[var(--color-academia-gold)] font-serif"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-stone-200">
+                      <thead className="bg-[var(--color-academia-cream)]">
+                        <tr>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Applicant</th>
+                          <th className="hidden sm:table-cell px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Opportunity</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Status</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-right text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">CV</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-stone-100">
+                        {filterData(applications, 'student.name').map((app) => (
+                          <tr key={app.id} className="hover:bg-stone-50 transition-colors">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
+                              <div className="text-sm font-bold text-[var(--color-academia-charcoal)]">{app.student?.name}</div>
+                              <div className="text-xs text-stone-500 sm:hidden truncate max-w-[150px]">{app.opportunity?.title}</div>
+                            </td>
+                            <td className="hidden sm:table-cell px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600 truncate max-w-[200px]">
+                              {app.opportunity?.title}
+                            </td>
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
+                              <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                                app.status === 'accepted' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                                app.status === 'rejected' ? 'bg-rose-50 text-rose-700 border-rose-200' :
+                                'bg-stone-50 text-stone-600 border-stone-200'
+                              }`}>
+                                {app.status}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-right text-sm font-medium">
+                              {app.resume_url ? (
+                                <a 
+                                  href={getResumeUrl(app.resume_url)} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-[var(--color-academia-gold)] hover:text-stone-800 transition-colors inline-block p-1"
+                                >
+                                  <FiDownload />
+                                </a>
+                              ) : (
+                                <span className="text-stone-300">-</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
                                 <div className="flex items-center gap-2">
                                     <div className="w-16 bg-stone-200 rounded-full h-1.5 overflow-hidden">
                                         <div className="bg-[var(--color-academia-gold)] h-full" style={{ width: `${student.student_profile.readiness_score}%` }}></div>

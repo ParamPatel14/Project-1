@@ -17,15 +17,15 @@ const RealWorldDashboard = () => {
     <div className="bg-[var(--color-academia-cream)] min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">Real World Projects & Events</h1>
-          <p className="mt-2 text-lg font-light text-stone-600">
+          <h1 className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">Real World Projects & Events</h1>
+          <p className="mt-2 text-base md:text-lg font-light text-stone-600">
             Connect with industry, join visits, and participate in intensive mentorship weekends.
           </p>
         </div>
 
         {/* Tabs */}
         <div className="border-b border-stone-200 mb-8 overflow-x-auto scrollbar-hide">
-          <nav className="-mb-px flex space-x-8 min-w-max px-1" aria-label="Tabs">
+          <nav className="-mb-px flex space-x-4 md:space-x-8 min-w-max px-1" aria-label="Tabs">
             {tabs.map((tab) => (
               <button
                 key={tab.id}

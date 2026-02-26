@@ -64,7 +64,7 @@ const StudentApplications = () => {
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-sm shadow-md border-t-4 border-[var(--color-academia-charcoal)] p-16 text-center"
+            className="bg-white rounded-sm shadow-md border-t-4 border-[var(--color-academia-charcoal)] p-8 md:p-16 text-center"
         >
           <div className="w-24 h-24 bg-[var(--color-academia-cream)] rounded-full flex items-center justify-center mx-auto mb-8 border border-[var(--color-academia-gold)]">
             <FiFileText size={40} className="text-[var(--color-academia-charcoal)]" />
@@ -73,7 +73,7 @@ const StudentApplications = () => {
           <p className="text-stone-500 mb-8 max-w-md mx-auto text-lg leading-relaxed">
             You haven't submitted any research proposals yet. Identify gaps in current research and apply to align with a mentor.
           </p>
-          <a href="/opportunities" className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-sm text-[var(--color-academia-cream)] bg-[var(--color-academia-charcoal)] hover:bg-stone-800 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+          <a href="/opportunities" className="inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-4 border border-transparent text-lg font-bold rounded-sm text-[var(--color-academia-cream)] bg-[var(--color-academia-charcoal)] hover:bg-stone-800 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
             Browse Research Opportunities
           </a>
         </motion.div>
@@ -93,7 +93,7 @@ const StudentApplications = () => {
                 className="bg-white rounded-sm shadow-sm border border-stone-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group flex flex-col h-full hover:border-[var(--color-academia-gold)]"
               >
                 {/* Card Header */}
-                <div className="p-8 pb-6 flex-grow">
+                <div className="p-6 md:p-8 md:pb-6 flex-grow">
                   <div className="flex justify-between items-start mb-6">
                     <span className={`px-4 py-1.5 rounded-sm text-xs font-bold uppercase tracking-wider flex items-center gap-2 ${statusConfig.color}`}>
                       {statusConfig.icon}
@@ -125,7 +125,7 @@ const StudentApplications = () => {
                 </div>
 
                 {/* Card Footer */}
-                <div className="px-8 py-5 bg-[var(--color-academia-cream)] border-t border-stone-100 flex items-center justify-between text-sm">
+                <div className="px-6 py-4 md:px-8 md:py-5 bg-[var(--color-academia-cream)] border-t border-stone-100 flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2 text-[var(--color-academia-charcoal)]">
                         <FiTarget className="text-[var(--color-academia-gold)]" />
                         <span className="font-bold">Match: {Math.round(app.match_score)}%</span>
