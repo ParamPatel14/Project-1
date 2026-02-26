@@ -81,13 +81,13 @@ const MentorApplications = () => {
     <div className="bg-stone-50 min-h-screen p-8 font-sans text-stone-800">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10 border-b border-[var(--color-academia-gold)] pb-6">
-          <h1 className="text-4xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-2">Talent Identification</h1>
+          <h1 className="text-3xl md:text-4xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-2">Talent Identification</h1>
           <p className="text-stone-600 max-w-2xl text-lg">Review and align with high-potential candidates for your research opportunities.</p>
         </header>
 
         {/* Controls */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 justify-center md:justify-start">
             {['all', 'pending', 'reviewing', 'accepted', 'rejected'].map(status => (
               <button
                 key={status}

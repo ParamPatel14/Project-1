@@ -207,7 +207,7 @@ const ResearchGapList = ({ mentorId, studentId, mentorName }) => {
                   </div>
                   
                   {/* Feasibility Circle */}
-                  <div className="flex flex-col items-center group/circle cursor-help" title={`Feasibility Score: ${gap.feasibility_score}% - Based on your skills and topic complexity`}>
+                  <div className="flex flex-col items-center group/circle cursor-help flex-shrink-0" title={`Feasibility Score: ${gap.feasibility_score}% - Based on your skills and topic complexity`}>
                     <div className="relative w-14 h-14 flex items-center justify-center transform group-hover/circle:scale-110 transition-transform">
                       <svg className="w-full h-full transform -rotate-90">
                         <circle cx="28" cy="28" r="24" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-stone-200" />

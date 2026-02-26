@@ -1,24 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiSearch, FiUsers, FiAward } from 'react-icons/fi';
+import { FiArrowRight, FiSearch, FiUsers, FiAward, FiMenu, FiX } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import NetworkVisualization from '../components/NetworkVisualization';
 
 const LandingPage = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] font-sans overflow-x-hidden">
       <nav className="fixed w-full top-0 z-50 bg-[var(--color-academia-cream)]/90 backdrop-blur-md border-b border-stone-200/50">
-        <div className="px-6 h-20 flex items-center">
+        <div className="px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[var(--color-academia-charcoal)] rounded-sm flex items-center justify-center text-[var(--color-academia-cream)] font-serif font-bold text-xl shadow-lg">
               R
             </div>
             <span className="text-xl font-bold tracking-tight font-serif">Shaun Spherix Solutions LLP</span>
           </div>
-          <div className="ml-auto flex gap-6 items-center">
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex gap-6 items-center">
             <Link
               to="/about"
-              className="text-sm font-medium hover:text-[var(--color-academia-gold)] transition-colors relative group hidden sm:inline-block"
+              className="text-sm font-medium hover:text-[var(--color-academia-gold)] transition-colors relative group"
             >
               About
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--color-academia-gold)] transition-all group-hover:w-full"></span>
@@ -31,7 +35,42 @@ const LandingPage = () => {
               Join the Network
             </Link>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-[var(--color-academia-charcoal)] focus:outline-none"
+          >
+            {isMobileMenuOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
+          </button>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-20 left-0 w-full bg-[var(--color-academia-cream)] border-b border-stone-200 shadow-lg z-40 p-6 flex flex-col gap-4 animate-fade-in">
+             <Link 
+               to="/about" 
+               className="text-lg font-medium text-[var(--color-academia-charcoal)] py-2 border-b border-stone-100"
+               onClick={() => setIsMobileMenuOpen(false)}
+             >
+               About
+             </Link>
+             <Link 
+               to="/login" 
+               className="text-lg font-medium text-[var(--color-academia-charcoal)] py-2 border-b border-stone-100"
+               onClick={() => setIsMobileMenuOpen(false)}
+             >
+               Log In
+             </Link>
+             <Link 
+               to="/register" 
+               className="text-lg font-medium text-[var(--color-academia-gold-hover)] py-2 font-serif"
+               onClick={() => setIsMobileMenuOpen(false)}
+             >
+               Join the Network →
+             </Link>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}

@@ -50,12 +50,12 @@ const StudentApplications = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 bg-[var(--color-academia-cream)] min-h-screen">
-      <div className="flex items-center justify-between mb-12">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-4 md:gap-0">
         <div>
-          <h2 className="text-4xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">My Applications</h2>
-          <p className="text-stone-500 font-serif text-lg">Track the status of your research proposals and internships</p>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">My Applications</h2>
+          <p className="text-stone-500 font-serif text-base md:text-lg">Track the status of your research proposals and internships</p>
         </div>
-        <div className="bg-white px-6 py-3 rounded-sm shadow-sm border border-[var(--color-academia-gold)] text-sm font-bold text-[var(--color-academia-charcoal)]">
+        <div className="w-full md:w-auto bg-white px-6 py-3 rounded-sm shadow-sm border border-[var(--color-academia-gold)] text-sm font-bold text-[var(--color-academia-charcoal)] text-center md:text-left">
           Total Applications: <span className="text-[var(--color-academia-gold)] text-lg ml-2">{applications.length}</span>
         </div>
       </div>
@@ -146,11 +146,11 @@ const StudentApplications = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-sm shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border-t-4 border-[var(--color-academia-gold)]"
+            className="bg-white rounded-sm shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border-t-4 border-[var(--color-academia-gold)] mx-4 md:mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="p-8 border-b border-stone-100 flex justify-between items-start bg-[var(--color-academia-cream)]">
+            <div className="p-6 md:p-8 border-b border-stone-100 flex justify-between items-start bg-[var(--color-academia-cream)]">
               <div>
                 <h3 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">
                   {selectedApp.opportunity?.title || 'Application Details'}
@@ -172,9 +172,9 @@ const StudentApplications = () => {
             </div>
 
             {/* Modal Content */}
-            <div className="p-8 space-y-10">
+            <div className="p-6 md:p-8 space-y-6 md:space-y-10">
               {/* Status Section */}
-              <div className="flex items-center justify-between bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
                 <div>
                     <p className="text-xs uppercase font-bold text-stone-500 mb-2 tracking-wider">Current Status</p>
                     <div className={`inline-flex items-center gap-3 px-4 py-2 rounded-sm text-base font-bold capitalize ${getStatusConfig(selectedApp.status).color}`}>
@@ -182,7 +182,7 @@ const StudentApplications = () => {
                         {selectedApp.status}
                     </div>
                 </div>
-                <div className="text-right">
+                <div className="text-left md:text-right w-full md:w-auto">
                     <p className="text-xs uppercase font-bold text-stone-500 mb-2 tracking-wider">Alignment Score</p>
                     <div className="text-4xl font-serif font-bold text-[var(--color-academia-charcoal)]">{Math.round(selectedApp.match_score)}%</div>
                 </div>
@@ -238,7 +238,7 @@ const StudentApplications = () => {
             </div>
             
             {/* Modal Footer */}
-            <div className="p-8 border-t border-stone-100 bg-stone-50 flex justify-end">
+            <div className="p-6 md:p-8 border-t border-stone-100 bg-stone-50 flex justify-end">
                 <button 
                     onClick={() => setSelectedApp(null)}
                     className="px-8 py-3 bg-white border border-stone-300 text-[var(--color-academia-charcoal)] font-bold rounded-sm hover:bg-stone-50 transition shadow-sm uppercase tracking-wide text-sm"

@@ -101,7 +101,7 @@ const SavedResearchGapList = () => {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
           <FiBookmark className="text-indigo-600" /> Saved Research Gaps
         </h2>
@@ -181,19 +181,19 @@ const SavedResearchGapList = () => {
                  </div>
               </div>
 
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-4 border-t border-gray-100 gap-4">
                  <button 
                     onClick={() => handleExplore(gap.title)}
-                    className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 hover:underline"
+                    className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 hover:underline w-full sm:w-auto justify-center sm:justify-start"
                  >
                     <FiSearch /> Explore on Google Scholar
                  </button>
                  
-                 <div className="flex gap-2">
+                 <div className="flex gap-2 w-full sm:w-auto">
                     <button 
                       onClick={() => handleDelete(gap.id)}
                       disabled={deletingId === gap.id}
-                      className="px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100 flex items-center gap-1"
+                      className="flex-1 sm:flex-none justify-center px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100 flex items-center gap-1"
                     >
                        {deletingId === gap.id ? (
                          <div className="animate-spin h-3 w-3 border-2 border-red-600 rounded-full border-t-transparent"></div>
@@ -203,7 +203,7 @@ const SavedResearchGapList = () => {
                     </button>
                     <button 
                       onClick={() => setSelectedGap(gap)}
-                      className="px-3 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm flex items-center gap-2"
+                      className="flex-1 sm:flex-none justify-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm flex items-center gap-2"
                     >
                        <FaRobot /> Plan Proposal
                     </button>

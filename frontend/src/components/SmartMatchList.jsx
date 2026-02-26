@@ -124,7 +124,7 @@ const SmartMatchList = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header & Tabs */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
             <h2 className="text-2xl font-bold font-serif text-[var(--color-academia-charcoal)] flex items-center gap-2">
                 <FiCpu className="text-[var(--color-academia-gold)]" /> Research Intelligence
@@ -132,10 +132,10 @@ const SmartMatchList = () => {
             <p className="text-stone-500 mt-1">AI-powered matching and research gap discovery.</p>
         </div>
         
-        <div className="flex bg-stone-100 p-1 rounded-sm">
+        <div className="flex bg-stone-100 p-1 rounded-sm w-full md:w-auto overflow-x-auto">
           <button
             onClick={() => setActiveTab("matches")}
-            className={`px-4 py-2 rounded-sm text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`flex-1 md:flex-none px-4 py-2 rounded-sm text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
               activeTab === "matches" 
                 ? "bg-white text-[var(--color-academia-charcoal)] shadow-sm border border-stone-200" 
                 : "text-stone-500 hover:text-[var(--color-academia-charcoal)]"
@@ -150,7 +150,7 @@ const SmartMatchList = () => {
           </button>
           <button
             onClick={() => setActiveTab("saved")}
-            className={`px-4 py-2 rounded-sm text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`flex-1 md:flex-none px-4 py-2 rounded-sm text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
               activeTab === "saved" 
                 ? "bg-white text-[var(--color-academia-charcoal)] shadow-sm border border-stone-200" 
                 : "text-stone-500 hover:text-[var(--color-academia-charcoal)]"
@@ -280,10 +280,10 @@ const SmartMatchList = () => {
                           </div>
                       </div>
 
-                      <div className="flex items-center justify-end gap-3 mt-2 pt-4 border-t border-stone-100">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 mt-2 pt-4 border-t border-stone-100">
                           <button 
                               onClick={() => toggleGaps(match.mentor_id)}
-                              className={`text-sm font-medium px-4 py-2 rounded-sm flex items-center gap-2 transition-all border ${
+                              className={`text-sm font-medium px-4 py-2 rounded-sm flex items-center justify-center gap-2 transition-all border ${
                                   expandedMentorId === match.mentor_id 
                                       ? "bg-[var(--color-academia-charcoal)] text-white border-[var(--color-academia-charcoal)]" 
                                       : "bg-white border-stone-300 text-stone-600 hover:text-[var(--color-academia-charcoal)] hover:bg-[var(--color-academia-cream)]"
@@ -292,12 +292,12 @@ const SmartMatchList = () => {
                               <FaLightbulb className={expandedMentorId === match.mentor_id ? "text-[var(--color-academia-gold)]" : ""} />
                               {expandedMentorId === match.mentor_id ? "Hide Gaps" : "Discover Gaps"}
                           </button>
-                          <button className="text-stone-500 hover:text-[var(--color-academia-charcoal)] text-sm font-medium px-4 py-2">
+                          <button className="text-stone-500 hover:text-[var(--color-academia-charcoal)] text-sm font-medium px-4 py-2 flex items-center justify-center">
                               View Profile
                           </button>
                           <button 
                             onClick={() => handleApplyClick(match)}
-                            className="bg-[var(--color-academia-charcoal)] hover:bg-[#2c3e50] text-white px-5 py-2 rounded-sm text-sm font-bold flex items-center gap-2 transition-colors shadow-sm hover:shadow hover:-translate-y-0.5"
+                            className="bg-[var(--color-academia-charcoal)] hover:bg-[#2c3e50] text-white px-5 py-2 rounded-sm text-sm font-bold flex items-center justify-center gap-2 transition-colors shadow-sm hover:shadow hover:-translate-y-0.5"
                           >
                               Connect <FiArrowRight />
                           </button>

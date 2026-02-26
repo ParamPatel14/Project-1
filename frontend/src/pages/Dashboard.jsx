@@ -14,7 +14,7 @@ import SmartMatchList from "../components/SmartMatchList";
 import RealWorldDashboard from "../components/RealWorldDashboard";
 import ErrorBoundary from "../components/ErrorBoundary";
 import CubeLoader from "../components/ui/CubeLoader";
-import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase, FiCpu, FiGlobe } from "react-icons/fi";
+import { FiLogOut, FiActivity, FiBook, FiUser, FiPlusCircle, FiList, FiBriefcase, FiCpu, FiGlobe, FiMenu, FiX } from "react-icons/fi";
 
 const Dashboard = () => {
   const { user, logout, loading: authLoading, refreshUser } = useAuth();
@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [completeness, setCompleteness] = useState({ score: 0, role: "" });
   const [loading, setLoading] = useState(true);
   const [selectedRole, setSelectedRole] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Mentor Tabs: 'profile', 'post-opp', 'applications'
   // Student Tabs: 'profile', 'browse', 'applications'
@@ -78,20 +79,21 @@ const Dashboard = () => {
     <div className="min-h-screen bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)]">
       {/* Navbar */}
       <nav className="bg-[var(--color-academia-cream)]/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-stone-200">
-        <div className="px-6 h-16 flex items-center justify-between">
+        <div className="px-4 md:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center">
-            <h1 className="text-lg md:text-xl leading-tight font-serif font-bold text-[var(--color-academia-charcoal)]">
+            <h1 className="text-lg md:text-xl leading-tight font-serif font-bold text-[var(--color-academia-charcoal)] truncate max-w-[200px] md:max-w-none">
               Shaun Spherix
             </h1>
             {/* Role Badge */}
             {displayRole && displayRole !== 'user' && (
-              <span className="ml-3 px-2 py-1 rounded-sm text-xs font-semibold bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] capitalize tracking-wide">
+              <span className="hidden md:inline-block ml-3 px-2 py-1 rounded-sm text-xs font-semibold bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] capitalize tracking-wide">
                 {displayRole} Portal
               </span>
             )}
           </div>
-          <div className="flex items-center space-x-4">
-              {/* Tabs Navigation */}
+          
+          <div className="flex items-center gap-2 md:gap-4">
+              {/* Desktop Tabs Navigation */}
               {displayRole === "student" && (
                 <div className="hidden lg:flex space-x-1 mr-2 overflow-x-auto">
                   {[
@@ -143,15 +145,99 @@ const Dashboard = () => {
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-[var(--color-academia-charcoal)]">{currentUser?.name}</p>
               </div>
+              
               <button
                 onClick={logout}
-                className="p-2 rounded-full text-stone-400 hover:text-[var(--color-academia-gold)] hover:bg-stone-100 transition-colors"
+                className="p-2 rounded-full text-stone-400 hover:text-[var(--color-academia-gold)] hover:bg-stone-100 transition-colors hidden sm:block"
                 title="Logout"
               >
                 <FiLogOut className="h-6 w-6" />
               </button>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 text-[var(--color-academia-charcoal)] focus:outline-none"
+              >
+                {isMobileMenuOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
+              </button>
             </div>
           </div>
+
+          {/* Mobile Menu Overlay */}
+          {isMobileMenuOpen && (
+            <div className="lg:hidden absolute top-16 left-0 w-full bg-[var(--color-academia-cream)] border-b border-stone-200 shadow-lg z-40 p-4 flex flex-col gap-4 animate-fade-in">
+               <div className="flex items-center justify-between border-b border-stone-200 pb-2 mb-2">
+                  <span className="font-serif font-bold text-[var(--color-academia-charcoal)]">Menu</span>
+                  <span className="text-xs text-stone-500">{currentUser?.name}</span>
+               </div>
+               
+               {displayRole === "student" && (
+                  <div className="flex flex-col gap-2">
+                    {[
+                      { id: 'profile', label: 'Profile', icon: FiUser },
+                      { id: 'smart-match', label: 'Smart Match', icon: FiCpu },
+                      { id: 'browse', label: 'Browse Opportunities', icon: FiList },
+                      { id: 'applications', label: 'My Applications', icon: FiBriefcase },
+                      { id: 'real-world', label: 'Real World Opportunities', icon: FiGlobe }
+                    ].map(tab => (
+                      <button
+                        key={tab.id}
+                        onClick={() => {
+                          setActiveTab(tab.id);
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-4 py-3 rounded-sm text-sm font-medium transition-all flex items-center gap-3 ${
+                          activeTab === tab.id 
+                            ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)]' 
+                            : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-100'
+                        }`}
+                      >
+                        {tab.icon && <tab.icon className={activeTab === tab.id ? 'text-[var(--color-academia-gold)]' : 'text-stone-400'} />}
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+               )}
+
+               {displayRole === "mentor" && (
+                  <div className="flex flex-col gap-2">
+                    {[
+                      { id: 'profile', label: 'Profile', icon: FiUser },
+                      { id: 'post-opp', label: 'Post Opportunity', icon: FiPlusCircle },
+                      { id: 'my-opportunities', label: 'My Opportunities', icon: FiList },
+                      { id: 'applications', label: 'Manage Applications', icon: FiBriefcase },
+                      { id: 'analytics', label: 'Analytics', icon: FiActivity }
+                    ].map(tab => (
+                      <button
+                        key={tab.id}
+                        onClick={() => {
+                          setActiveTab(tab.id);
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-4 py-3 rounded-sm text-sm font-medium transition-all flex items-center gap-3 ${
+                          activeTab === tab.id 
+                            ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)]' 
+                            : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-100'
+                        }`}
+                      >
+                        {tab.icon && <tab.icon className={activeTab === tab.id ? 'text-[var(--color-academia-gold)]' : 'text-stone-400'} />}
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+               )}
+
+               <div className="pt-2 border-t border-stone-200">
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-3 rounded-sm text-sm font-medium text-red-600 hover:bg-red-50 transition-all flex items-center gap-3"
+                  >
+                    <FiLogOut /> Logout
+                  </button>
+               </div>
+            </div>
+          )}
       </nav>
 
       {/* Main Content */}
@@ -195,21 +281,6 @@ const Dashboard = () => {
         {/* Student View */}
         {displayRole === "student" && (
           <>
-            {/* Mobile Tab Selector */}
-            <div className="md:hidden mb-6">
-              <select 
-                value={activeTab} 
-                onChange={(e) => setActiveTab(e.target.value)}
-                className="block w-full rounded-sm border-stone-200 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] bg-white text-[var(--color-academia-charcoal)]"
-              >
-                <option value="profile">My Profile</option>
-                <option value="smart-match">Smart Match</option>
-                <option value="browse">Browse Opportunities</option>
-                <option value="applications">My Applications</option>
-                <option value="real-world">Real World Opportunities</option>
-              </select>
-            </div>
-
             {activeTab === 'profile' && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column: Profile */}

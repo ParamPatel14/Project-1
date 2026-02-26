@@ -24,8 +24,8 @@ const RealWorldDashboard = () => {
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-stone-200 mb-8">
-          <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+        <div className="border-b border-stone-200 mb-8 overflow-x-auto scrollbar-hide">
+          <nav className="-mb-px flex space-x-8 min-w-max px-1" aria-label="Tabs">
             {tabs.map((tab) => (
               <button
                 key={tab.id}

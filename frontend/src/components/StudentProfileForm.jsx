@@ -31,19 +31,19 @@ const StudentProfileView = ({ data, onEdit }) => {
           onClick={onEdit}
           className="relative group rounded-sm mb-10 cursor-pointer w-full border border-[var(--color-academia-gold)] bg-[var(--color-academia-cream)] p-6 hover:shadow-sm transition-all duration-300"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-start gap-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+            <div className="flex items-start gap-4 md:gap-6">
                <div className="mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
                   <FiBook className="text-3xl text-[var(--color-academia-charcoal)]" />
                </div>
                <div>
-                  <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Pursuing a PhD?</h3>
-                  <p className="text-[var(--color-academia-charcoal)] text-base font-light leading-relaxed max-w-2xl">
+                  <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Pursuing a PhD?</h3>
+                  <p className="text-[var(--color-academia-charcoal)] text-sm md:text-base font-light leading-relaxed max-w-2xl">
                     Connect with leading professors and research labs. Update your profile with research interests and publications to get discovered.
                   </p>
                </div>
             </div>
-            <div className="flex-shrink-0 pl-8">
+            <div className="flex-shrink-0 pl-0 md:pl-8 mt-4 md:mt-0 w-full md:w-auto text-right">
                 <span className="inline-flex items-center gap-2 text-[var(--color-academia-charcoal)] font-serif font-bold text-base border-b border-[var(--color-academia-charcoal)] pb-0.5 group-hover:text-[var(--color-academia-gold)] group-hover:border-[var(--color-academia-gold)] transition-all">
                     Start Research Track <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </span>
@@ -52,12 +52,12 @@ const StudentProfileView = ({ data, onEdit }) => {
         </div>
       )}
       <div className="bg-white p-8 rounded-sm shadow-sm border border-stone-200 w-full space-y-8">
-      <div className="flex justify-between items-center border-b border-stone-200 pb-5">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0 border-b border-stone-200 pb-5">
         <div>
-            <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.name}</h2>
-            <p className="text-stone-600 text-lg font-light mt-2">{data.headline}</p>
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.name}</h2>
+            <p className="text-stone-600 text-base md:text-lg font-light mt-1 md:mt-2">{data.headline}</p>
         </div>
-        <button onClick={onEdit} className="bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-2 rounded-sm hover:opacity-90 flex items-center gap-2 transition font-medium shadow-sm">
+        <button onClick={onEdit} className="w-full md:w-auto bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-2 rounded-sm hover:opacity-90 flex items-center justify-center gap-2 transition font-medium shadow-sm">
             <FiEdit2 /> Edit Profile
         </button>
       </div>
