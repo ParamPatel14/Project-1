@@ -217,13 +217,13 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
     <div className="bg-white rounded-sm shadow-xl border border-stone-200 overflow-hidden font-sans relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--color-academia-charcoal)] via-[var(--color-academia-gold)] to-[var(--color-academia-charcoal)]"></div>
       <div className="bg-stone-50 p-4 md:p-8 border-b border-stone-200">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold flex items-center gap-3 tracking-wide text-[var(--color-academia-charcoal)]">
+          <h2 className="text-xl md:text-3xl font-serif font-bold flex items-center gap-3 tracking-wide text-[var(--color-academia-charcoal)]">
               <div className="p-2 bg-[var(--color-academia-charcoal)] rounded-sm text-[var(--color-academia-gold)] shadow-md">
-                <FiZap size={24} />
+                <FiZap className="w-5 h-5 md:w-6 md:h-6" />
               </div>
               Post New Opportunity
           </h2>
-          <p className="text-stone-500 mt-2 text-lg pl-14">Create an exciting role for students to apply to.</p>
+          <p className="text-stone-500 mt-2 text-sm md:text-lg pl-12 md:pl-14">Create an exciting role for students to apply to.</p>
       </div>
       
       <div className="p-4 md:p-8">
@@ -255,8 +255,8 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                     <h3 className="text-xl font-serif font-bold tracking-wide">Basic Information</h3>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="col-span-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div className="col-span-1 md:col-span-2">
                         <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Opportunity Title</label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -377,7 +377,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
 
                 {/* Beehive Event Specific Fields */}
                 {formData.type === 'beehive_event' && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 animate-fade-in">
                          <div className="col-span-1">
                             <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Event Date</label>
                             <div className="relative">
@@ -476,7 +476,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
 
             {/* Grant Details (Conditional) */}
             {formData.type === 'grant' && (
-                <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-stone-200 space-y-4 animate-fade-in relative overflow-hidden">
+                <div className="bg-[var(--color-academia-cream)] p-4 md:p-6 rounded-sm border border-stone-200 space-y-4 animate-fade-in relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-academia-gold)] opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
                     <div className="flex items-center gap-2 text-[var(--color-academia-charcoal)] border-b border-stone-200 pb-2 mb-2 relative z-10">
                         <FiDollarSign className="text-[var(--color-academia-gold)]" />
@@ -575,7 +575,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
                     <h3 className="text-xl font-serif font-bold tracking-wide">Required Skills</h3>
                 </div>
                 
-                <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-stone-200">
+                <div className="bg-[var(--color-academia-cream)] p-4 md:p-6 rounded-sm border border-stone-200">
                     <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Add Skills (Type to search or create)</label>
                     <div className="relative" ref={skillInputRef}>
                         <div className="flex gap-2">

@@ -94,7 +94,7 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
               <input
                 type="text"
                 required
-                className="mt-1 block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] sm:text-sm p-2 border"
+                className="mt-1 block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] sm:text-sm py-2 md:py-3 px-3 border"
                 value={newEvent.title}
                 onChange={(e) => setNewEvent({...newEvent, title: e.target.value})}
               />
@@ -104,7 +104,7 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
               <input
                 type="datetime-local"
                 required
-                className="mt-1 block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] sm:text-sm p-2 border"
+                className="mt-1 block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] sm:text-sm py-2 md:py-3 px-3 border"
                 value={newEvent.event_date}
                 onChange={(e) => setNewEvent({...newEvent, event_date: e.target.value})}
               />
@@ -114,7 +114,7 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
               <input
                 type="number"
                 required
-                className="mt-1 block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] sm:text-sm p-2 border"
+                className="mt-1 block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] sm:text-sm py-2 md:py-3 px-3 border"
                 value={newEvent.duration_hours}
                 onChange={(e) => setNewEvent({...newEvent, duration_hours: parseFloat(e.target.value)})}
               />
@@ -124,7 +124,7 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
               <input
                 type="number"
                 required
-                className="mt-1 block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] sm:text-sm p-2 border"
+                className="mt-1 block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)] sm:text-sm py-2 md:py-3 px-3 border"
                 value={newEvent.max_seats}
                 onChange={(e) => setNewEvent({...newEvent, max_seats: parseInt(e.target.value)})}
               />
@@ -151,7 +151,7 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
             <div className="md:col-span-2">
               <button
                 type="submit"
-                className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-sm text-[var(--color-academia-charcoal)] bg-[var(--color-academia-gold)] hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-academia-gold)]"
+                className="w-full inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-sm text-[var(--color-academia-charcoal)] bg-[var(--color-academia-gold)] hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-academia-gold)]"
               >
                 Create Event
               </button>

@@ -97,10 +97,10 @@ const Dashboard = () => {
               {displayRole === "student" && (
                 <div className="hidden lg:flex space-x-1 mr-2 overflow-x-auto">
                   {[
-                    { id: 'profile', label: 'Profile', icon: null },
+                    { id: 'profile', label: 'Profile', icon: FiUser },
                     { id: 'smart-match', label: 'Smart Match', icon: FiCpu },
-                    { id: 'browse', label: 'Browse Opportunities', icon: null },
-                    { id: 'applications', label: 'My Applications', icon: null },
+                    { id: 'browse', label: 'Browse Opportunities', icon: FiList },
+                    { id: 'applications', label: 'My Applications', icon: FiBriefcase },
                     { id: 'real-world', label: 'Real World Opportunities', icon: FiGlobe }
                   ].map(tab => (
                     <button
@@ -245,31 +245,31 @@ const Dashboard = () => {
         
         {/* Role Selection for New Users (OAuth) */}
         {currentUser?.role === "user" && !selectedRole && (
-          <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3pxl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4">Welcome to Shaun Spherix Solutions LLP!</h2>
-            <p className="text-xl text-stone-600 mb-12">To get started, please tell us how you plan to use the platform.</p>
+          <div className="max-w-4xl mx-auto text-center px-4">
+                <h2 className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4">Welcome to Shaun Spherix Solutions LLP!</h2>
+            <p className="text-lg md:text-xl text-stone-600 mb-8 md:mb-12">To get started, please tell us how you plan to use the platform.</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div 
-                className="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-all cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] group" 
+                className="bg-white p-6 md:p-8 rounded-sm shadow-sm hover:shadow-md transition-all cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] group" 
                 onClick={() => setSelectedRole("student")}
               >
-                <div className="bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6 group-hover:bg-[var(--color-academia-gold)] transition-colors">
-                  <FiBook className="text-[var(--color-academia-charcoal)] text-4xl group-hover:text-white transition-colors" />
+                <div className="bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] p-4 md:p-6 rounded-full w-16 h-16 md:w-24 md:h-24 flex items-center justify-center mx-auto mb-4 md:mb-6 group-hover:bg-[var(--color-academia-gold)] transition-colors">
+                  <FiBook className="text-[var(--color-academia-charcoal)] text-2xl md:text-4xl group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">I am a Student</h3>
-                <p className="text-stone-500 font-light">I'm looking for research opportunities, mentors, and lab positions to advance my academic career.</p>
+                <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2 md:mb-3">I am a Student</h3>
+                <p className="text-sm md:text-base text-stone-500 font-light">I'm looking for research opportunities, mentors, and lab positions to advance my academic career.</p>
               </div>
 
               <div 
-                className="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-all cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] group" 
+                className="bg-white p-6 md:p-8 rounded-sm shadow-sm hover:shadow-md transition-all cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] group" 
                 onClick={() => setSelectedRole("mentor")}
               >
-                <div className="bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6 group-hover:bg-[var(--color-academia-gold)] transition-colors">
-                  <FiUser className="text-[var(--color-academia-charcoal)] text-4xl group-hover:text-white transition-colors" />
+                <div className="bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] p-4 md:p-6 rounded-full w-16 h-16 md:w-24 md:h-24 flex items-center justify-center mx-auto mb-4 md:mb-6 group-hover:bg-[var(--color-academia-gold)] transition-colors">
+                  <FiUser className="text-[var(--color-academia-charcoal)] text-2xl md:text-4xl group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">I am a Mentor</h3>
-                <p className="text-stone-500 font-light">I'm a professor or researcher looking for talented students to join my lab and research projects.</p>
+                <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-2 md:mb-3">I am a Mentor</h3>
+                <p className="text-sm md:text-base text-stone-500 font-light">I'm a professor or researcher looking for talented students to join my lab and research projects.</p>
               </div>
             </div>
           </div>
@@ -282,19 +282,19 @@ const Dashboard = () => {
         {displayRole === "student" && (
           <>
             {activeTab === 'profile' && (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
                 {/* Left Column: Profile */}
-                <div className="lg:col-span-2 space-y-8">
+                <div className="lg:col-span-2 space-y-6 md:space-y-8">
                   {/* Completeness Hero Section */}
                   <div className="bg-white p-4 rounded-sm border border-[var(--color-academia-gold)] relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                      <FiActivity className="text-6xl text-[var(--color-academia-charcoal)]" />
+                      <FiActivity className="text-4xl md:text-6xl text-[var(--color-academia-charcoal)]" />
                     </div>
                     
-                    <div className="flex items-center gap-5 relative z-10">
+                    <div className="flex items-center gap-4 md:gap-5 relative z-10">
                       {/* Circular Chart */}
                       <div className="relative flex-shrink-0">
-                         <div className="relative w-20 h-20">
+                         <div className="relative w-16 h-16 md:w-20 md:h-20">
                             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 96 96">
                               <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-stone-100" />
                               <circle cx="48" cy="48" r="42" stroke="currentColor" strokeWidth="8" fill="transparent" 
@@ -305,7 +305,7 @@ const Dashboard = () => {
                               />
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                               <span className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)]">
+                               <span className="text-lg md:text-xl font-serif font-bold text-[var(--color-academia-charcoal)]">
                                   {completeness.score}%
                                </span>
                             </div>
@@ -314,7 +314,7 @@ const Dashboard = () => {
 
                       {/* Text Content */}
                       <div className="flex-1">
-                        <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-1">
+                        <h3 className="text-base md:text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-1">
                           {displayRole === 'student' ? 'Readiness Score' : 'Profile Completeness'}
                         </h3>
                         <p className="text-stone-600 text-xs leading-relaxed font-light">

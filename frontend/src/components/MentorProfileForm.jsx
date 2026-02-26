@@ -400,9 +400,9 @@ const MentorProfileForm = ({ user, onUpdate }) => {
       ) : (
         // --- Edit Mode (Existing Form with enhancements) ---
         <div className="animate-fade-in">
-           <div className="p-6 bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] flex justify-between items-center sticky top-0 z-20 shadow-md">
+           <div className="p-4 md:p-6 bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] flex justify-between items-center sticky top-0 z-20 shadow-md">
             <div>
-                <h2 className="text-2xl font-serif font-bold flex items-center">
+                <h2 className="text-xl md:text-2xl font-serif font-bold flex items-center">
                     <FiEdit2 className="mr-3 text-[var(--color-academia-gold)]" /> Edit Profile
                 </h2>
                 <p className="opacity-80 mt-1 text-sm font-sans">Update your lab details and requirements</p>
@@ -422,23 +422,23 @@ const MentorProfileForm = ({ user, onUpdate }) => {
             )}
           </div>
           
-          <div className="p-6 md:p-8">
-            <form onSubmit={handleSubmit} className="space-y-8 w-full">
+          <div className="p-4 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8 w-full">
               {/* Mentor Type Selection */}
-              <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+              <div className="bg-white p-4 md:p-6 rounded-xl border border-stone-200 shadow-sm">
                 <label className="block text-sm font-bold text-stone-700 mb-4 uppercase tracking-wide">Select Role Type</label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                         type="button"
                         onClick={() => setFormData(prev => ({ ...prev, mentor_type: 'academic_supervisor' }))}
-                        className={`relative py-4 px-6 rounded-xl border-2 text-left transition-all duration-200 ${
+                        className={`relative py-3 px-4 md:py-4 md:px-6 rounded-xl border-2 text-left transition-all duration-200 ${
                             formData.mentor_type === 'academic_supervisor' 
                             ? 'bg-[var(--color-academia-cream)] border-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)] shadow-md' 
                             : 'bg-white border-stone-100 text-stone-500 hover:border-stone-300 hover:bg-stone-50'
                         }`}
                     >
                         <div className="flex items-center justify-between mb-1">
-                            <span className="font-serif font-bold text-lg">PhD Supervisor</span>
+                            <span className="font-serif font-bold text-base md:text-lg">PhD Supervisor</span>
                             {formData.mentor_type === 'academic_supervisor' && <FiCheckCircle className="text-[var(--color-academia-gold)]" />}
                         </div>
                         <span className="text-sm opacity-75">For Academic Research & Lab Recruitment</span>
@@ -446,14 +446,14 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                     <button
                         type="button"
                         onClick={() => setFormData(prev => ({ ...prev, mentor_type: 'industry_mentor' }))}
-                        className={`relative py-4 px-6 rounded-xl border-2 text-left transition-all duration-200 ${
+                        className={`relative py-3 px-4 md:py-4 md:px-6 rounded-xl border-2 text-left transition-all duration-200 ${
                             formData.mentor_type === 'industry_mentor' 
                             ? 'bg-[var(--color-academia-cream)] border-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)] shadow-md' 
                             : 'bg-white border-stone-100 text-stone-500 hover:border-stone-300 hover:bg-stone-50'
                         }`}
                     >
                         <div className="flex items-center justify-between mb-1">
-                            <span className="font-serif font-bold text-lg">Industry Mentor</span>
+                            <span className="font-serif font-bold text-base md:text-lg">Industry Mentor</span>
                             {formData.mentor_type === 'industry_mentor' && <FiCheckCircle className="text-[var(--color-academia-gold)]" />}
                         </div>
                         <span className="text-sm opacity-75">For Internships, Jobs & Career Guidance</span>
@@ -462,11 +462,11 @@ const MentorProfileForm = ({ user, onUpdate }) => {
               </div>
 
               {/* Basic Info Section */}
-              <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
-                  <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2">
+              <div className="bg-white p-4 md:p-6 rounded-xl border border-stone-200 shadow-sm">
+                  <h3 className="text-base md:text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2">
                       <FiUser className="text-[var(--color-academia-gold)]" /> Basic Information
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     {formData.mentor_type === 'academic_supervisor' ? (
                         <>
                             <div>

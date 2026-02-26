@@ -180,18 +180,18 @@ const StudentProfileView = ({ data, onEdit }) => {
                     <p className="text-stone-700 whitespace-pre-line leading-relaxed">{data.research_interests || "No research interests specified."}</p>
                 </div>
 
-                <div className="grid grid-cols-3 gap-6 mb-8">
-                    <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
-                        <span className="block text-stone-400 text-xs uppercase tracking-widest font-bold mb-2">GPA</span>
-                        <span className="font-serif font-bold text-3xl text-[var(--color-academia-charcoal)]">{data.gpa || "-"}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8">
+                    <div className="bg-white p-4 md:p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
+                        <span className="block text-stone-400 text-[10px] md:text-xs uppercase tracking-widest font-bold mb-2">GPA</span>
+                        <span className="font-serif font-bold text-2xl md:text-3xl text-[var(--color-academia-charcoal)]">{data.gpa || "-"}</span>
                     </div>
-                    <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
-                        <span className="block text-stone-400 text-xs uppercase tracking-widest font-bold mb-2">GRE</span>
-                        <span className="font-serif font-bold text-3xl text-[var(--color-academia-charcoal)]">{data.gre_score || "-"}</span>
+                    <div className="bg-white p-4 md:p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
+                        <span className="block text-stone-400 text-[10px] md:text-xs uppercase tracking-widest font-bold mb-2">GRE</span>
+                        <span className="font-serif font-bold text-2xl md:text-3xl text-[var(--color-academia-charcoal)]">{data.gre_score || "-"}</span>
                     </div>
-                    <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
-                        <span className="block text-stone-400 text-xs uppercase tracking-widest font-bold mb-2">TOEFL</span>
-                        <span className="font-serif font-bold text-3xl text-[var(--color-academia-charcoal)]">{data.toefl_score || "-"}</span>
+                    <div className="bg-white p-4 md:p-6 rounded-sm shadow-sm border border-stone-200 text-center hover:border-[var(--color-academia-gold)] transition-colors">
+                        <span className="block text-stone-400 text-[10px] md:text-xs uppercase tracking-widest font-bold mb-2">TOEFL</span>
+                        <span className="font-serif font-bold text-2xl md:text-3xl text-[var(--color-academia-charcoal)]">{data.toefl_score || "-"}</span>
                     </div>
                 </div>
 

@@ -236,45 +236,45 @@ const AdminDashboard = () => {
 
               {/* OVERVIEW TAB */}
               {activeTab === 'overview' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-2 space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+                  <div className="lg:col-span-2 space-y-4 md:space-y-6">
                     <div className="flex items-center justify-between">
-                       <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center">
-                         <span className="w-2 h-8 bg-[var(--color-academia-gold)] mr-3 rounded-sm"></span>
+                       <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center">
+                         <span className="w-1.5 h-6 md:w-2 md:h-8 bg-[var(--color-academia-gold)] mr-2 md:mr-3 rounded-sm"></span>
                          Pending Verifications
                        </h3>
-                       <span className="bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] text-xs font-bold px-3 py-1 rounded-full">
+                       <span className="bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] text-[10px] md:text-xs font-bold px-2 py-1 md:px-3 md:py-1 rounded-full">
                          {pendingMentors.length} Pending
                        </span>
                     </div>
 
                     {pendingMentors.length === 0 ? (
-                      <div className="bg-white rounded-sm p-12 text-center border border-dashed border-stone-300 flex flex-col items-center">
-                        <div className="w-16 h-16 bg-[var(--color-academia-cream)] rounded-full flex items-center justify-center mb-4">
-                            <FiCheck className="text-[var(--color-academia-gold)] text-2xl" />
+                      <div className="bg-white rounded-sm p-8 md:p-12 text-center border border-dashed border-stone-300 flex flex-col items-center">
+                        <div className="w-12 h-12 md:w-16 md:h-16 bg-[var(--color-academia-cream)] rounded-full flex items-center justify-center mb-4">
+                            <FiCheck className="text-[var(--color-academia-gold)] text-xl md:text-2xl" />
                         </div>
-                        <h4 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)]">All Clear!</h4>
-                        <p className="text-stone-500 mt-2 max-w-md">There are no pending mentor verifications at this time. Great job keeping up!</p>
+                        <h4 className="text-base md:text-lg font-serif font-bold text-[var(--color-academia-charcoal)]">All Clear!</h4>
+                        <p className="text-stone-500 mt-2 max-w-md text-sm md:text-base">There are no pending mentor verifications at this time. Great job keeping up!</p>
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 gap-4">
                         {pendingMentors.map((mentor) => (
-                          <div key={mentor.id} className="bg-white border-l-4 border-l-[var(--color-academia-gold)] border-y border-r border-stone-200 rounded-r-sm p-6 hover:shadow-lg transition-all group relative overflow-hidden">
+                          <div key={mentor.id} className="bg-white border-l-4 border-l-[var(--color-academia-gold)] border-y border-r border-stone-200 rounded-r-sm p-4 md:p-6 hover:shadow-lg transition-all group relative overflow-hidden">
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
                               <div>
-                                <h4 className="font-serif font-bold text-xl text-[var(--color-academia-charcoal)]">{mentor.lab_name}</h4>
+                                <h4 className="font-serif font-bold text-lg md:text-xl text-[var(--color-academia-charcoal)]">{mentor.lab_name}</h4>
                                 <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-stone-600">
                                   <span className="flex items-center gap-1"><FiUsers className="text-[var(--color-academia-gold)]" /> {mentor.university}</span>
-                                  <span className="text-stone-300">|</span>
-                                  <span className="font-medium italic">{mentor.position}</span>
+                                  <span className="text-stone-300 hidden md:inline">|</span>
+                                  <span className="font-medium italic w-full md:w-auto">{mentor.position}</span>
                                 </div>
                                 <p className="text-xs text-stone-400 mt-2 font-mono bg-stone-50 inline-block px-2 py-1 rounded-sm border border-stone-100">{mentor.email}</p>
                               </div>
                               <button
                                 onClick={() => handleVerify(mentor.user_id)}
-                                className="w-full md:w-auto flex items-center justify-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-3 rounded-sm hover:bg-black transition-all shadow-md hover:shadow-[var(--color-academia-gold)]/20 font-bold tracking-wide border border-transparent hover:border-[var(--color-academia-gold)] group-hover:translate-x-1"
+                                className="w-full md:w-auto flex items-center justify-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-4 py-2 md:px-6 md:py-3 rounded-sm hover:bg-black transition-all shadow-md hover:shadow-[var(--color-academia-gold)]/20 font-bold tracking-wide border border-transparent hover:border-[var(--color-academia-gold)] group-hover:translate-x-1 text-sm md:text-base"
                               >
-                                <FiCheck className="mr-2 text-[var(--color-academia-gold)]" /> Approve & Verify
+                                <FiCheck className="mr-2 text-[var(--color-academia-gold)]" /> Approve
                               </button>
                             </div>
                           </div>
@@ -284,16 +284,16 @@ const AdminDashboard = () => {
                   </div>
                   
                   {/* Quick Stats / Sidebar */}
-                  <div className="space-y-6">
-                    <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-[var(--color-academia-gold)]">
+                  <div className="space-y-4 md:space-y-6">
+                    <div className="bg-[var(--color-academia-cream)] p-4 md:p-6 rounded-sm border border-[var(--color-academia-gold)]">
                         <h4 className="font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 uppercase tracking-wider text-sm">Quick Actions</h4>
                         <div className="space-y-3">
                             <button onClick={() => setActiveTab('internships')} className="w-full text-left px-4 py-3 bg-white hover:bg-stone-50 border border-stone-200 rounded-sm transition-colors flex items-center justify-between group">
-                                <span className="font-medium text-stone-700">Manage Internships</span>
+                                <span className="font-medium text-stone-700 text-sm md:text-base">Manage Internships</span>
                                 <FiExternalLink className="text-stone-400 group-hover:text-[var(--color-academia-gold)]" />
                             </button>
                             <button onClick={() => setActiveTab('students')} className="w-full text-left px-4 py-3 bg-white hover:bg-stone-50 border border-stone-200 rounded-sm transition-colors flex items-center justify-between group">
-                                <span className="font-medium text-stone-700">View Students</span>
+                                <span className="font-medium text-stone-700 text-sm md:text-base">View Students</span>
                                 <FiExternalLink className="text-stone-400 group-hover:text-[var(--color-academia-gold)]" />
                             </button>
                         </div>
@@ -376,16 +376,16 @@ const AdminDashboard = () => {
                     <table className="min-w-full divide-y divide-stone-200">
                       <thead className="bg-[var(--color-academia-cream)]">
                         <tr>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Mentor</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Institution</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Role</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Status</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Mentor</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Institution</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Role</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Status</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-stone-100">
                         {mentors.map((mentor) => (
                           <tr key={mentor.id} className="hover:bg-stone-50 transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                     <div className="h-8 w-8 rounded-full bg-white border border-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)] flex items-center justify-center font-serif font-bold mr-3">
                                         {mentor.name ? mentor.name.charAt(0).toUpperCase() : 'M'}
@@ -396,13 +396,13 @@ const AdminDashboard = () => {
                                     </div>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">
                               {mentor.mentor_profile ? mentor.mentor_profile.university || "-" : "-"}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600 italic">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600 italic">
                                 {mentor.mentor_profile ? mentor.mentor_profile.position || "-" : "-"}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-600">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-600">
                               {mentor.mentor_profile?.is_verified ? (
                                 <span className="px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-sm bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] items-center gap-1 shadow-sm">
                                   <FiCheck size={10} /> Verified
@@ -481,17 +481,17 @@ const AdminDashboard = () => {
                     <table className="min-w-full divide-y divide-stone-200">
                       <thead className="bg-[var(--color-academia-cream)]">
                         <tr>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Applicant</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Opportunity</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Match Score</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Status</th>
-                          <th className="px-6 py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Applicant</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Opportunity</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Match Score</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Status</th>
+                          <th className="px-4 py-3 md:px-6 md:py-4 text-left text-xs font-serif font-bold text-[var(--color-academia-charcoal)] uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-stone-100">
                         {applications.map((app) => (
                           <tr key={app.id} className="hover:bg-stone-50 transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
                               <div className="flex items-center">
                                 <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-[var(--color-academia-charcoal)] font-bold font-serif text-xs mr-3 border border-stone-200">
                                     {app.student?.name ? app.student.name.charAt(0) : 'S'}
@@ -502,11 +502,11 @@ const AdminDashboard = () => {
                                 </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-[var(--color-academia-charcoal)] max-w-xs truncate" title={app.opportunity?.title}>{app.opportunity?.title || "Unknown Opportunity"}</div>
                               <div className="text-xs text-stone-500 capitalize">{app.opportunity?.type?.replace('_', ' ')}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
                               <span className={`px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-sm border ${
                                 app.match_score >= 80 ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]' :
                                 app.match_score >= 50 ? 'bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border-[var(--color-academia-gold)]' :
@@ -515,7 +515,7 @@ const AdminDashboard = () => {
                                 {app.match_score}% Match
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
                               <span className={`px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-sm ${
                                 app.status === 'accepted' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
                                 app.status === 'rejected' ? 'bg-rose-50 text-rose-800 border border-rose-200' :
@@ -524,7 +524,7 @@ const AdminDashboard = () => {
                                 {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500">
+                            <td className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap text-sm text-stone-500">
                               <div className="flex space-x-3">
                                  {app.student?.student_profile?.resume_url && (
                                     <a 
