@@ -86,7 +86,7 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
       </div>
 
       {showCreateForm && (
-        <div className="bg-white p-6 rounded-sm shadow-md border-t-4 border-[var(--color-academia-charcoal)] animate-fade-in">
+        <div className="bg-white p-4 md:p-6 rounded-sm shadow-md border-t-4 border-[var(--color-academia-charcoal)] animate-fade-in">
           <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4">Host a Beehive Event</h3>
           <form onSubmit={handleCreateSubmit} className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="md:col-span-2">
@@ -171,7 +171,7 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
                <div className="absolute top-0 right-0 bg-[var(--color-academia-gold)] text-[var(--color-academia-charcoal)] text-xs font-bold px-3 py-1 rounded-bl-sm">
                 Running
               </div>
-              <div className="p-6 flex-1">
+              <div className="p-4 md:p-6 flex-1">
                 <div className="flex justify-between items-start mb-2">
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)]">
                     <FiHexagon className="mr-1" /> Beehive Event
@@ -196,7 +196,7 @@ const BeehiveEventList = ({ showAdminControls = true }) => {
                    <span className="flex items-center"><FiUsers className="mr-1 text-[var(--color-academia-gold)]" /> {event.max_seats} Seats</span>
                 </div>
               </div>
-              <div className="bg-[var(--color-academia-cream)] px-6 py-4 border-t border-stone-200">
+              <div className="bg-[var(--color-academia-cream)] px-4 py-3 md:px-6 md:py-4 border-t border-stone-200">
                 <button
                   onClick={() => handleViewDetails(event)}
                   className="w-full inline-flex justify-center items-center px-4 py-2 border border-[var(--color-academia-charcoal)] text-sm font-medium rounded-sm text-[var(--color-academia-charcoal)] bg-transparent hover:bg-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-cream)] transition-all duration-300"

@@ -46,14 +46,14 @@ const StudentProfileModal = ({
             onClick={e => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="bg-[var(--color-academia-charcoal)] text-white p-6 flex justify-between items-start shrink-0 relative overflow-hidden">
+            <div className="bg-[var(--color-academia-charcoal)] text-white p-4 md:p-6 flex justify-between items-start shrink-0 relative overflow-hidden">
                <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-academia-gold)] rounded-full opacity-10 blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
-              <div className="flex gap-6 items-center relative z-10">
-                <div className="w-20 h-20 bg-white rounded-full border-4 border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] text-3xl font-bold font-serif shadow-lg">
+              <div className="flex gap-4 md:gap-6 items-center relative z-10">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full border-4 border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] text-2xl md:text-3xl font-bold font-serif shadow-lg">
                   {student.name ? student.name.charAt(0).toUpperCase() : 'S'}
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold font-serif mb-1">{student.name}</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold font-serif mb-1">{student.name}</h2>
                   <div className="flex gap-4 text-stone-300 text-sm">
                     <span className="flex items-center gap-1"><FiMail className="text-[var(--color-academia-gold)]" /> {student.email}</span>
                     {profile.city && (
@@ -71,7 +71,7 @@ const StudentProfileModal = ({
             </div>
 
             {/* Tabs */}
-            <div className="bg-stone-50 border-b border-stone-200 px-6 flex gap-6 shrink-0 overflow-x-auto">
+            <div className="bg-stone-50 border-b border-stone-200 px-4 md:px-6 flex gap-4 md:gap-6 shrink-0 overflow-x-auto">
               {tabs.map(tab => (
                 <button
                   key={tab}
@@ -88,7 +88,7 @@ const StudentProfileModal = ({
             </div>
 
             {/* Scrollable Content */}
-            <div className="p-8 overflow-y-auto grow bg-white">
+            <div className="p-4 md:p-8 overflow-y-auto grow bg-white">
               
               {activeTab === 'profile' && (
                 <div className="space-y-8 max-w-3xl mx-auto animate-fade-in">
@@ -245,7 +245,7 @@ const StudentProfileModal = ({
             </div>
 
             {/* Footer Actions */}
-            <div className="bg-stone-50 border-t border-stone-200 p-6 shrink-0 flex justify-between items-center">
+            <div className="bg-stone-50 border-t border-stone-200 p-4 md:p-6 shrink-0 flex justify-between items-center">
               {application && onStatusChange ? (
                 <>
                   <div className="text-stone-500 text-sm">
