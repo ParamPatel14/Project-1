@@ -435,7 +435,7 @@ const AdminDashboard = () => {
                     
                     <button 
                       onClick={() => setShowOppModal(true)}
-                      className="flex items-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-3 rounded-sm hover:bg-black transition-all shadow-md hover:shadow-lg font-bold text-sm border border-transparent hover:border-[var(--color-academia-gold)] group"
+                      className="w-full md:w-auto justify-center flex items-center bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-3 rounded-sm hover:bg-black transition-all shadow-md hover:shadow-lg font-bold text-sm border border-transparent hover:border-[var(--color-academia-gold)] group"
                     >
                       <FiPlus className="mr-2 text-[var(--color-academia-gold)] group-hover:rotate-90 transition-transform" /> Add New Opportunity
                     </button>
@@ -578,15 +578,15 @@ const AdminDashboard = () => {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
-                className="bg-white rounded-sm shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto m-4 border-2 border-[var(--color-academia-gold)]"
+                className="bg-white rounded-sm shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto m-2 md:m-4 border-2 border-[var(--color-academia-gold)]"
             >
-              <div className="p-6 border-b border-stone-200 flex justify-between items-center bg-[var(--color-academia-cream)]">
-                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2">
+              <div className="p-4 md:p-6 border-b border-stone-200 flex justify-between items-center bg-[var(--color-academia-cream)]">
+                <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2">
                   <FiBriefcase className="text-[var(--color-academia-gold)]"/> 
                   New Opportunity
                 </h3>
                 <button onClick={() => setShowOppModal(false)} className="text-stone-400 hover:text-[var(--color-academia-charcoal)] transition-colors p-2 hover:bg-stone-200 rounded-full">
-                  <FiX size={24} />
+                  <FiX size={20} className="md:w-6 md:h-6" />
                 </button>
               </div>
               <div className="p-0">
