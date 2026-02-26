@@ -78,11 +78,11 @@ const MentorApplications = () => {
   );
 
   return (
-    <div className="bg-stone-50 min-h-screen p-8 font-sans text-stone-800">
+    <div className="bg-stone-50 min-h-screen p-4 md:p-8 font-sans text-stone-800">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10 border-b border-[var(--color-academia-gold)] pb-6">
-          <h1 className="text-3xl md:text-4xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-2">Talent Identification</h1>
-          <p className="text-stone-600 max-w-2xl text-lg">Review and align with high-potential candidates for your research opportunities.</p>
+          <h1 className="text-2xl md:text-4xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-2">Talent Identification</h1>
+          <p className="text-stone-600 max-w-2xl text-base md:text-lg">Review and align with high-potential candidates for your research opportunities.</p>
         </header>
 
         {/* Controls */}
@@ -92,7 +92,7 @@ const MentorApplications = () => {
               <button
                 key={status}
                 onClick={() => setFilterStatus(status)}
-                className={`px-4 py-2 rounded-sm text-sm font-medium transition-all capitalize ${
+                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-sm text-sm font-medium transition-all capitalize ${
                   filterStatus === status 
                     ? 'bg-[var(--color-academia-charcoal)] text-white shadow-md' 
                     : 'bg-white text-stone-600 hover:bg-stone-200 border border-stone-300'

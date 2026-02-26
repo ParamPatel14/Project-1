@@ -116,25 +116,25 @@ const SavedResearchGapList = () => {
           >
             <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500"></div>
             
-            <div className="p-6 pl-8">
-              {/* Header */}
-              <div className="flex justify-between items-start gap-4 mb-4">
-                <div>
-                   <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-700 border border-purple-200">
-                        {gap.type.replace(/_/g, ' ')}
-                      </span>
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200 flex items-center gap-1">
-                        <FiActivity className="text-[9px]" /> {gap.confidence_score}% Confidence
-                      </span>
-                      <span className="text-xs text-gray-400 ml-2">
-                        Saved on {new Date(gap.created_at).toLocaleDateString()}
-                      </span>
-                   </div>
-                   <h4 className="text-lg font-bold text-gray-800 group-hover:text-indigo-700 transition-colors">
-                     {gap.title}
-                   </h4>
-                </div>
+            <div className="p-4 md:p-6 md:pl-8">
+                {/* Header */}
+                <div className="flex justify-between items-start gap-4 mb-4">
+                  <div>
+                     <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-700 border border-purple-200">
+                          {gap.type.replace(/_/g, ' ')}
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200 flex items-center gap-1">
+                          <FiActivity className="text-[9px]" /> {gap.confidence_score}% Confidence
+                        </span>
+                        <span className="text-xs text-gray-400 ml-2">
+                          Saved on {new Date(gap.created_at).toLocaleDateString()}
+                        </span>
+                     </div>
+                     <h4 className="text-base md:text-lg font-bold text-gray-800 group-hover:text-indigo-700 transition-colors">
+                       {gap.title}
+                     </h4>
+                  </div>
                 
                 <div className="flex flex-col items-center">
                   <div className="relative w-12 h-12 flex items-center justify-center">

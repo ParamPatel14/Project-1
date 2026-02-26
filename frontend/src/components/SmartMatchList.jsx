@@ -185,13 +185,15 @@ const SmartMatchList = () => {
                 >
                   <div className="flex flex-col md:flex-row">
                     {/* Left: Score Panel */}
-                    <div className="bg-gradient-to-b from-[var(--color-academia-charcoal)] to-[#2c3e50] p-6 flex flex-col items-center justify-center text-white min-w-[140px] relative overflow-hidden">
+                    <div className="bg-gradient-to-b from-[var(--color-academia-charcoal)] to-[#2c3e50] p-4 md:p-6 flex flex-col items-center justify-center text-white min-w-[140px] relative overflow-hidden">
                       <div className="absolute top-0 left-0 w-full h-full bg-[var(--color-academia-gold)] opacity-10 mix-blend-overlay"></div>
-                      <div className="relative z-10 text-center">
-                          <span className="text-xs uppercase tracking-wider font-serif font-semibold opacity-90 text-[var(--color-academia-gold)]">Match Score</span>
-                          <div className="text-5xl font-bold font-serif my-2 text-white">{match.match_score}%</div>
+                      <div className="relative z-10 text-center w-full flex flex-row md:flex-col justify-between md:justify-center items-center gap-4 md:gap-0">
+                          <div className="text-center">
+                            <span className="text-xs uppercase tracking-wider font-serif font-semibold opacity-90 text-[var(--color-academia-gold)]">Match Score</span>
+                            <div className="text-4xl md:text-5xl font-bold font-serif my-1 md:my-2 text-white">{match.match_score}%</div>
+                          </div>
                           
-                          <div className="mt-4 space-y-2 w-full">
+                          <div className="mt-0 md:mt-4 space-y-2 w-1/2 md:w-full">
                               <div className="flex justify-between text-xs opacity-90">
                                   <span>Semantic</span>
                                   <span>{match.semantic_score}%</span>
@@ -212,7 +214,7 @@ const SmartMatchList = () => {
                     </div>
 
                     {/* Right: Content Panel */}
-                    <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div className="p-4 md:p-6 flex-1 flex flex-col justify-between">
                       <div>
                           <div className="flex items-start justify-between mb-2">
                               <div>
@@ -322,9 +324,9 @@ const SmartMatchList = () => {
         <div className="fixed inset-0 bg-[var(--color-academia-charcoal)]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white rounded-sm shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-stone-200">
             <div className="p-0">
-              <div className="bg-[var(--color-academia-charcoal)] px-8 py-6 flex justify-between items-center border-b-4 border-[var(--color-academia-gold)]">
+              <div className="bg-[var(--color-academia-charcoal)] px-4 py-4 md:px-8 md:py-6 flex justify-between items-center border-b-4 border-[var(--color-academia-gold)]">
                 <div>
-                  <h3 className="text-2xl font-bold font-serif text-white">Apply to Lab</h3>
+                  <h3 className="text-xl md:text-2xl font-bold font-serif text-white">Apply to Lab</h3>
                   <p className="text-[var(--color-academia-gold)] font-medium text-sm mt-1">{selectedMentor.mentor_name}</p>
                 </div>
                 <button 
@@ -335,7 +337,7 @@ const SmartMatchList = () => {
                 </button>
               </div>
 
-              <div className="p-8">
+              <div className="p-4 md:p-8">
                 {loadingOpportunities ? (
                   <div className="flex justify-center py-8">
                     <div className="w-8 h-8 border-4 border-[var(--color-academia-charcoal)] border-t-transparent rounded-full animate-spin"></div>
