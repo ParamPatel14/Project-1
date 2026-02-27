@@ -211,7 +211,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
   const exactMatch = filteredSkills.some(s => s.name.toLowerCase() === skillSearch.toLowerCase());
 
   // Refined Input Classes - Clean, white background with gold focus
-  const inputClasses = "w-full pl-10 pr-4 py-3 border border-stone-200 rounded-sm focus:outline-none focus:border-[var(--color-academia-gold)] focus:ring-2 focus:ring-[var(--color-academia-gold)]/10 transition-all bg-white hover:border-stone-300 text-[var(--color-academia-charcoal)] placeholder-stone-400 shadow-sm";
+  const inputClasses = "w-full pl-10 pr-4 py-3 border border-stone-200 rounded-sm focus:outline-none focus:border-[var(--color-academia-gold)] focus:ring-2 focus:ring-[var(--color-academia-gold)]/10 transition-all bg-white hover:border-stone-300 text-base text-[var(--color-academia-charcoal)] placeholder-stone-400 shadow-sm";
 
   return (
     <div className="bg-white rounded-sm shadow-xl border border-stone-200 overflow-hidden font-sans relative">
@@ -319,7 +319,7 @@ const OpportunityForm = ({ onSuccess, customSubmitFunction }) => {
 
                 {/* Industrial Visit Specific Fields */}
                 {formData.type === 'industrial_visit' && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 animate-fade-in">
                          <div className="col-span-1">
                             <label className="block text-[var(--color-academia-charcoal)] text-sm font-bold mb-2">Company Name</label>
                             <div className="relative">

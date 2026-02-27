@@ -29,7 +29,7 @@ const StudentProfileView = ({ data, onEdit }) => {
       {!data.is_phd_seeker && (
         <div 
           onClick={onEdit}
-          className="relative group rounded-sm mb-10 cursor-pointer w-full border border-[var(--color-academia-gold)] bg-[var(--color-academia-cream)] p-6 hover:shadow-sm transition-all duration-300"
+          className="relative group rounded-sm mb-6 md:mb-10 cursor-pointer w-full border border-[var(--color-academia-gold)] bg-[var(--color-academia-cream)] p-4 md:p-6 hover:shadow-sm transition-all duration-300"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
             <div className="flex items-start gap-4 md:gap-6">
@@ -51,7 +51,7 @@ const StudentProfileView = ({ data, onEdit }) => {
           </div>
         </div>
       )}
-      <div className="bg-white p-8 rounded-sm shadow-sm border border-stone-200 w-full space-y-8">
+      <div className="bg-white p-4 md:p-8 rounded-sm shadow-sm border border-stone-200 w-full space-y-6 md:space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0 border-b border-stone-200 pb-5">
         <div>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">{data.name}</h2>
@@ -68,12 +68,12 @@ const StudentProfileView = ({ data, onEdit }) => {
             <div className="bg-[var(--color-academia-cream)] rounded-sm border border-stone-200 overflow-hidden transition-all duration-300">
                 <button 
                     onClick={() => setIsDetailsOpen(!isDetailsOpen)}
-                    className="w-full p-5 flex justify-between items-center text-[var(--color-academia-charcoal)] hover:bg-stone-100 transition-colors"
+                    className="w-full p-4 md:p-5 flex justify-between items-center text-[var(--color-academia-charcoal)] hover:bg-stone-100 transition-colors"
                 >
-                    <h3 className="font-serif font-bold flex items-center gap-2 text-lg"><FiUser className="text-[var(--color-academia-gold)]" /> Personal Details</h3>
+                    <h3 className="font-serif font-bold flex items-center gap-2 text-base md:text-lg"><FiUser className="text-[var(--color-academia-gold)]" /> Personal Details</h3>
                     {isDetailsOpen ? <FiChevronUp /> : <FiChevronDown />}
                 </button>
-                <div className={`px-5 overflow-hidden transition-all duration-500 ease-in-out ${isDetailsOpen ? 'max-h-96 pb-5 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className={`px-4 md:px-5 overflow-hidden transition-all duration-500 ease-in-out ${isDetailsOpen ? 'max-h-96 pb-4 md:pb-5 opacity-100' : 'max-h-0 opacity-0'}`}>
                     <ul className="space-y-4 text-sm pt-4 border-t border-stone-300">
                         <li className="flex justify-between"><span className="font-bold text-stone-500 font-serif">Status:</span> <span className="text-[var(--color-academia-charcoal)]">{data.current_status}</span></li>
                         <li className="flex justify-between"><span className="font-bold text-stone-500 font-serif">Location:</span> <span className="text-[var(--color-academia-charcoal)]">{data.city}, {data.country}</span></li>
@@ -84,18 +84,18 @@ const StudentProfileView = ({ data, onEdit }) => {
                 </div>
             </div>
             
-            <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-stone-200">
-                <h3 className="font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-2 text-lg"><FiGlobe className="text-[var(--color-academia-gold)]" /> Socials</h3>
-                <div className="flex flex-col gap-4">
-                    {data.github_url && <a href={data.github_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors"><FiGithub /> GitHub</a>}
-                    {data.linkedin_url && <a href={data.linkedin_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors"><FiLinkedin /> LinkedIn</a>}
-                    {data.twitter_url && <a href={data.twitter_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors"><FiTwitter /> Twitter</a>}
-                    {data.website_url && <a href={data.website_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors"><FiGlobe /> Website</a>}
+            <div className="bg-[var(--color-academia-cream)] p-4 md:p-6 rounded-sm border border-stone-200">
+                <h3 className="font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 md:mb-4 flex items-center gap-2 text-base md:text-lg"><FiGlobe className="text-[var(--color-academia-gold)]" /> Socials</h3>
+                <div className="flex flex-col gap-3 md:gap-4">
+                    {data.github_url && <a href={data.github_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors text-sm md:text-base"><FiGithub /> GitHub</a>}
+                    {data.linkedin_url && <a href={data.linkedin_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors text-sm md:text-base"><FiLinkedin /> LinkedIn</a>}
+                    {data.twitter_url && <a href={data.twitter_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors text-sm md:text-base"><FiTwitter /> Twitter</a>}
+                    {data.website_url && <a href={data.website_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-stone-700 hover:text-[var(--color-academia-gold)] transition-colors text-sm md:text-base"><FiGlobe /> Website</a>}
                 </div>
             </div>
 
-             <div className="bg-[var(--color-academia-cream)] p-6 rounded-sm border border-stone-200">
-                <h3 className="font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-2 text-lg"><FiCheck className="text-[var(--color-academia-gold)]" /> Skills</h3>
+             <div className="bg-[var(--color-academia-cream)] p-4 md:p-6 rounded-sm border border-stone-200">
+                <h3 className="font-serif font-bold text-[var(--color-academia-charcoal)] mb-3 md:mb-4 flex items-center gap-2 text-base md:text-lg"><FiCheck className="text-[var(--color-academia-gold)]" /> Skills</h3>
                 <div className="mb-6">
                     <p className="text-xs text-stone-500 uppercase font-bold tracking-wider mb-3">Primary</p>
                     <div className="flex flex-wrap gap-2">
@@ -116,16 +116,16 @@ const StudentProfileView = ({ data, onEdit }) => {
         </div>
 
         {/* Right Column: Experience, Education, Projects */}
-        <div className="md:col-span-2 space-y-10">
+        <div className="md:col-span-2 space-y-8 md:space-y-10">
             <section>
-                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiBriefcase className="text-[var(--color-academia-gold)]" /> Work Experience</h3>
+                <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 md:mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiBriefcase className="text-[var(--color-academia-gold)]" /> Work Experience</h3>
                 {data.work_experiences?.length > 0 ? (
-                    <div className="space-y-8">
+                    <div className="space-y-6 md:space-y-8">
                         {data.work_experiences.map((exp, i) => (
-                            <div key={i} className="border-l-4 border-[var(--color-academia-gold)] pl-6 py-1 ml-2">
-                                <h4 className="font-serif font-bold text-xl text-[var(--color-academia-charcoal)]">{exp.title}</h4>
-                                <p className="text-[var(--color-academia-gold)] font-medium text-lg mt-1">{exp.company} <span className="text-stone-400 text-base font-normal ml-2">| {exp.start_date} - {exp.end_date}</span></p>
-                                <p className="text-stone-600 mt-3 text-base leading-relaxed whitespace-pre-line font-light">{exp.description}</p>
+                            <div key={i} className="border-l-4 border-[var(--color-academia-gold)] pl-4 md:pl-6 py-1 ml-1 md:ml-2">
+                                <h4 className="font-serif font-bold text-lg md:text-xl text-[var(--color-academia-charcoal)]">{exp.title}</h4>
+                                <p className="text-[var(--color-academia-gold)] font-medium text-base md:text-lg mt-1">{exp.company} <span className="text-stone-400 text-sm md:text-base font-normal ml-2">| {exp.start_date} - {exp.end_date}</span></p>
+                                <p className="text-stone-600 mt-2 md:mt-3 text-sm md:text-base leading-relaxed whitespace-pre-line font-light">{exp.description}</p>
                             </div>
                         ))}
                     </div>
@@ -133,14 +133,14 @@ const StudentProfileView = ({ data, onEdit }) => {
             </section>
 
             <section>
-                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiCpu className="text-[var(--color-academia-gold)]" /> Projects</h3>
+                <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 md:mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiCpu className="text-[var(--color-academia-gold)]" /> Projects</h3>
                 {data.projects?.length > 0 ? (
-                    <div className="grid grid-cols-1 gap-6">
+                    <div className="grid grid-cols-1 gap-4 md:gap-6">
                         {data.projects.map((proj, i) => (
-                            <div key={i} className="border border-stone-200 p-6 rounded-sm hover:border-[var(--color-academia-gold)] hover:shadow-md transition-all duration-300 bg-white group">
+                            <div key={i} className="border border-stone-200 p-4 md:p-6 rounded-sm hover:border-[var(--color-academia-gold)] hover:shadow-md transition-all duration-300 bg-white group">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h4 className="font-serif font-bold text-lg text-[var(--color-academia-charcoal)] group-hover:text-[var(--color-academia-gold)] transition-colors">{proj.title}</h4>
-                                    {proj.url && <a href={proj.url} target="_blank" rel="noreferrer" className="text-stone-400 hover:text-[var(--color-academia-gold)] text-sm flex items-center gap-1 transition-colors"><FiLink /> View</a>}
+                                    <h4 className="font-serif font-bold text-base md:text-lg text-[var(--color-academia-charcoal)] group-hover:text-[var(--color-academia-gold)] transition-colors">{proj.title}</h4>
+                                    {proj.url && <a href={proj.url} target="_blank" rel="noreferrer" className="text-stone-400 hover:text-[var(--color-academia-gold)] text-xs md:text-sm flex items-center gap-1 transition-colors"><FiLink /> View</a>}
                                 </div>
                                 <p className="text-xs text-stone-500 mb-3 font-mono bg-stone-50 inline-block px-2 py-1 rounded-sm border border-stone-100">{proj.tech_stack}</p>
                                 <p className="text-stone-600 text-sm leading-relaxed">{proj.description}</p>
@@ -151,18 +151,18 @@ const StudentProfileView = ({ data, onEdit }) => {
             </section>
 
             <section>
-                <h3 className="text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiBook className="text-[var(--color-academia-gold)]" /> Education</h3>
+                <h3 className="text-xl md:text-2xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 md:mb-6 flex items-center gap-3 border-b border-stone-200 pb-2"><FiBook className="text-[var(--color-academia-gold)]" /> Education</h3>
                 {data.educations?.length > 0 ? (
-                    <div className="space-y-6">
+                    <div className="space-y-4 md:space-y-6">
                         {data.educations.map((edu, i) => (
-                            <div key={i} className="flex justify-between items-start border-b border-stone-100 pb-6 last:border-0 last:pb-0">
+                            <div key={i} className="flex justify-between items-start border-b border-stone-100 pb-4 md:pb-6 last:border-0 last:pb-0">
                                 <div>
-                                    <h4 className="font-serif font-bold text-lg text-[var(--color-academia-charcoal)]">{edu.institution}</h4>
-                                    <p className="text-stone-600 text-base mt-1">{edu.degree}</p>
+                                    <h4 className="font-serif font-bold text-base md:text-lg text-[var(--color-academia-charcoal)]">{edu.institution}</h4>
+                                    <p className="text-stone-600 text-sm md:text-base mt-1">{edu.degree}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-stone-500 text-sm font-medium">{edu.start_year} - {edu.end_year}</p>
-                                    <p className="text-[var(--color-academia-gold)] text-xs font-bold mt-1 uppercase tracking-wide">Grade: {edu.grade}</p>
+                                    <p className="text-stone-500 text-xs md:text-sm font-medium">{edu.start_year} - {edu.end_year}</p>
+                                    <p className="text-[var(--color-academia-gold)] text-[10px] md:text-xs font-bold mt-1 uppercase tracking-wide">Grade: {edu.grade}</p>
                                 </div>
                             </div>
                         ))}
@@ -476,19 +476,19 @@ const StudentProfileForm = ({ user, onUpdate }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 bg-[var(--color-academia-cream)] p-8 rounded-sm border border-stone-200 w-full">
+    <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8 bg-[var(--color-academia-cream)] p-4 md:p-8 rounded-sm border border-stone-200 w-full">
       <div className="flex justify-between items-center border-b border-[var(--color-academia-gold)] pb-4">
-        <h2 className="text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">Complete Your Profile</h2>
-        {formData.resume_url && <span className="text-green-700 font-serif flex items-center gap-2"><FiCheck /> CV Uploaded</span>}
+        <h2 className="text-2xl md:text-3xl font-serif font-bold text-[var(--color-academia-charcoal)]">Complete Your Profile</h2>
+        {formData.resume_url && <span className="text-green-700 font-serif flex items-center gap-2 text-sm md:text-base"><FiCheck /> CV Uploaded</span>}
       </div>
 
       {/* Resume Upload Section - Front & Center */}
-      <div className="bg-white p-8 rounded-sm border border-[var(--color-academia-gold)] text-center shadow-sm">
-        <FiUpload className="mx-auto text-4xl text-[var(--color-academia-charcoal)] mb-3" />
-        <h3 className="font-serif font-bold text-xl text-[var(--color-academia-charcoal)] mb-1">Auto-fill with Resume</h3>
-        <p className="text-sm text-stone-600 mb-6 font-light">Upload your CV to automatically extract details</p>
-        <div className="flex justify-center items-center gap-4">
-            <label className="cursor-pointer bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-8 py-3 rounded-sm hover:opacity-90 transition font-serif font-medium">
+      <div className="bg-white p-4 md:p-8 rounded-sm border border-[var(--color-academia-gold)] text-center shadow-sm">
+        <FiUpload className="mx-auto text-3xl md:text-4xl text-[var(--color-academia-charcoal)] mb-3" />
+        <h3 className="font-serif font-bold text-lg md:text-xl text-[var(--color-academia-charcoal)] mb-1">Auto-fill with Resume</h3>
+        <p className="text-xs md:text-sm text-stone-600 mb-4 md:mb-6 font-light">Upload your CV to automatically extract details</p>
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+            <label className="cursor-pointer bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] px-6 py-2 md:px-8 md:py-3 rounded-sm hover:opacity-90 transition font-serif font-medium text-sm md:text-base">
             {isParsing ? "Parsing..." : "Upload Resume / CV"}
             <input type="file" accept=".pdf" className="hidden" onChange={handleResumeAutofill} disabled={isParsing} />
             </label>
@@ -501,40 +501,40 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 1. Core Profile & Identity */}
       <section>
-        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2"><FiFileText className="text-[var(--color-academia-gold)]" /> Core Profile</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <h3 className="text-lg md:text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 md:mb-6 flex items-center gap-2 border-b border-stone-200 pb-2"><FiFileText className="text-[var(--color-academia-gold)]" /> Core Profile</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             <div>
                 <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Full Name</label>
-                <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-2 md:p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
                 <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">I am a</label>
-                <select name="current_status" value={formData.current_status} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors">
+                <select name="current_status" value={formData.current_status} onChange={handleChange} className="w-full p-2 md:p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors">
                     {USER_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
             </div>
             <div>
                 <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Headline</label>
-                <input type="text" name="headline" value={formData.headline} onChange={handleChange} placeholder="e.g. Full Stack Developer | React Expert" className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400" />
+                <input type="text" name="headline" value={formData.headline} onChange={handleChange} placeholder="e.g. Full Stack Developer | React Expert" className="w-full p-2 md:p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors placeholder-stone-400" />
             </div>
             <div>
                 <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Phone Number</label>
-                <input type="text" name="phone_number" value={formData.phone_number} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                <input type="text" name="phone_number" value={formData.phone_number} onChange={handleChange} className="w-full p-2 md:p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
                 <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">City</label>
-                <input type="text" name="city" value={formData.city} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                <input type="text" name="city" value={formData.city} onChange={handleChange} className="w-full p-2 md:p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
                 <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Country</label>
-                <input type="text" name="country" value={formData.country} onChange={handleChange} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
+                <input type="text" name="country" value={formData.country} onChange={handleChange} className="w-full p-2 md:p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
             </div>
             <div>
                 <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Gender</label>
-                <div className="flex gap-3 mt-1">
+                <div className="flex flex-wrap gap-2 md:gap-3 mt-1">
                     {GENDER_OPTIONS.map(g => (
                         <button key={g} type="button" onClick={() => setFormData(p => ({...p, gender: g}))}
-                            className={`px-5 py-2 rounded-sm text-sm font-medium transition-colors border ${formData.gender === g ? 'bg-[var(--color-academia-charcoal)] border-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)]' : 'bg-white border-stone-300 text-stone-600 hover:border-[var(--color-academia-gold)]'}`}>
+                            className={`px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-xs md:text-sm font-medium transition-colors border ${formData.gender === g ? 'bg-[var(--color-academia-charcoal)] border-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)]' : 'bg-white border-stone-300 text-stone-600 hover:border-[var(--color-academia-gold)]'}`}>
                             {g}
                         </button>
                     ))}
@@ -554,7 +554,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
                 onChange={handleChange} 
                 className="w-5 h-5 text-[var(--color-academia-charcoal)] rounded focus:ring-[var(--color-academia-gold)] border-stone-300 cursor-pointer"
             />
-            <label htmlFor="is_phd_seeker" className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] cursor-pointer">
+            <label htmlFor="is_phd_seeker" className="text-lg md:text-xl font-serif font-bold text-[var(--color-academia-charcoal)] cursor-pointer">
                 I am looking for a PhD Supervisor
             </label>
         </div>
@@ -573,7 +573,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
                     />
                 </div>
                 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Overall GPA</label>
                         <input type="text" name="gpa" value={formData.gpa} onChange={handleChange} placeholder="e.g. 3.8/4.0" className="w-full p-2 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
@@ -598,7 +598,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
                     </div>
                     <div className="space-y-4">
                         {publications.map((pub, index) => (
-                            <div key={index} className="bg-[var(--color-academia-cream)] p-5 rounded-sm border border-stone-200 relative group hover:border-[var(--color-academia-gold)] transition-colors">
+                            <div key={index} className="bg-[var(--color-academia-cream)] p-4 md:p-5 rounded-sm border border-stone-200 relative group hover:border-[var(--color-academia-gold)] transition-colors">
                                 <button type="button" onClick={() => removePublication(index)} className="absolute top-3 right-3 text-stone-400 hover:text-red-600 transition p-1">
                                     <FiTrash2 />
                                 </button>
@@ -688,13 +688,13 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 3. Work Experience */}
       <section>
-        <div className="flex justify-between items-center mb-6 border-b border-stone-200 pb-2">
-            <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiBook className="text-[var(--color-academia-gold)]" /> Work Experience</h3>
+        <div className="flex justify-between items-center mb-4 md:mb-6 border-b border-stone-200 pb-2">
+            <h3 className="text-lg md:text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiBook className="text-[var(--color-academia-gold)]" /> Work Experience</h3>
             <button type="button" onClick={addWorkExperience} className="text-sm text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center gap-1 font-medium transition-colors"><FiPlus /> Add</button>
         </div>
         <div className="space-y-6">
             {workExperiences.map((exp, index) => (
-                <div key={index} className="p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
+                <div key={index} className="p-4 md:p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
                     <button type="button" onClick={() => removeWorkExperience(index)} className="absolute top-3 right-3 text-stone-400 hover:text-red-600 transition p-1"><FiTrash2 /></button>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
                         <input type="text" placeholder="Job Title" value={exp.title} onChange={(e) => updateWorkExperience(index, 'title', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
@@ -710,13 +710,13 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 4. Education */}
       <section>
-        <div className="flex justify-between items-center mb-6 border-b border-stone-200 pb-2">
-            <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiBook className="text-[var(--color-academia-gold)]" /> Education</h3>
+        <div className="flex justify-between items-center mb-4 md:mb-6 border-b border-stone-200 pb-2">
+            <h3 className="text-lg md:text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiBook className="text-[var(--color-academia-gold)]" /> Education</h3>
             <button type="button" onClick={addEducation} className="text-sm text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center gap-1 font-medium transition-colors"><FiPlus /> Add</button>
         </div>
         <div className="space-y-6">
             {educations.map((edu, index) => (
-                <div key={index} className="p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
+                <div key={index} className="p-4 md:p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
                     <button type="button" onClick={() => removeEducation(index)} className="absolute top-3 right-3 text-stone-400 hover:text-red-600 transition p-1"><FiTrash2 /></button>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <input type="text" placeholder="Institution" value={edu.institution} onChange={(e) => updateEducation(index, 'institution', e.target.value)} className="p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
@@ -732,13 +732,13 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 5. Projects */}
       <section>
-        <div className="flex justify-between items-center mb-6 border-b border-stone-200 pb-2">
-            <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiCpu className="text-[var(--color-academia-gold)]" /> Projects</h3>
+        <div className="flex justify-between items-center mb-4 md:mb-6 border-b border-stone-200 pb-2">
+            <h3 className="text-lg md:text-xl font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2"><FiCpu className="text-[var(--color-academia-gold)]" /> Projects</h3>
             <button type="button" onClick={addProject} className="text-sm text-[var(--color-academia-charcoal)] hover:text-[var(--color-academia-gold)] flex items-center gap-1 font-medium transition-colors"><FiPlus /> Add</button>
         </div>
         <div className="space-y-6">
             {projects.map((proj, index) => (
-                <div key={index} className="p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
+                <div key={index} className="p-4 md:p-6 border border-stone-200 rounded-sm bg-[var(--color-academia-cream)] relative group hover:border-[var(--color-academia-gold)] transition-colors">
                     <button type="button" onClick={() => removeProject(index)} className="absolute top-3 right-3 text-stone-400 hover:text-red-600 transition p-1"><FiTrash2 /></button>
                     <div className="grid grid-cols-1 gap-5 mb-4">
                         <input type="text" placeholder="Project Title" value={proj.title} onChange={(e) => updateProject(index, 'title', e.target.value)} className="w-full p-3 bg-white border border-stone-300 rounded-sm focus:border-[var(--color-academia-gold)] focus:ring-1 focus:ring-[var(--color-academia-gold)] transition-colors" />
@@ -753,7 +753,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 6. Skills */}
       <section>
-        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2"><FiCheck className="text-[var(--color-academia-gold)]" /> Skills</h3>
+        <h3 className="text-lg md:text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 md:mb-6 flex items-center gap-2 border-b border-stone-200 pb-2"><FiCheck className="text-[var(--color-academia-gold)]" /> Skills</h3>
         <div className="space-y-6">
             <div>
                 <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-2">Primary Skills (Top 5)</label>
@@ -768,13 +768,13 @@ const StudentProfileForm = ({ user, onUpdate }) => {
 
       {/* 7. Additional Info */}
       <section>
-        <h3 className="text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 border-b border-stone-200 pb-2">Interests & Languages</h3>
-        <div className="mb-6">
+        <h3 className="text-lg md:text-xl font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 md:mb-6 border-b border-stone-200 pb-2">Interests & Languages</h3>
+        <div className="mb-4 md:mb-6">
             <label className="block text-sm font-serif font-bold text-[var(--color-academia-charcoal)] mb-3">Interests</label>
             <div className="flex flex-wrap gap-2">
                 {INTEREST_OPTIONS.map(interest => (
                     <button key={interest} type="button" onClick={() => toggleSelection(interest, selectedInterests, setSelectedInterests)}
-                        className={`px-4 py-1.5 rounded-sm text-sm border transition-colors ${selectedInterests.includes(interest) ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]' : 'bg-white text-stone-600 border-stone-300 hover:border-[var(--color-academia-gold)]'}`}>
+                        className={`px-3 py-1.5 md:px-4 rounded-sm text-sm border transition-colors ${selectedInterests.includes(interest) ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]' : 'bg-white text-stone-600 border-stone-300 hover:border-[var(--color-academia-gold)]'}`}>
                         {interest}
                     </button>
                 ))}
@@ -785,7 +785,7 @@ const StudentProfileForm = ({ user, onUpdate }) => {
             <div className="flex flex-wrap gap-2">
                 {LANGUAGE_OPTIONS.map(lang => (
                     <button key={lang} type="button" onClick={() => toggleSelection(lang, selectedLanguages, setSelectedLanguages)}
-                        className={`px-4 py-1.5 rounded-sm text-sm border transition-colors ${selectedLanguages.includes(lang) ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]' : 'bg-white text-stone-600 border-stone-300 hover:border-[var(--color-academia-gold)]'}`}>
+                        className={`px-3 py-1.5 md:px-4 rounded-sm text-sm border transition-colors ${selectedLanguages.includes(lang) ? 'bg-[var(--color-academia-charcoal)] text-[var(--color-academia-cream)] border-[var(--color-academia-charcoal)]' : 'bg-white text-stone-600 border-stone-300 hover:border-[var(--color-academia-gold)]'}`}>
                         {lang}
                     </button>
                 ))}

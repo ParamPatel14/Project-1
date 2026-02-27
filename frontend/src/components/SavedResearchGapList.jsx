@@ -118,8 +118,8 @@ const SavedResearchGapList = () => {
             
             <div className="p-4 md:p-6 md:pl-8">
                 {/* Header */}
-                <div className="flex justify-between items-start gap-4 mb-4">
-                  <div>
+                <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">
+                  <div className="flex-1">
                      <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-700 border border-purple-200">
                           {gap.type.replace(/_/g, ' ')}
@@ -127,17 +127,20 @@ const SavedResearchGapList = () => {
                         <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200 flex items-center gap-1">
                           <FiActivity className="text-[9px]" /> {gap.confidence_score}% Confidence
                         </span>
-                        <span className="text-xs text-gray-400 ml-2">
+                        <span className="text-[10px] md:text-xs text-gray-400 ml-0 md:ml-2 mt-1 md:mt-0 block md:inline">
                           Saved on {new Date(gap.created_at).toLocaleDateString()}
                         </span>
                      </div>
-                     <h4 className="text-base md:text-lg font-bold text-gray-800 group-hover:text-indigo-700 transition-colors">
+                     <h4 className="text-lg md:text-xl font-bold text-gray-800 group-hover:text-indigo-700 transition-colors leading-tight">
                        {gap.title}
                      </h4>
                   </div>
                 
-                <div className="flex flex-col items-center">
-                  <div className="relative w-12 h-12 flex items-center justify-center">
+                <div className="flex items-center gap-3 self-end md:self-start bg-stone-50 p-2 rounded-lg border border-stone-100 md:bg-transparent md:border-0 md:p-0">
+                  <div className="text-right md:text-center mr-2 md:mr-0">
+                      <span className="text-[10px] font-bold text-gray-500 uppercase block md:hidden">Feasibility</span>
+                  </div>
+                  <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
                     <svg className="w-full h-full transform -rotate-90">
                       <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-gray-100" />
                       <circle 
@@ -193,7 +196,7 @@ const SavedResearchGapList = () => {
                     <button 
                       onClick={() => handleDelete(gap.id)}
                       disabled={deletingId === gap.id}
-                      className="flex-1 sm:flex-none justify-center px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100 flex items-center gap-1"
+                      className="flex-1 sm:flex-none justify-center px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100 flex items-center gap-1 min-h-[40px]"
                     >
                        {deletingId === gap.id ? (
                          <div className="animate-spin h-3 w-3 border-2 border-red-600 rounded-full border-t-transparent"></div>
@@ -203,7 +206,7 @@ const SavedResearchGapList = () => {
                     </button>
                     <button 
                       onClick={() => setSelectedGap(gap)}
-                      className="flex-1 sm:flex-none justify-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm flex items-center gap-2"
+                      className="flex-1 sm:flex-none justify-center px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm flex items-center gap-2 min-h-[40px]"
                     >
                        <FaRobot /> Plan Proposal
                     </button>

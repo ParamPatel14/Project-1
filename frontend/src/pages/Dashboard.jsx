@@ -331,7 +331,7 @@ const Dashboard = () => {
 
                 {/* Right Column: Status/Matches (Placeholder) */}
                 <div className="space-y-8">
-                  <div className="bg-white p-6 rounded-sm shadow-sm border border-stone-200 border-t-4 border-t-[var(--color-academia-charcoal)]">
+                  <div className="bg-white p-4 md:p-6 rounded-sm shadow-sm border border-stone-200 border-t-4 border-t-[var(--color-academia-charcoal)]">
                     <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center">
                       <FiActivity className="mr-2" /> Quick Stats
                     </h3>
@@ -344,7 +344,7 @@ const Dashboard = () => {
                   {!currentUser?.student_profile?.is_phd_seeker && (
                     <div 
                       onClick={() => window.dispatchEvent(new Event('open-profile-edit'))}
-                      className="bg-white p-6 rounded-sm shadow-sm cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] transition group"
+                      className="bg-white p-4 md:p-6 rounded-sm shadow-sm cursor-pointer border border-stone-200 hover:border-[var(--color-academia-gold)] transition group"
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <div className="bg-[var(--color-academia-cream)] p-2 rounded-sm border border-[var(--color-academia-gold)] group-hover:bg-[var(--color-academia-gold)] transition-colors">
@@ -385,20 +385,6 @@ const Dashboard = () => {
         {/* Mentor View */}
         {displayRole === "mentor" && (
           <>
-             {/* Mobile Tab Selector */}
-            <div className="md:hidden mb-6">
-              <select 
-                value={activeTab} 
-                onChange={(e) => setActiveTab(e.target.value)}
-                className="block w-full rounded-sm border-stone-300 shadow-sm focus:border-[var(--color-academia-gold)] focus:ring-[var(--color-academia-gold)]"
-              >
-                <option value="profile">My Profile</option>
-                <option value="post-opp">Post Opportunity</option>
-                <option value="my-opportunities">My Opportunities</option>
-                <option value="applications">Manage Applications</option>
-              </select>
-            </div>
-
             {activeTab === 'profile' && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column: Profile */}

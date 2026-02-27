@@ -166,9 +166,9 @@ const MentorProfileForm = ({ user, onUpdate }) => {
 
   // --- View Mode Component ---
   const renderViewMode = () => (
-    <div className="animate-fade-in space-y-8 w-full">
+    <div className="animate-fade-in space-y-6 md:space-y-8 w-full">
       {/* Header Profile Card */}
-      <div className="relative bg-[var(--color-academia-charcoal)] rounded-xl p-8 text-[var(--color-academia-cream)] shadow-lg overflow-hidden">
+      <div className="relative bg-[var(--color-academia-charcoal)] rounded-xl p-6 md:p-8 text-[var(--color-academia-cream)] shadow-lg overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10">
           <FiBook className="w-64 h-64 text-[var(--color-academia-cream)]" />
         </div>
@@ -176,7 +176,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-3xl font-serif font-bold tracking-wide">{formData.position || "Mentor"}</h2>
+              <h2 className="text-2xl md:text-3xl font-serif font-bold tracking-wide">{formData.position || "Mentor"}</h2>
               {user?.mentor_profile?.is_verified && (
                 <span className="bg-[var(--color-academia-gold)]/20 text-[var(--color-academia-gold)] border border-[var(--color-academia-gold)]/30 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 backdrop-blur-sm">
                   <FiCheckCircle /> Verified
@@ -233,60 +233,60 @@ const MentorProfileForm = ({ user, onUpdate }) => {
       </div>
 
       {/* Main Content Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 w-full">
         
         {/* Left Column (Main Info) */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-6 md:space-y-8">
           
           {/* About Section */}
-          <div className="bg-white rounded-xl shadow-sm p-6 border border-stone-200">
+          <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-stone-200">
             <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-2">
               <FiUser className="text-[var(--color-academia-gold)]" /> About
             </h3>
-            <p className="text-stone-600 leading-relaxed whitespace-pre-wrap font-sans">
+            <p className="text-stone-600 leading-relaxed whitespace-pre-wrap font-sans text-sm md:text-base">
               {formData.bio || "No bio provided yet."}
             </p>
           </div>
 
           {/* Research Areas */}
-          <div className="bg-white rounded-xl shadow-sm p-6 border border-stone-200">
+          <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-stone-200">
             <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-2">
               <FiBook className="text-[var(--color-academia-gold)]" /> Research Interests
             </h3>
             <div className="flex flex-wrap gap-2">
               {formData.research_areas ? (
                 formData.research_areas.split(',').map((area, idx) => (
-                  <span key={idx} className="bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] px-3 py-1 rounded-full text-sm font-medium border border-[var(--color-academia-gold)]/20">
+                  <span key={idx} className="bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] px-3 py-1 rounded-full text-xs md:text-sm font-medium border border-[var(--color-academia-gold)]/20">
                     {area.trim()}
                   </span>
                 ))
               ) : (
-                <span className="text-stone-500 italic">No research areas listed.</span>
+                <span className="text-stone-500 italic text-sm">No research areas listed.</span>
               )}
             </div>
           </div>
 
           {/* Publications */}
           {publications.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-stone-200">
+            <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-stone-200">
               <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-2">
                 <FiType className="text-[var(--color-academia-gold)]" /> Selected Publications
               </h3>
               <div className="space-y-4">
                 {publications.map((pub, idx) => (
                   <div key={idx} className="group p-4 rounded-lg bg-[var(--color-academia-cream)] hover:bg-stone-100 transition-colors border border-stone-200">
-                    <h4 className="font-bold text-[var(--color-academia-charcoal)] group-hover:text-[var(--color-academia-gold)] transition-colors font-serif">
+                    <h4 className="font-bold text-[var(--color-academia-charcoal)] group-hover:text-[var(--color-academia-gold)] transition-colors font-serif text-sm md:text-base">
                       {pub.url ? (
                         <a href={pub.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                           {pub.title} <FiLink className="w-4 h-4 opacity-50" />
                         </a>
                       ) : pub.title}
                     </h4>
-                    <div className="text-sm text-stone-500 mt-1 flex flex-wrap gap-x-4">
+                    <div className="text-xs md:text-sm text-stone-500 mt-1 flex flex-wrap gap-x-4">
                       {pub.journal_conference && <span className="font-medium text-stone-700">{pub.journal_conference}</span>}
                       {pub.publication_date && <span>{pub.publication_date}</span>}
                     </div>
-                    {pub.description && <p className="text-sm text-stone-600 mt-2">{pub.description}</p>}
+                    {pub.description && <p className="text-xs md:text-sm text-stone-600 mt-2">{pub.description}</p>}
                   </div>
                 ))}
               </div>
@@ -295,38 +295,38 @@ const MentorProfileForm = ({ user, onUpdate }) => {
         </div>
 
         {/* Right Column (Details & Requirements) */}
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
           
           {/* Lab/Work Details */}
-          <div className="bg-white rounded-xl shadow-sm p-6 border border-stone-200">
+          <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-stone-200">
              <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 flex items-center gap-2">
               <FiBriefcase className="text-[var(--color-academia-gold)]" /> Lab Details
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
                {formData.mentor_type === 'academic_supervisor' && (
                   <>
                     <div className="flex items-start justify-between">
                       <span className="text-stone-500 text-sm">Lab Size</span>
-                      <span className="font-medium text-[var(--color-academia-charcoal)]">{formData.lab_size || "N/A"} members</span>
+                      <span className="font-medium text-[var(--color-academia-charcoal)] text-sm md:text-base">{formData.lab_size || "N/A"} members</span>
                     </div>
                      <div className="flex items-start justify-between">
                       <span className="text-stone-500 text-sm">Methodology</span>
-                      <span className="font-medium text-[var(--color-academia-charcoal)]">{formData.research_methodology || "N/A"}</span>
+                      <span className="font-medium text-[var(--color-academia-charcoal)] text-sm md:text-base">{formData.research_methodology || "N/A"}</span>
                     </div>
                      <div className="flex items-start justify-between">
                       <span className="text-stone-500 text-sm">Style</span>
-                      <span className="font-medium text-[var(--color-academia-charcoal)]">{formData.mentorship_style || "N/A"}</span>
+                      <span className="font-medium text-[var(--color-academia-charcoal)] text-sm md:text-base">{formData.mentorship_style || "N/A"}</span>
                     </div>
                   </>
                )}
                <div className="flex items-start justify-between">
                   <span className="text-stone-500 text-sm">Time Commitment</span>
-                  <span className="font-medium text-[var(--color-academia-charcoal)]">{formData.time_commitment || "N/A"}</span>
+                  <span className="font-medium text-[var(--color-academia-charcoal)] text-sm md:text-base">{formData.time_commitment || "N/A"}</span>
                </div>
             </div>
             
             {formData.alumni_placement && (
-                <div className="mt-6 pt-4 border-t border-stone-100">
+                <div className="mt-4 md:mt-6 pt-4 border-t border-stone-100">
                     <span className="block text-stone-500 text-sm mb-2">Alumni Placements</span>
                     <p className="text-sm text-stone-700 italic">"{formData.alumni_placement}"</p>
                 </div>
@@ -334,12 +334,12 @@ const MentorProfileForm = ({ user, onUpdate }) => {
           </div>
 
           {/* Student Requirements */}
-          <div className="bg-[var(--color-academia-charcoal)] rounded-xl shadow-lg p-6 text-[var(--color-academia-cream)]">
+          <div className="bg-[var(--color-academia-charcoal)] rounded-xl shadow-lg p-4 md:p-6 text-[var(--color-academia-cream)]">
             <h3 className="text-lg font-serif font-bold mb-4 flex items-center gap-2">
               <FiUsers className="text-[var(--color-academia-gold)]" /> Student Profile
             </h3>
             
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               <div>
                 <h4 className="text-xs uppercase tracking-wider text-stone-400 font-semibold mb-2">Preferred Backgrounds</h4>
                 <div className="flex flex-wrap gap-2">
@@ -441,7 +441,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                             <span className="font-serif font-bold text-base md:text-lg">PhD Supervisor</span>
                             {formData.mentor_type === 'academic_supervisor' && <FiCheckCircle className="text-[var(--color-academia-gold)]" />}
                         </div>
-                        <span className="text-sm opacity-75">For Academic Research & Lab Recruitment</span>
+                        <span className="text-xs md:text-sm opacity-75">For Academic Research & Lab Recruitment</span>
                     </button>
                     <button
                         type="button"
@@ -456,14 +456,14 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                             <span className="font-serif font-bold text-base md:text-lg">Industry Mentor</span>
                             {formData.mentor_type === 'industry_mentor' && <FiCheckCircle className="text-[var(--color-academia-gold)]" />}
                         </div>
-                        <span className="text-sm opacity-75">For Internships, Jobs & Career Guidance</span>
+                        <span className="text-xs md:text-sm opacity-75">For Internships, Jobs & Career Guidance</span>
                     </button>
                 </div>
               </div>
 
               {/* Basic Info Section */}
               <div className="bg-white p-4 md:p-6 rounded-xl border border-stone-200 shadow-sm">
-                  <h3 className="text-base md:text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2">
+                  <h3 className="text-base md:text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 md:mb-6 flex items-center gap-2 border-b border-stone-200 pb-2">
                       <FiUser className="text-[var(--color-academia-gold)]" /> Basic Information
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -476,7 +476,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                     name="university"
                                     value={formData.university}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none"
+                                    className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none text-sm md:text-base"
                                     placeholder="e.g. Stanford University"
                                 />
                             </div>
@@ -487,7 +487,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                     name="lab_name"
                                     value={formData.lab_name}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none"
+                                    className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none text-sm md:text-base"
                                     placeholder="e.g. SAIL (Stanford AI Lab)"
                                 />
                             </div>
@@ -500,7 +500,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                 name="company"
                                 value={formData.company}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none"
+                                className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none text-sm md:text-base"
                                 placeholder="e.g. Google"
                             />
                         </div>
@@ -513,7 +513,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                             name="position"
                             value={formData.position}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none"
+                            className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none text-sm md:text-base"
                             placeholder="e.g. Associate Professor"
                         />
                     </div>
@@ -527,33 +527,33 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                 name="website_url"
                                 value={formData.website_url}
                                 onChange={handleChange}
-                                className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none"
+                                className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none text-sm md:text-base"
                                 placeholder="https://..."
                             />
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-4 md:mt-6">
                     <label className="block text-sm font-medium text-stone-700 mb-1">Bio</label>
                     <textarea
                         name="bio"
                         value={formData.bio}
                         onChange={handleChange}
                         rows="4"
-                        className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none"
+                        className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none text-sm md:text-base"
                         placeholder="Tell students about yourself and your work..."
                     ></textarea>
                 </div>
 
-                 <div className="mt-6">
+                 <div className="mt-4 md:mt-6">
                     <label className="block text-sm font-medium text-stone-700 mb-1">Research Areas</label>
                     <textarea
                         name="research_areas"
                         value={formData.research_areas}
                         onChange={handleChange}
                         rows="2"
-                        className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none"
+                        className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] transition-all outline-none text-sm md:text-base"
                         placeholder="e.g. Computer Vision, NLP, Robotics (Comma separated)"
                     ></textarea>
                 </div>
@@ -561,19 +561,19 @@ const MentorProfileForm = ({ user, onUpdate }) => {
 
               {/* PhD Specifics */}
               {formData.mentor_type === 'academic_supervisor' && (
-                <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
-                    <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-6 flex items-center gap-2 border-b border-stone-200 pb-2">
+                <div className="bg-white p-4 md:p-6 rounded-xl border border-stone-200 shadow-sm">
+                    <h3 className="text-base md:text-lg font-serif font-bold text-[var(--color-academia-charcoal)] mb-4 md:mb-6 flex items-center gap-2 border-b border-stone-200 pb-2">
                         <FiBriefcase className="text-[var(--color-academia-gold)]" /> Lab & Mentorship Details
                     </h3>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-4 md:mb-6">
                         <div>
                             <label className="block text-sm font-medium text-stone-700 mb-1">Accepting Students?</label>
                             <select
                                 name="accepting_phd_students"
                                 value={formData.accepting_phd_students}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                             >
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
@@ -586,7 +586,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                 name="funding_available"
                                 value={formData.funding_available}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                             >
                                 <option value="Yes">Yes</option>
                                 <option value="Depends">Depends</option>
@@ -600,19 +600,19 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                 name="max_student_requests"
                                 value={formData.max_student_requests}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                             />
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
                          <div>
                             <label className="block text-sm font-medium text-stone-700 mb-1">Research Methodology</label>
                             <select
                                 name="research_methodology"
                                 value={formData.research_methodology}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                             >
                                 <option value="Experimental">Experimental</option>
                                 <option value="Theoretical">Theoretical</option>
@@ -627,7 +627,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                 name="mentorship_style"
                                 value={formData.mentorship_style}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                             >
                                 <option value="Hands-on">Hands-on (Close Supervision)</option>
                                 <option value="Collaborative">Collaborative (Team)</option>
@@ -636,23 +636,23 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                             </select>
                         </div>
                     </div>
-                     <div className="mb-6">
+                     <div className="mb-4 md:mb-6">
                         <label className="block text-sm font-medium text-stone-700 mb-1">Alumni Placements</label>
                         <input
                             type="text"
                             name="alumni_placement"
                             value={formData.alumni_placement}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                            className="w-full px-3 py-2 md:px-4 md:py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                             placeholder="e.g. Google, MIT Faculty, Startups"
                         />
                     </div>
 
                     {/* Checkboxes for Backgrounds */}
-                     <div className="mb-6">
+                     <div className="mb-4 md:mb-6">
                         <label className="block text-sm font-bold text-stone-700 mb-3">Preferred Backgrounds</label>
-                        <div className="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div className="bg-stone-50 p-3 md:p-4 rounded-lg border border-stone-200">
+                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                                 {backgrounds.map(bg => (
                                     <label key={bg} className="inline-flex items-center space-x-2 cursor-pointer hover:bg-white p-1 rounded transition">
                                         <input
@@ -672,7 +672,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                     value={formData.other_background}
                                     onChange={handleChange}
                                     placeholder="Other (specify)"
-                                    className="w-full px-3 py-1.5 text-sm border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none"
+                                    className="w-full px-3 py-2 md:py-1.5 text-sm border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none"
                                 />
                             </div>
                         </div>
@@ -681,8 +681,8 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                      {/* Checkboxes for Expectations */}
                      <div>
                         <label className="block text-sm font-bold text-stone-700 mb-3">Minimum Expectations</label>
-                        <div className="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div className="bg-stone-50 p-3 md:p-4 rounded-lg border border-stone-200">
+                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                                 {expectations.map(exp => (
                                     <label key={exp} className="inline-flex items-center space-x-2 cursor-pointer hover:bg-white p-1 rounded transition">
                                         <input
@@ -702,7 +702,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                     value={formData.other_expectation}
                                     onChange={handleChange}
                                     placeholder="Other (specify)"
-                                    className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md"
+                                    className="w-full px-3 py-2 md:py-1.5 text-sm border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none"
                                 />
                             </div>
                         </div>
@@ -711,9 +711,9 @@ const MentorProfileForm = ({ user, onUpdate }) => {
               )}
 
               {/* Publications Section */}
-               <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
-                  <div className="flex justify-between items-center mb-6 border-b border-stone-200 pb-2">
-                     <h3 className="text-lg font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2">
+               <div className="bg-white p-4 md:p-6 rounded-xl border border-stone-200 shadow-sm">
+                  <div className="flex justify-between items-center mb-4 md:mb-6 border-b border-stone-200 pb-2">
+                     <h3 className="text-base md:text-lg font-serif font-bold text-[var(--color-academia-charcoal)] flex items-center gap-2">
                         <FiType className="text-[var(--color-academia-gold)]" /> Publications
                     </h3>
                     <button type="button" onClick={addPublication} className="text-sm flex items-center gap-1 text-[var(--color-academia-gold)] font-bold hover:text-[var(--color-academia-gold-hover)] transition-colors">
@@ -722,13 +722,13 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                   </div>
                   
                   {publications.length === 0 ? (
-                      <div className="text-center py-8 text-stone-500 bg-stone-50 rounded-lg border border-dashed border-stone-300">
+                      <div className="text-center py-6 md:py-8 text-stone-500 bg-stone-50 rounded-lg border border-dashed border-stone-300 text-sm md:text-base">
                           No publications added yet. Click "Add New" to showcase your work.
                       </div>
                   ) : (
                       <div className="space-y-4">
                         {publications.map((pub, index) => (
-                            <div key={index} className="bg-stone-50 p-4 rounded-lg border border-stone-200 relative group transition-all hover:shadow-md">
+                            <div key={index} className="bg-stone-50 p-3 md:p-4 rounded-lg border border-stone-200 relative group transition-all hover:shadow-md">
                                 <button
                                     type="button"
                                     onClick={() => removePublication(index)}
@@ -737,34 +737,34 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                 >
                                     <FiTrash2 />
                                 </button>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                                     <input
                                         type="text"
                                         placeholder="Paper Title"
                                         value={pub.title}
                                         onChange={(e) => updatePublication(index, "title", e.target.value)}
-                                        className="w-full px-3 py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                        className="w-full px-3 py-2 md:px-3 md:py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                                     />
                                      <input
                                         type="text"
                                         placeholder="Journal / Conference (e.g. CVPR 2024)"
                                         value={pub.journal_conference}
                                         onChange={(e) => updatePublication(index, "journal_conference", e.target.value)}
-                                        className="w-full px-3 py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                        className="w-full px-3 py-2 md:px-3 md:py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                                     />
                                      <input
                                         type="text"
                                         placeholder="Link to Paper (URL)"
                                         value={pub.url}
                                         onChange={(e) => updatePublication(index, "url", e.target.value)}
-                                        className="w-full px-3 py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                        className="w-full px-3 py-2 md:px-3 md:py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                                     />
                                      <input
                                         type="text"
                                         placeholder="Publication Date (YYYY-MM-DD)"
                                         value={pub.publication_date}
                                         onChange={(e) => updatePublication(index, "publication_date", e.target.value)}
-                                        className="w-full px-3 py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                        className="w-full px-3 py-2 md:px-3 md:py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                                     />
                                     <div className="md:col-span-2">
                                          <textarea
@@ -772,7 +772,7 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                                             value={pub.description}
                                             onChange={(e) => updatePublication(index, "description", e.target.value)}
                                             rows="2"
-                                            className="w-full px-3 py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all"
+                                            className="w-full px-3 py-2 md:px-3 md:py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-[var(--color-academia-gold)] focus:border-[var(--color-academia-gold)] outline-none transition-all text-sm md:text-base"
                                         />
                                     </div>
                                 </div>
@@ -783,11 +783,11 @@ const MentorProfileForm = ({ user, onUpdate }) => {
                </div>
 
               {/* Submit Button */}
-              <div className="flex justify-end pt-4">
+              <div className="flex flex-col md:flex-row justify-end pt-4 md:pt-6">
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="bg-[var(--color-academia-charcoal)] text-[var(--color-academia-gold)] px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center border border-[var(--color-academia-gold)]/20 hover:border-[var(--color-academia-gold)]"
+                  className="bg-[var(--color-academia-charcoal)] text-[var(--color-academia-gold)] px-6 py-3 md:px-8 md:py-4 rounded-xl font-bold text-base md:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center border border-[var(--color-academia-gold)]/20 hover:border-[var(--color-academia-gold)] w-full md:w-auto"
                 >
                   {isLoading ? (
                     <>

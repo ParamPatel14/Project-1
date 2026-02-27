@@ -80,19 +80,19 @@ const MentorApplications = () => {
   return (
     <div className="bg-stone-50 min-h-screen p-4 md:p-8 font-sans text-stone-800">
       <div className="max-w-7xl mx-auto">
-        <header className="mb-10 border-b border-[var(--color-academia-gold)] pb-6">
+        <header className="mb-6 md:mb-10 border-b border-[var(--color-academia-gold)] pb-4 md:pb-6">
           <h1 className="text-2xl md:text-4xl font-bold font-serif text-[var(--color-academia-charcoal)] mb-2">Talent Identification</h1>
           <p className="text-stone-600 max-w-2xl text-base md:text-lg">Review and align with high-potential candidates for your research opportunities.</p>
         </header>
 
         {/* Controls */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-          <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8 gap-4">
+          <div className="flex flex-wrap gap-2 justify-center md:justify-start w-full md:w-auto">
             {['all', 'pending', 'reviewing', 'accepted', 'rejected'].map(status => (
               <button
                 key={status}
                 onClick={() => setFilterStatus(status)}
-                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-sm text-sm font-medium transition-all capitalize ${
+                className={`px-3 py-2 md:px-4 md:py-2 rounded-sm text-sm font-medium transition-all capitalize flex-1 md:flex-none text-center ${
                   filterStatus === status 
                     ? 'bg-[var(--color-academia-charcoal)] text-white shadow-md' 
                     : 'bg-white text-stone-600 hover:bg-stone-200 border border-stone-300'
@@ -102,7 +102,7 @@ const MentorApplications = () => {
               </button>
             ))}
           </div>
-          <div className="text-stone-500 font-serif italic">
+          <div className="text-stone-500 font-serif italic text-sm md:text-base">
             Showing {filteredApplications.length} candidates
           </div>
         </div>
@@ -122,23 +122,23 @@ const MentorApplications = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="bg-white rounded-sm border-t-4 border-[var(--color-academia-gold)] shadow-sm hover:shadow-lg transition-shadow p-6 flex flex-col"
+                  className="bg-white rounded-sm border-t-4 border-[var(--color-academia-gold)] shadow-sm hover:shadow-lg transition-shadow p-4 md:p-6 flex flex-col"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] font-bold font-serif text-lg">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[var(--color-academia-cream)] border border-[var(--color-academia-gold)] flex items-center justify-center text-[var(--color-academia-charcoal)] font-bold font-serif text-base md:text-lg">
                         {app.student?.name ? app.student.name.charAt(0).toUpperCase() : 'S'}
                       </div>
                       <div>
-                        <h3 className="font-bold text-[var(--color-academia-charcoal)] font-serif text-lg leading-tight">
+                        <h3 className="font-bold text-[var(--color-academia-charcoal)] font-serif text-base md:text-lg leading-tight">
                           {app.student?.name || "Unknown Candidate"}
                         </h3>
-                        <p className="text-xs text-stone-500 uppercase tracking-wider">
+                        <p className="text-[10px] md:text-xs text-stone-500 uppercase tracking-wider">
                           {app.student?.student_profile?.university || "University N/A"}
                         </p>
                       </div>
                     </div>
-                    <div className={`px-2 py-1 rounded-sm text-xs font-bold border ${getStatusColor(app.status)}`}>
+                    <div className={`px-2 py-1 rounded-sm text-[10px] md:text-xs font-bold border ${getStatusColor(app.status)}`}>
                       {app.status}
                     </div>
                   </div>

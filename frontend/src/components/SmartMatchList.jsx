@@ -185,15 +185,15 @@ const SmartMatchList = () => {
                 >
                   <div className="flex flex-col md:flex-row">
                     {/* Left: Score Panel */}
-                    <div className="bg-gradient-to-b from-[var(--color-academia-charcoal)] to-[#2c3e50] p-4 md:p-6 flex flex-col items-center justify-center text-white min-w-[140px] relative overflow-hidden">
+                    <div className="bg-gradient-to-r md:bg-gradient-to-b from-[var(--color-academia-charcoal)] to-[#2c3e50] p-4 md:p-6 flex flex-col items-center justify-center text-white min-w-[140px] relative overflow-hidden">
                       <div className="absolute top-0 left-0 w-full h-full bg-[var(--color-academia-gold)] opacity-10 mix-blend-overlay"></div>
                       <div className="relative z-10 text-center w-full flex flex-row md:flex-col justify-between md:justify-center items-center gap-4 md:gap-0">
-                          <div className="text-center">
+                          <div className="text-center flex-1 md:flex-none">
                             <span className="text-xs uppercase tracking-wider font-serif font-semibold opacity-90 text-[var(--color-academia-gold)]">Match Score</span>
                             <div className="text-4xl md:text-5xl font-bold font-serif my-1 md:my-2 text-white">{match.match_score}%</div>
                           </div>
                           
-                          <div className="mt-0 md:mt-4 space-y-2 w-1/2 md:w-full">
+                          <div className="mt-0 md:mt-4 space-y-2 w-1/2 md:w-full flex-1 md:flex-none pl-4 md:pl-0 border-l md:border-l-0 border-white/10 md:border-t md:border-white/10 md:pt-4">
                               <div className="flex justify-between text-xs opacity-90">
                                   <span>Semantic</span>
                                   <span>{match.semantic_score}%</span>
@@ -216,16 +216,16 @@ const SmartMatchList = () => {
                     {/* Right: Content Panel */}
                     <div className="p-4 md:p-6 flex-1 flex flex-col justify-between">
                       <div>
-                          <div className="flex items-start justify-between mb-2">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                               <div>
-                                  <h3 className="text-xl font-bold font-serif text-[var(--color-academia-charcoal)]">{match.mentor_name}</h3>
-                                  <div className="text-stone-500 font-medium flex items-center gap-2 text-sm uppercase tracking-wide">
-                                      <FiBriefcase className="text-sm" />
-                                      {match.position} at {match.institution}
+                                  <h3 className="text-lg md:text-xl font-bold font-serif text-[var(--color-academia-charcoal)]">{match.mentor_name}</h3>
+                                  <div className="text-stone-500 font-medium flex flex-wrap items-center gap-2 text-xs md:text-sm uppercase tracking-wide mt-1">
+                                      <FiBriefcase className="text-sm shrink-0" />
+                                      <span>{match.position} at {match.institution}</span>
                                   </div>
                               </div>
                               {match.accepting_students === 'Yes' && (
-                                  <span className="bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)] px-3 py-1 rounded-sm text-xs font-bold flex items-center gap-1">
+                                  <span className="self-start sm:self-auto bg-[var(--color-academia-cream)] text-[var(--color-academia-charcoal)] border border-[var(--color-academia-gold)] px-2 py-1 md:px-3 rounded-sm text-xs font-bold flex items-center gap-1 shrink-0">
                                       <FiCheckCircle className="text-[var(--color-academia-gold)]" /> Hiring
                                   </span>
                               )}
@@ -308,7 +308,7 @@ const SmartMatchList = () => {
                   </div>
                   
                   {expandedMentorId === match.mentor_id && studentId && (
-                      <div className="border-t border-stone-200 p-6 bg-stone-50">
+                      <div className="border-t border-stone-200 p-4 md:p-6 bg-stone-50">
                           <ResearchGapList mentorId={match.mentor_id} studentId={studentId} mentorName={match.mentor_name} />
                       </div>
                   )}
@@ -399,18 +399,18 @@ const SmartMatchList = () => {
                       ></textarea>
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-4 border-t border-stone-100">
+                    <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-4 border-t border-stone-100">
                       <button
                         type="button"
                         onClick={() => setShowApplyModal(false)}
-                        className="px-4 py-2 text-stone-600 font-medium hover:bg-stone-100 rounded-sm"
+                        className="px-4 py-2 text-stone-600 font-medium hover:bg-stone-100 rounded-sm w-full sm:w-auto"
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
                         disabled={applying || !selectedOpportunityId}
-                        className={`px-6 py-2 bg-[var(--color-academia-charcoal)] text-white font-bold rounded-sm flex items-center gap-2 ${
+                        className={`px-6 py-2 bg-[var(--color-academia-charcoal)] text-white font-bold rounded-sm flex items-center justify-center gap-2 w-full sm:w-auto ${
                           (applying || !selectedOpportunityId) ? "opacity-70 cursor-not-allowed" : "hover:bg-[#2c3e50] shadow-md hover:shadow-lg"
                         }`}
                       >
