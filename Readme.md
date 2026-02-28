@@ -6,9 +6,9 @@
 
 ### 🎓 Student Portal
 *   **Smart Profile:** Comprehensive profile management including academic stats, skills, publications, and resume parsing.
-*   **AI-Powered Matching:** "Smart Match" system uses a 3-Lens Architecture (Domain Filtering, Semantic Similarity, Profile Alignment) to recommend the best mentors and opportunities.
+*   **AI-Powered Matching:** "Smart Match" system uses a **3-Lens Architecture** (Domain Filtering, Semantic Similarity, Profile Alignment) to recommend the best mentors and opportunities.
 *   **Research Intelligence:**
-    *   **Gap Discovery:** AI-driven analysis to identify research gaps in specific domains.
+    *   **Gap Discovery:** AI-driven analysis to identify research gaps in specific domains using method-domain matrices.
     *   **Proposal Guidance:** Structured assistance for drafting PhD proposals (Direction, Talking Points, Readiness Check).
 *   **Opportunity Browsing:** Filter and search for Internships, PhD positions, and Grants.
 *   **Real World & Beehive:** Access to Industrial Visits, "Honey Bee" mentorship events, and real-world projects.
@@ -33,6 +33,7 @@
 *   **3-Lens Matching Engine:** Sophisticated algorithm with skill-weighted scoring for high-quality student-mentor pairing.
 *   **Resume Scoring:** Automated scoring of resumes against opportunity requirements.
 *   **Gap Analysis:** AI identification of method-domain gaps in research proposals.
+*   **Proposal Generator:** Generates structured PhD proposal outlines based on student interests and identified gaps.
 
 ### 💬 Communication
 *   **WhatsApp Integration:** Twilio-powered notifications and updates.
@@ -41,7 +42,7 @@
 ## 🛠️ Tech Stack
 
 ### Backend
-*   **Framework:** FastAPI (Python)
+*   **Framework:** FastAPI (Python 3.9+)
 *   **Database:** PostgreSQL (via SQLAlchemy ORM)
 *   **AI/ML:** Google Generative AI (Gemini), Pandas, Scikit-learn (for similarity)
 *   **Authentication:** JWT (Python-Jose), OAuth (Google/GitHub)
@@ -121,6 +122,7 @@ python init_db.py
 python seed_mentors.py
 python seed_internships.py
 python seed_realworld.py
+python seed_mentors_opps.py
 ```
 
 Run the Server:
