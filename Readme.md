@@ -4,7 +4,7 @@
 
 ## Key Features
 
-###  Student Portal
+### 🎓 Student Portal
 *   **Smart Profile:** Comprehensive profile management including academic stats, skills, publications, and resume parsing.
 *   **AI-Powered Matching:** "Smart Match" system uses a 3-Lens Architecture (Domain Filtering, Semantic Similarity, Profile Alignment) to recommend the best mentors and opportunities.
 *   **Research Intelligence:**
@@ -13,28 +13,32 @@
 *   **Opportunity Browsing:** Filter and search for Internships, PhD positions, and Grants.
 *   **Real World & Beehive:** Access to Industrial Visits, "Honey Bee" mentorship events, and real-world projects.
 *   **Application Management:** Track status of applications (Pending, Accepted, Rejected).
+*   **Mobile-First Design:** Fully responsive interface optimized for seamless use on smartphones and tablets.
 
 ### 👨‍🏫 Mentor Portal
+*   **Role-Based Profiles:** Dedicated workflows for **Academic Supervisors (PhD)** and **Industry Mentors (Internships)**.
 *   **Lab Management:** Showcase research methodology, mentorship style, and alumni placements.
 *   **Opportunity Posting:** Create and manage research positions with detailed requirements.
 *   **Application Review:** Review student applications with AI-enhanced insights (Match Score, Gap Analysis).
 *   **Analytics:** Dashboard for tracking profile views and application statistics.
 
 ### 🛡️ Admin Portal
-*   **System Overview:** centralized dashboard for managing users and platform content.
+*   **Responsive Dashboard:** Mobile-friendly card views for managing students, mentors, and applications on the go.
+*   **System Overview:** Centralized dashboard for managing users and platform content.
 *   **Event Management:** Create and manage Beehive Events and Industrial Visits.
 *   **Certificate Verification:** Generate and verify certificates for completed projects.
 
 ### 🤖 AI & Intelligence
 *   **Gemini Integration:** Powered by Google Gemini for semantic embeddings, resume parsing, and content generation.
-*   **3-Lens Matching Engine:** Sophisticated algorithm for high-quality student-mentor pairing.
+*   **3-Lens Matching Engine:** Sophisticated algorithm with skill-weighted scoring for high-quality student-mentor pairing.
 *   **Resume Scoring:** Automated scoring of resumes against opportunity requirements.
+*   **Gap Analysis:** AI identification of method-domain gaps in research proposals.
 
 ### 💬 Communication
 *   **WhatsApp Integration:** Twilio-powered notifications and updates.
 *   **Meeting Scheduler:** Integrated tools for scheduling mentorship sessions.
 
-##  Tech Stack
+## 🛠️ Tech Stack
 
 ### Backend
 *   **Framework:** FastAPI (Python)
